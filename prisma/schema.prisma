@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String            @id @default(uuid())
+  name            String
+  email           String            @unique
+  cpf             String
+  phone           String
+  password        String
+  address         Address?
+  AnimalFound     AnimalFound[]
+  LostAnimal      LostAnimal[]
+  AvailableAnimal AvailableAnimal[]
+}
+
+model Address {
+  id         String  @id @default(uuid())
+  cep        String
+  complement String?
+  userId     String? @unique
+  user       User?   @relation(fields: [userId], references: [id])
+}
+
+model AnimalFound {
+  id                          String  @id @default(uuid())
+  photo                       String
+  local_encontrado            String
+  species                     String
+  race                        String
+  age                         String
+  color                       String
+  size                        String
+  distinctive_characteristics String
+  userId                      String?
+  user                        User?   @relation(fields: [userId], references: [id])
+}
+
+model LostAnimal {
+  id                          String  @id @default(uuid())
+  species                     String
+  race                        String
+  age                         String
+  color                       String
+  size                        String
+  distinctive_characteristics String
+  date_loss                   String
+  location_loss               String
+  userId                      String?
+  user                        User?   @relation(fields: [userId], references: [id])
+}
+
+model AvailableAnimal {
+  id                          String  @id @default(uuid())
+  species                     String
+  race                        String
+  age                         String
+  color                       String
+  size                        String
+  distinctive_characteristics String
+  informacoes_personalidade   String
+  userId                      String?
+  user                        User?   @relation(fields: [userId], references: [id])
+}
