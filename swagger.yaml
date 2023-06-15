@@ -1,0 +1,270 @@
+openapi: 3.0.0
+info:
+  title: API de Animais Perdidos e Achados
+  version: 1.0.0
+paths:
+  /api/users:
+    post:
+      summary: Cria um novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+  /api/users/login:
+    post:
+      summary: Autentica um usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Usuário autenticado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+  /api/animals/lost:
+    post:
+      summary: Registra um animal perdido
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LostAnimal'
+      responses:
+        '200':
+          description: Animal perdido registrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LostAnimalResponse'
+  /api/animals/found:
+    post:
+      summary: Registra um animal encontrado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FoundAnimal'
+      responses:
+        '200':
+          description: Animal encontrado registrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FoundAnimalResponse'
+  /api/animals/search:
+    get:
+      summary: Busca de animais perdidos e para adoção
+      parameters:
+        - name: species
+          in: query
+          description: Espécie do animal
+          schema:
+            type: string
+        - name: breed
+          in: query
+          description: Raça do animal
+          schema:
+            type: string
+        - name: color
+          in: query
+          description: Cor do animal
+          schema:
+            type: string
+        - name: size
+          in: query
+          description: Tamanho do animal
+          schema:
+            type: string
+        # Outros parâmetros de busca...
+      responses:
+        '200':
+          description: Lista de animais correspondentes à busca
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchAnimalResponse'
+  /api/feedback:
+    post:
+      summary: Envia feedback do resgate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Feedback'
+      responses:
+        '200':
+          description: Feedback enviado com sucesso
+  /api/users/{userId}/animals:
+    get:
+      summary: Obtém os animais resgatados pelo usuário
+      parameters:
+        - name: userId
+          in: path
+          description: ID do usuário
+          schema:
+            type: integer
+            format: int64
+            example: 123
+      responses:
+        '200':
+          description: Lista de animais resgatados pelo usuário
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RescuedAnimalsResponse'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        cpf:
+          type: string
+        tel:
+          type: string
+        password:
+          type: string
+        address:
+          type: string
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        cpf:
+          type: string
+        tel:
+          type: string
+        address:
+          type: string
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+    LostAnimal:
+      type: object
+      properties:
+        name:
+          type: string
+        species:
+          type: string
+        age:
+          type: integer
+        breed:
+          type: string
+        lostDate:
+          type: string
+        lostLocation:
+          type: string
+    LostAnimalResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        species:
+          type: string
+        age:
+          type: integer
+        breed:
+          type: string
+        lostDate:
+          type: string
+        lostLocation:
+          type: string
+    FoundAnimal:
+      type: object
+      properties:
+        name:
+          type: string
+        species:
+          type: string
+        age:
+          type: integer
+        breed:
+          type: string
+        foundLocation:
+          type: string
+    FoundAnimalResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        species:
+          type: string
+        age:
+          type: integer
+        breed:
+          type: string
+        foundLocation:
+          type: string
+    SearchAnimalResponse:
+      type: object
+      properties:
+        animals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Animal'
+    Animal:
+      type: object
+      properties:
+        name:
+          type: string
+        species:
+          type: string
+        breed:
+          type: string
+        color:
+          type: string
+        size:
+          type: string
+        # Outras propriedades...
+    Feedback:
+      type: object
+      properties:
+        userId:
+          type: integer
+        feedback:
+          type: string
+    RescuedAnimalsResponse:
+      type: object
+      properties:
+        animals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Animal'

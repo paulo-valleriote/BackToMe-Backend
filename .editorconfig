@@ -1,0 +1,52 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# Top-most EditorConfig file
+root = true
+
+# Indentation style
+[*]
+indent_style = space
+indent_size = 2
+
+# End of line
+[*]
+end_of_line = lf
+
+# Charset
+[*]
+charset = utf-8
+
+# Trim trailing whitespace and ensure a new line at the end of the file
+[*]
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Set default file format for Prisma files
+[*.prisma]
+indent_style = space
+indent_size = 2
+
+# Set default file format for TypeScript files
+[*.ts]
+indent_style = space
+indent_size = 2
+
+# Set default file format for JavaScript files
+[*.js]
+indent_style = space
+indent_size = 2
+
+# Set default file format for JSON files
+[*.json]
+indent_style = space
+indent_size = 2
+
+# Set default file format for YAML files
+[*.yaml, *.yml]
+indent_style = space
+indent_size = 2
+
+# Set default file format for NestJS files
+[*.nest]
+indent_style = space
+indent_size = 2
