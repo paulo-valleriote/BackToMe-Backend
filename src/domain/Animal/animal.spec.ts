@@ -7,7 +7,7 @@ describe('Animal Class', () => {
   const makeSut = (props: HttpRequest) => {
     const newAnimal = new Animal();
 
-    return newAnimal.handle(props);
+    return newAnimal.handle(props.body);
   };
 
   it('should return 400 if no specie is provided', () => {
@@ -17,24 +17,24 @@ describe('Animal Class', () => {
         age: 'any_age',
         color: 'any_color',
         size: 'any_size',
-        distinctiveCharacteristics: 'any_characteristic',
+        distinctive_characteristics: 'any_characteristic',
       },
     };
 
     const httpResponse = makeSut(httpRequest);
 
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('specie'));
+    expect(httpResponse.body).toEqual(new MissingParamError('species'));
   });
 
   it('should return 400 if no race is provided', () => {
     const httpRequest = {
       body: {
-        specie: 'any_specie',
+        species: 'any_specie',
         age: 'any_age',
         color: 'any_color',
         size: 'any_size',
-        distinctiveCharacteristics: 'any_characteristic',
+        distinctive_characteristics: 'any_characteristic',
       },
     };
 
@@ -47,12 +47,12 @@ describe('Animal Class', () => {
   it('should return 400 if a invalid age is provided', () => {
     const httpRequest = {
       body: {
-        specie: 'any_specie',
+        species: 'any_specie',
         race: 'any_race',
         age: 'invalid_age',
         color: 'any_color',
         size: 'any_size',
-        distinctiveCharacteristics: 'any_characteristic',
+        distinctive_characteristics: 'any_characteristic',
       },
     };
 
@@ -67,11 +67,11 @@ describe('Animal Class', () => {
   it('should return 400 if no age is provided', () => {
     const httpRequest = {
       body: {
-        specie: 'any_specie',
+        species: 'any_specie',
         race: 'any_race',
         color: 'any_color',
         size: 'any_size',
-        distinctiveCharacteristics: 'any_characteristic',
+        distinctive_characteristics: 'any_characteristic',
       },
     };
 
@@ -84,11 +84,11 @@ describe('Animal Class', () => {
   it('should return 400 if no color is provided', () => {
     const httpRequest = {
       body: {
-        specie: 'any_specie',
+        species: 'any_specie',
         race: 'any_race',
         age: 'any_age',
         size: 'any_size',
-        distinctiveCharacteristics: 'any_characteristic',
+        distinctive_characteristics: 'any_characteristic',
       },
     };
 
@@ -101,11 +101,11 @@ describe('Animal Class', () => {
   it('should return 400 if no size is provided', () => {
     const httpRequest = {
       body: {
-        specie: 'any_specie',
+        species: 'any_specie',
         race: 'any_race',
         age: 'any_age',
         color: 'any_color',
-        distinctiveCharacteristics: 'any_characteristic',
+        distinctive_characteristics: 'any_characteristic',
       },
     };
 
@@ -118,7 +118,7 @@ describe('Animal Class', () => {
   it('should return 400 if no distinctive characteristic is provided', () => {
     const httpRequest = {
       body: {
-        specie: 'any_specie',
+        species: 'any_specie',
         race: 'any_race',
         age: 'any_age',
         color: 'any_color',
@@ -130,7 +130,7 @@ describe('Animal Class', () => {
 
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(
-      new MissingParamError('distinctiveCharacteristics'),
+      new MissingParamError('distinctive_characteristics'),
     );
   });
 });
