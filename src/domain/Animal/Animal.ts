@@ -1,35 +1,31 @@
 import { InvalidParamError } from '@app/errors/InvalidParamError';
 import { MissingParamError } from '@app/errors/MissingParamError';
-import { HttpRequest, HttpResponse } from '@app/protocols/http';
 
-interface AnimalProps extends HttpRequest {
-  body: {
-    specie: string;
-    race: string;
-    age: string;
-    color: string;
-    size: string;
-    distinctiveCharacteristics: string;
-  };
+export type AnimalProps = any;
+
+interface NewAnimal {
+  body: AnimalProps | Error;
+  statusCode: number;
 }
 
 export class Animal {
   props?: AnimalProps;
+  protected requiredParams: string[];
 
-  constructor() {}
-
-  handle(httpRequest: AnimalProps): HttpResponse {
-    const requiredParams = [
-      'specie',
+  constructor() {
+    this.requiredParams = [
+      'species',
       'race',
       'age',
       'color',
       'size',
-      'distinctiveCharacteristics',
+      'distinctive_characteristics',
     ];
+  }
 
-    for (const param of requiredParams) {
-      if (!httpRequest.body[param]) {
+  handle(httpRequest: AnimalProps): NewAnimal {
+    for (const param of this.requiredParams) {
+      if (!httpRequest[param]) {
         return {
           body: new MissingParamError(param),
           statusCode: 400,
@@ -37,15 +33,15 @@ export class Animal {
       }
     }
 
-    if (!this.ageValidator(httpRequest.body.age)) {
+    if (!this.ageValidator(httpRequest.age)) {
       return {
-        body: new InvalidParamError(httpRequest.body.age),
+        body: new InvalidParamError(httpRequest.age),
         statusCode: 400,
       };
     }
 
     return {
-      body: httpRequest.body,
+      body: httpRequest,
       statusCode: 200,
     };
   }
