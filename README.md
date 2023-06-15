@@ -8,7 +8,7 @@ Este README tem como objetivo fornecer informações sobre as rotas e queries ut
 
 ## prisma.schema exemple
 
-****
+```
 generator client {
   provider = "prisma-client-js"
 }
@@ -77,7 +77,7 @@ model AvailableAnimal {
   user                     User?     @relation(fields: [userId], references: [id])
 }
 
-****
+```
 
 ## Tabelas
 
