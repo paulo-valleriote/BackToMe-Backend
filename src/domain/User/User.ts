@@ -31,36 +31,28 @@ interface IsValidMethodReturn {
 }
 
 export class User {
-  props?: UserProps;
+  props: UserProps;
 
   constructor(props: UserProps) {
     const { address, ...userProps } = props;
 
     const newUser = this.handle(userProps);
 
-    if (!address) {
-      throw new MissingParamError('address');
-    }
-
+    if (!address) throw new MissingParamError('address');
     const newAddress = new Address(address);
 
     if (newUser.statusCode >= 300) {
       throw newUser.body;
     }
 
-    if (newUser.statusCode < 300) {
-      this.props = {
-        ...newUser.body,
-        password: makeHash(newUser.body.password),
-        address: {
-          cep: newAddress.props?.cep as string,
-          complement: newAddress.props?.complement as string,
-        },
-      };
-    }
+    this.props = {
+      ...newUser.body,
+      password: makeHash(newUser.body.password),
+      address: newAddress.props,
+    };
   }
 
-  handle(props: UserCreationProps): NewUser {
+  private handle(props: UserCreationProps): NewUser {
     const { isValid, body, statusCode } = this.isValid(props);
 
     if (!isValid) {
@@ -78,11 +70,11 @@ export class User {
 
   private isValid(params: UserCreationProps): IsValidMethodReturn {
     const userSchema = z.object({
-      name: z.string().min(3),
-      email: z.string().email().min(6),
-      phone: z.string().min(9),
+      name: z.string().min(3, { message: 'Invalid' }),
+      email: z.string().email().min(6, { message: 'Invalid' }),
+      phone: z.string().min(9, { message: 'Invalid' }),
       cpf: z.string().length(11, { message: 'Invalid' }),
-      password: z.string().min(6),
+      password: z.string().min(6, { message: 'Invalid' }),
     });
     const userIsValid = userSchema.safeParse(params);
     if (!userIsValid.success) {

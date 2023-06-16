@@ -11,8 +11,14 @@ interface NewAddress {
   statusCode: number;
 }
 
+interface IsValidMethodReturn {
+  isValid: boolean;
+  body: any;
+  statusCode: number;
+}
+
 export class Address {
-  props?: AddressProps;
+  props: AddressProps;
 
   constructor(props: AddressProps) {
     const newUser = this.handle(props);
@@ -21,12 +27,10 @@ export class Address {
       throw newUser.body;
     }
 
-    if (newUser.statusCode < 300) {
-      this.props = newUser.body;
-    }
+    this.props = newUser.body;
   }
 
-  handle(props: AddressProps): NewAddress {
+  private handle(props: AddressProps): NewAddress {
     const { isValid, body, statusCode } = this.isValid(props);
 
     if (!isValid) {
@@ -42,11 +46,7 @@ export class Address {
     };
   }
 
-  private isValid(params: AddressProps): {
-    isValid: boolean;
-    body: any;
-    statusCode: number;
-  } {
+  private isValid(params: AddressProps): IsValidMethodReturn {
     const addressSchema = z.object({
       cep: z.string(),
       complement: z.string(),
