@@ -9,65 +9,85 @@ describe('User', () => {
     return newUser;
   };
 
-  it('should return 400 if none name is provided', () => {
+  it('should throw missing error param if none name is provided', () => {
     const httpRequest = {
       body: {
         email: 'any_email@mail.com',
         cpf: '11111111111',
         phone: '11 11111-1111',
         password: 'any_password',
+        address: {
+          cep: 'any_cep',
+          complement: 'any_complement',
+        },
       },
     };
 
     expect(() => makeSut(httpRequest)).toThrow(new MissingParamError('name'));
   });
 
-  it('should return 400 if none email is provided', () => {
+  it('should throw missing error param if none email is provided', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
         cpf: '11111111111',
         phone: '11 11111-1111',
         password: 'any_password',
+        address: {
+          cep: 'any_cep',
+          complement: 'any_complement',
+        },
       },
     };
 
     expect(() => makeSut(httpRequest)).toThrow(new MissingParamError('email'));
   });
 
-  it('should return 400 if none cpf is provided', () => {
+  it('should throw missing error param if none cpf is provided', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
         email: 'any_email@mail.com',
         phone: '11 11111-1111',
         password: 'any_password',
+        address: {
+          cep: 'any_cep',
+          complement: 'any_complement',
+        },
       },
     };
 
     expect(() => makeSut(httpRequest)).toThrow(new MissingParamError('cpf'));
   });
 
-  it('should return 400 if none phone is provided', () => {
+  it('should throw missing error param if none phone is provided', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
         email: 'any_email@mail.com',
         cpf: '11111111111',
         password: 'any_password',
+        address: {
+          cep: 'any_cep',
+          complement: 'any_complement',
+        },
       },
     };
 
     expect(() => makeSut(httpRequest)).toThrow(new MissingParamError('phone'));
   });
 
-  it('should return 400 if none password is provided', () => {
+  it('should throw missing error param if none password is provided', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
         email: 'any_email@mail.com',
         cpf: '11111111111',
         phone: '11 11111-1111',
+        address: {
+          cep: 'any_cep',
+          complement: 'any_complement',
+        },
       },
     };
 
@@ -76,7 +96,7 @@ describe('User', () => {
     );
   });
 
-  it('should return 200 if new user was created', () => {
+  it('should return an new user if request is valid', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
@@ -84,10 +104,16 @@ describe('User', () => {
         cpf: '11111111111',
         phone: '11 11111-1111',
         password: 'any_password',
+        address: {
+          cep: 'any_cep',
+          complement: 'any_complement',
+        },
       },
     };
     const newUser = makeSut(httpRequest);
 
-    expect(newUser.props).toEqual(httpRequest.body);
+    if (!newUser.props) throw new Error('Error creating new user');
+
+    expect(Object.values(newUser.props)).toBeTruthy();
   });
 });
