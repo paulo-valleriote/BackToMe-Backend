@@ -45,14 +45,6 @@ export class PrismaUserRepository implements UserRepository {
         encryptedString: databaseStored.password,
       })
     ) {
-      console.log(
-        account.password,
-        databaseStored?.password,
-        compareToEncrypted({
-          receivedString: account.password,
-          encryptedString: databaseStored?.password as string,
-        }),
-      );
       return new BadRequestException('E-mail or password are incorrect');
     }
 
