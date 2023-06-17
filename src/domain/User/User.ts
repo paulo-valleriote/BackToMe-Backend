@@ -1,6 +1,6 @@
 import { InvalidParamError } from '@app/errors/InvalidParamError';
 import { MissingParamError } from '@app/errors/MissingParamError';
-import { makeHash } from '@app/protocols/crypto/makeHash';
+import { makeHash } from '@app/protocols/crypto/hash/makeHash';
 import { Address } from '@domain/Address/Addres';
 import { z } from 'zod';
 
