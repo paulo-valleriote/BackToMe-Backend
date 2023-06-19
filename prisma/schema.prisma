@@ -29,17 +29,17 @@ model Address {
 }
 
 model AnimalFound {
-  id                          String  @id @default(uuid())
+  id                          String @id @default(uuid())
   photo                       String
-  local_encontrado            String
+  found_location              String
   species                     String
   race                        String
   age                         String
   color                       String
   size                        String
   distinctive_characteristics String
-  userId                      String?
-  user                        User?   @relation(fields: [userId], references: [id])
+  userId                      String
+  user                        User?  @relation(fields: [userId], references: [id])
 }
 
 model LostAnimal {
@@ -57,14 +57,14 @@ model LostAnimal {
 }
 
 model AvailableAnimal {
-  id                          String  @id @default(uuid())
+  id                          String @id @default(uuid())
   species                     String
   race                        String
   age                         String
   color                       String
   size                        String
   distinctive_characteristics String
-  informacoes_personalidade   String
-  userId                      String?
-  user                        User?   @relation(fields: [userId], references: [id])
+  personality_description     String
+  userId                      String
+  user                        User?  @relation(fields: [userId], references: [id])
 }
