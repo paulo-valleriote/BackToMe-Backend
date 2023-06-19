@@ -1,5 +1,6 @@
 import { UserRepository } from '@app/repositories/User/user';
 import { User } from '@domain/User/User';
+import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { BadRequestException } from '@nestjs/common';
 
@@ -23,5 +24,17 @@ export class inMemoryUserRepository implements UserRepository {
     }
 
     return 'random_token';
+  }
+
+  async edit(userId: string, user: EditUserDTO): Promise<void | Error> {
+    if (!userId) {
+      return new BadRequestException('Invalid user identification');
+    }
+
+    const userIndex = this.users.findIndex(
+      (user) => user.props.name === userId,
+    );
+
+    Object.assign(this.users[userIndex].props, user);
   }
 }

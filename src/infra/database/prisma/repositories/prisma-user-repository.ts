@@ -1,10 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { sign } from 'jsonwebtoken';
 import { PrismaService } from '../prisma.service';
-import { UserRepository } from '@app/repositories/User/user';
 import { User } from '@domain/User/User';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { UserRepository } from '@app/repositories/User/user';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { compareToEncrypted } from '@app/protocols/crypto/compare/compareToEncrypted';
-import { sign } from 'jsonwebtoken';
+import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
@@ -49,5 +50,30 @@ export class PrismaUserRepository implements UserRepository {
     }
 
     return sign({ id: databaseStored.id }, process.env.JWT_SECRET as string);
+  }
+
+  async edit(userId: string, account: EditUserDTO): Promise<void | Error> {
+    if (!userId) {
+      throw new BadRequestException('Invalid user identification');
+    }
+
+    this.prismaService.user.update({
+      data: {
+        name: account.name,
+        email: account.email,
+        password: account.password,
+        phone: account.phone,
+        cpf: account.cpf,
+        address: {
+          update: {
+            cep: account.address?.cep,
+            complement: account.address?.complement,
+          },
+        },
+      },
+      where: {
+        id: userId,
+      },
+    });
   }
 }

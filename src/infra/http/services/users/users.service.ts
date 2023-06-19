@@ -6,6 +6,7 @@ import { PhoneValidator } from '@app/protocols/phone/phoneValidator';
 import { InvalidParamError } from '@app/errors/InvalidParamError';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { z } from 'zod';
+import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 
 interface RegisterUserRequest {
   name: string;
@@ -27,7 +28,7 @@ export class UserService {
     private cpfValidator: CpfValidator,
   ) {}
 
-  async register(request: RegisterUserRequest): Promise<User> {
+  async register(request: RegisterUserRequest): Promise<User | Error> {
     const newUser = new User(request);
 
     const cpfIsValid = this.cpfValidator.execute(newUser.props?.cpf as string);
@@ -35,8 +36,8 @@ export class UserService {
       newUser.props?.phone as string,
     );
 
-    if (!cpfIsValid) throw new InvalidParamError('cpf');
-    if (!phoneIsValid) throw new InvalidParamError('phone');
+    if (!cpfIsValid) return new InvalidParamError('cpf');
+    if (!phoneIsValid) return new InvalidParamError('phone');
 
     await this.userRepository.register(newUser);
     return newUser;
@@ -51,7 +52,7 @@ export class UserService {
     const loginProps = requestSchema.safeParse(request);
 
     if (!loginProps.success) {
-      throw new BadRequestException('User login error', {
+      return new BadRequestException('User login error', {
         cause: new BadRequestException(),
         description: loginProps.error.errors[0].message,
       });
@@ -60,9 +61,21 @@ export class UserService {
     const userLoginResponse = await this.userRepository.login(loginProps.data);
 
     if (userLoginResponse instanceof BadRequestException) {
-      throw userLoginResponse;
+      return userLoginResponse;
     }
 
     return userLoginResponse;
+  }
+
+  async edit(userId: string, request: EditUserDTO): Promise<void | Error> {
+    if (!userId) {
+      return new BadRequestException('Invalid user identification');
+    }
+
+    const editionGoneWrong = await this.userRepository.edit(userId, request);
+
+    if (editionGoneWrong instanceof Error) {
+      return editionGoneWrong;
+    }
   }
 }

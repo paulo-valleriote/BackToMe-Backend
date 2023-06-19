@@ -1,9 +1,9 @@
+import { User } from '@domain/User/User';
 import { inMemoryUserRepository } from '@test/repositories/in-memory-user-repository';
 import { UserService } from './users.service';
-import { User } from '@domain/User/User';
 import { BadRequestException } from '@nestjs/common';
 
-describe('User', () => {
+describe('Edit user service', () => {
   class PhoneValidatorMock {
     execute() {
       return 'valid_phone';
@@ -41,34 +41,32 @@ describe('User', () => {
 
     const user = await userService.register(newUser.props);
 
-    if (user instanceof Error) {
-      throw user;
-    }
-
     return user;
   };
 
-  it('should throw an error when user not be able to sign in', async () => {
-    const user = await makeSud();
-    const password = 'not_valid';
+  it('should throw an error if none identification is provided', async () => {
+    const userId = '';
+    const user = {
+      name: 'any',
+    };
 
-    const userLoginResponse = await userRepository.login({
-      email: user.props.email,
-      password,
-    });
+    await makeSud();
 
-    expect(userLoginResponse).toEqual(
-      new BadRequestException('E-mail or password are incorrect'),
+    expect(await userService.edit(userId, user)).toEqual(
+      new BadRequestException('Invalid user identification'),
     );
   });
 
-  it('should receive a token when user be able to sign in', async () => {
-    const user = await makeSud();
-    const { email } = user.props;
-    const password = 'any_password';
+  it('should edit existing user if identification is provided', async () => {
+    const userId = 'any_name';
+    const user = {
+      name: 'any',
+    };
 
-    const token = await userRepository.login({ email, password });
+    await makeSud();
 
-    expect(token).toBeTruthy();
+    userService.edit(userId, user);
+
+    expect(userRepository.users[0].props.name).toEqual(user.name);
   });
 });
