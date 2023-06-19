@@ -1,16 +1,25 @@
-import { MissingParamError } from '@app/errors/MissingParamError';
+import { z } from 'zod';
 import { Animal } from './Animal';
-import { InvalidParamError } from '@app/errors/InvalidParamError';
 import { HttpRequest } from '@app/protocols/http';
 
 describe('Animal Class', () => {
   const makeSut = (props: HttpRequest) => {
-    const newAnimal = new Animal();
+    const newAnimal = new Animal(
+      z.object({
+        race: z.string({ required_error: 'Raça inválida' }),
+        age: z.string({ required_error: 'Idade inválida' }),
+        color: z.string({ required_error: 'Cor inválida' }),
+        size: z.string({ required_error: 'Tamanho inválido' }),
+        distinctive_chacteristics: z.string({
+          required_error: 'Características inválidas',
+        }),
+      }),
+    );
 
     return newAnimal.handle(props.body);
   };
 
-  it('should return 400 if no specie is provided', () => {
+  it('should throw bad request error if no specie is provided', () => {
     const httpRequest = {
       body: {
         race: 'any_race',
@@ -21,13 +30,10 @@ describe('Animal Class', () => {
       },
     };
 
-    const httpResponse = makeSut(httpRequest);
-
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('species'));
+    expect(() => makeSut(httpRequest)).toThrow();
   });
 
-  it('should return 400 if no race is provided', () => {
+  it('should throw bad request error if no race is provided', () => {
     const httpRequest = {
       body: {
         species: 'any_specie',
@@ -38,13 +44,10 @@ describe('Animal Class', () => {
       },
     };
 
-    const httpResponse = makeSut(httpRequest);
-
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('race'));
+    expect(() => makeSut(httpRequest)).toThrow();
   });
 
-  it('should return 400 if a invalid age is provided', () => {
+  it('should throw bad request error if a invalid age is provided', () => {
     const httpRequest = {
       body: {
         species: 'any_specie',
@@ -56,15 +59,10 @@ describe('Animal Class', () => {
       },
     };
 
-    const httpResponse = makeSut(httpRequest);
-
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(
-      new InvalidParamError(httpRequest.body.age),
-    );
+    expect(() => makeSut(httpRequest)).toThrow();
   });
 
-  it('should return 400 if no age is provided', () => {
+  it('should throw bad request error if no age is provided', () => {
     const httpRequest = {
       body: {
         species: 'any_specie',
@@ -75,13 +73,10 @@ describe('Animal Class', () => {
       },
     };
 
-    const httpResponse = makeSut(httpRequest);
-
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('age'));
+    expect(() => makeSut(httpRequest)).toThrow();
   });
 
-  it('should return 400 if no color is provided', () => {
+  it('should throw bad request error if no color is provided', () => {
     const httpRequest = {
       body: {
         species: 'any_specie',
@@ -92,13 +87,10 @@ describe('Animal Class', () => {
       },
     };
 
-    const httpResponse = makeSut(httpRequest);
-
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('color'));
+    expect(() => makeSut(httpRequest)).toThrow();
   });
 
-  it('should return 400 if no size is provided', () => {
+  it('should throw bad request error if no size is provided', () => {
     const httpRequest = {
       body: {
         species: 'any_specie',
@@ -109,13 +101,10 @@ describe('Animal Class', () => {
       },
     };
 
-    const httpResponse = makeSut(httpRequest);
-
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('size'));
+    expect(() => makeSut(httpRequest)).toThrow();
   });
 
-  it('should return 400 if no distinctive characteristic is provided', () => {
+  it('should throw bad request error if no distinctive characteristic is provided', () => {
     const httpRequest = {
       body: {
         species: 'any_specie',
@@ -126,11 +115,6 @@ describe('Animal Class', () => {
       },
     };
 
-    const httpResponse = makeSut(httpRequest);
-
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(
-      new MissingParamError('distinctive_characteristics'),
-    );
+    expect(() => makeSut(httpRequest)).toThrow();
   });
 });

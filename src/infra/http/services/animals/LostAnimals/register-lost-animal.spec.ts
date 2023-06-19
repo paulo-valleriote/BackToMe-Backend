@@ -4,7 +4,6 @@ import { LostAnimalService } from './lost-animals.service';
 describe('Lost Animal', () => {
   it('should register a new lost animal', async () => {
     const lostAnimalRepository = new inMemoryLostAnimalRepository();
-
     const lostAnimalService = new LostAnimalService(lostAnimalRepository);
 
     const lostAnimal = await lostAnimalService.register({

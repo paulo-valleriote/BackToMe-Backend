@@ -1,5 +1,6 @@
 import { InvalidParamError } from '@app/errors/InvalidParamError';
-import { MissingParamError } from '@app/errors/MissingParamError';
+import { BadRequestException } from '@nestjs/common';
+import { z } from 'zod';
 
 export type AnimalProps = any;
 
@@ -10,38 +11,27 @@ interface NewAnimal {
 
 export class Animal {
   props?: AnimalProps;
-  protected requiredParams: string[];
+  protected propsValidationSchema: z.ZodObject<any>;
 
-  constructor() {
-    this.requiredParams = [
-      'species',
-      'race',
-      'age',
-      'color',
-      'size',
-      'distinctive_characteristics',
-    ];
+  constructor(propsValidationSchema: z.ZodObject<any>) {
+    this.propsValidationSchema = propsValidationSchema;
   }
 
   handle(httpRequest: AnimalProps): NewAnimal {
-    for (const param of this.requiredParams) {
-      if (!httpRequest[param]) {
-        return {
-          body: new MissingParamError(param),
-          statusCode: 400,
-        };
-      }
+    const body = this.propsValidationSchema.safeParse(httpRequest);
+
+    if (!body.success) {
+      const errorMessage = body.error.errors[0].message;
+
+      throw new BadRequestException(errorMessage);
     }
 
     if (!this.ageValidator(httpRequest.age)) {
-      return {
-        body: new InvalidParamError(httpRequest.age),
-        statusCode: 400,
-      };
+      throw new InvalidParamError(httpRequest.age);
     }
 
     return {
-      body: httpRequest,
+      body: body.data,
       statusCode: 200,
     };
   }
