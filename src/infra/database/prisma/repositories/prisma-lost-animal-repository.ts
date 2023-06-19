@@ -15,7 +15,7 @@ export class PrismaLostAnimalsRepository implements LostAnimalsRepository {
     });
   }
 
-  async list(): Promise<LostAnimal['props'][]> {
+  async find(): Promise<LostAnimal['props'][]> {
     const lostAnimals = await this.prismaService.lostAnimal.findMany();
 
     if (lostAnimals.length < 1) {
