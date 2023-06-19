@@ -1,5 +1,5 @@
 import { InvalidParamError } from '@app/errors/InvalidParamError';
-import { BadRequestException } from '@nestjs/common';
+import { MissingParamError } from '@app/errors/MissingParamError';
 import { z } from 'zod';
 
 export type AnimalProps = any;
@@ -21,9 +21,9 @@ export class Animal {
     const body = this.propsValidationSchema.safeParse(httpRequest);
 
     if (!body.success) {
-      const errorMessage = body.error.errors[0].message;
+      const errorPath = body.error.errors[0].path[0].toLocaleString();
 
-      throw new BadRequestException(errorMessage);
+      throw new MissingParamError(errorPath);
     }
 
     if (!this.ageValidator(httpRequest.age)) {
