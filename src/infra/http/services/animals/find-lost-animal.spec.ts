@@ -1,8 +1,19 @@
 import { inMemoryLostAnimalRepository } from '@test/repositories/in-memory-lost-animal-repository';
 import { LostAnimalService } from './lost-animals.service';
+import { NotFoundException } from '@nestjs/common';
 
-describe('Lost Animal', () => {
-  it('should register a new lost animal', async () => {
+describe('Find animal', () => {
+  it('should throw not found if none animal is registered', async () => {
+    const lostAnimalRepository = new inMemoryLostAnimalRepository();
+
+    const lostAnimalService = new LostAnimalService(lostAnimalRepository);
+
+    expect(await lostAnimalService.find()).toEqual(
+      new NotFoundException('There are no lost animals to list'),
+    );
+  });
+
+  it('should return a list of registered lost animals', async () => {
     const lostAnimalRepository = new inMemoryLostAnimalRepository();
 
     const lostAnimalService = new LostAnimalService(lostAnimalRepository);
@@ -19,7 +30,8 @@ describe('Lost Animal', () => {
       userId: 'any_id',
     });
 
-    expect(lostAnimalRepository.lostAnimals.length).toBeGreaterThanOrEqual(1);
-    expect(lostAnimalRepository.lostAnimals[0]).toEqual(lostAnimal);
+    const lostAnimalsList = await lostAnimalService.find();
+
+    expect(lostAnimalsList[0]).toEqual(lostAnimal.props);
   });
 });

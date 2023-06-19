@@ -7,5 +7,5 @@ export interface RegisterLostAnimalDTO {
   distinctive_characteristics: string;
   date_loss: string;
   location_loss: string;
-  user_id: string;
+  userId: string;
 }

@@ -11,7 +11,7 @@ interface LostAnimalProps extends HttpRequest {
     distinctive_characteristics: string;
     date_loss: string;
     location_loss: string;
-    user_id: string;
+    userId: string;
   };
 }
 
@@ -33,7 +33,7 @@ describe('Lost Animal', () => {
         distinctive_characteristics: 'any_characteristic',
         date_loss: 'any_date',
         location_loss: 'any_location',
-        user_id: 'any_id',
+        userId: 'any_id',
       },
     };
 
@@ -51,7 +51,7 @@ describe('Lost Animal', () => {
         distinctive_characteristics: 'any_characteristic',
         date_loss: 'any_date',
         location_loss: 'any_location',
-        user_id: 'any_id',
+        userId: 'any_id',
       },
     };
 

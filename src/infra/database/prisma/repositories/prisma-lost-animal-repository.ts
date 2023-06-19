@@ -1,5 +1,5 @@
 import { LostAnimalsRepository } from '@app/repositories/LostAnimals/lost-animals';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { LostAnimal } from '@domain/LostAnimal/LostAnimal';
 
@@ -13,5 +13,15 @@ export class PrismaLostAnimalsRepository implements LostAnimalsRepository {
         ...animal.props,
       },
     });
+  }
+
+  async list(): Promise<LostAnimal['props'][]> {
+    const lostAnimals = await this.prismaService.lostAnimal.findMany();
+
+    if (lostAnimals.length < 1) {
+      throw new NotFoundException('There are no animals to list');
+    }
+
+    return lostAnimals;
   }
 }
