@@ -7,18 +7,7 @@ import { InvalidParamError } from '@app/errors/InvalidParamError';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { z } from 'zod';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
-
-interface RegisterUserRequest {
-  name: string;
-  email: string;
-  cpf: string;
-  phone: string;
-  password: string;
-  address: {
-    cep: string;
-    complement: string;
-  };
-}
+import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 
 @Injectable()
 export class UserService {
@@ -28,7 +17,7 @@ export class UserService {
     private cpfValidator: CpfValidator,
   ) {}
 
-  async register(request: RegisterUserRequest): Promise<User | Error> {
+  async register(request: RegisterUserDTO): Promise<User | Error> {
     const newUser = new User(request);
 
     const cpfIsValid = this.cpfValidator.execute(newUser.props?.cpf as string);
