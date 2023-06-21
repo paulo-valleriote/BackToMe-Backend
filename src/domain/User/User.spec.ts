@@ -96,6 +96,23 @@ describe('User', () => {
     );
   });
 
+  it('should be possible to create a new user without adress', () => {
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email@mail.com',
+        cpf: '11111111111',
+        phone: '11 11111-1111',
+        password: 'any_password',
+      },
+    };
+    const newUser = makeSut(httpRequest);
+
+    if (!newUser.props) throw new Error('Error creating new user');
+
+    expect(Object.values(newUser.props)).toBeTruthy();
+  });
+
   it('should return an new user if request is valid', () => {
     const httpRequest = {
       body: {

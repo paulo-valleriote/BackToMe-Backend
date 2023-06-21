@@ -13,7 +13,7 @@ interface UserCreationProps {
 }
 
 interface UserProps extends UserCreationProps {
-  address: {
+  address?: {
     cep: string;
     complement: string;
   };
@@ -32,14 +32,16 @@ interface IsValidMethodReturn {
 
 export class User {
   props: UserProps;
+  private address?: Address;
 
   constructor(props: UserProps) {
     const { address, ...userProps } = props;
 
     const newUser = this.handle(userProps);
 
-    if (!address) throw new MissingParamError('address');
-    const newAddress = new Address(address);
+    if (address) {
+      this.address = new Address(address);
+    }
 
     if (newUser.statusCode >= 300) {
       throw newUser.body;
@@ -48,7 +50,7 @@ export class User {
     this.props = {
       ...newUser.body,
       password: makeHash(newUser.body.password),
-      address: newAddress.props,
+      address: this.address && this.address.props,
     };
   }
 
