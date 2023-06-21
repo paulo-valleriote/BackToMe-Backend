@@ -52,7 +52,7 @@ export class UserService {
     const loginProps = requestSchema.safeParse(request);
 
     if (!loginProps.success) {
-      return new BadRequestException('User login error', {
+      return new BadRequestException('Erro ao realizar login', {
         cause: new BadRequestException(),
         description: loginProps.error.errors[0].message,
       });
@@ -69,7 +69,7 @@ export class UserService {
 
   async edit(userId: string, request: EditUserDTO): Promise<void | Error> {
     if (!userId) {
-      return new BadRequestException('Invalid user identification');
+      return new BadRequestException('Identificação de usuário inválida');
     }
 
     const editionGoneWrong = await this.userRepository.edit(userId, request);
