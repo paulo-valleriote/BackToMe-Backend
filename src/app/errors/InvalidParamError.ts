@@ -2,7 +2,7 @@ import { BadRequestException } from '@nestjs/common';
 
 export class InvalidParamError extends BadRequestException {
   constructor(param: string) {
-    super(`${param} - is not a valid parameter`, {
+    super(`${param} - não é um parâmetro válido`, {
       cause: Error(),
     });
   }

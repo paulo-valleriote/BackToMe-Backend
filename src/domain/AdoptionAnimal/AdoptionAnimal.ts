@@ -1,22 +1,21 @@
 import { Animal, AnimalProps } from '@domain/Animal/Animal';
 import { z } from 'zod';
 
-interface LostAnimalProps extends AnimalProps {
+interface AdoptionAnimalProps extends AnimalProps {
   species: string;
   race: string;
   age: string;
   color: string;
   size: string;
   distinctive_characteristics: string;
-  date_loss: string;
-  location_loss: string;
+  personality_description: string;
   userId: string;
 }
 
-export class LostAnimal extends Animal {
-  props: LostAnimalProps;
+export class AdoptionAnimal extends Animal {
+  props: AdoptionAnimalProps;
 
-  constructor(animalProps: LostAnimalProps) {
+  constructor(animalProps: AdoptionAnimalProps) {
     super(
       z.object({
         species: z.string({ required_error: 'Espécie não foi informada' }),
@@ -27,11 +26,8 @@ export class LostAnimal extends Animal {
         distinctive_characteristics: z.string({
           required_error: 'Características não foram informadas',
         }),
-        date_loss: z.string({
-          required_error: 'Data da perda não foi informada',
-        }),
-        location_loss: z.string({
-          required_error: 'Localização da perda não foi informada',
+        personality_description: z.string({
+          required_error: 'Descrição da personalidade não foi informada',
         }),
         userId: z.string({
           required_error: 'Identificação do usuário não foi informada',
