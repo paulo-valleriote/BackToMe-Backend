@@ -53,7 +53,7 @@ describe('Edit user service', () => {
     await makeSud();
 
     expect(await userService.edit(userId, user)).toEqual(
-      new BadRequestException('Invalid user identification'),
+      new BadRequestException('Identificação de usuário inválida'),
     );
   });
 
