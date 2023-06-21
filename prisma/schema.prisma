@@ -43,7 +43,7 @@ model AnimalFound {
 }
 
 model LostAnimal {
-  id                          String  @id @default(uuid())
+  id                          String @id @default(uuid())
   species                     String
   race                        String
   age                         String
@@ -52,8 +52,8 @@ model LostAnimal {
   distinctive_characteristics String
   date_loss                   String
   location_loss               String
-  userId                      String?
-  user                        User?   @relation(fields: [userId], references: [id])
+  userId                      String
+  user                        User?  @relation(fields: [userId], references: [id])
 }
 
 model AvailableAnimal {

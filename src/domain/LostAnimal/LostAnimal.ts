@@ -9,7 +9,7 @@ interface LostAnimalProps extends AnimalProps {
   distinctive_characteristics: string;
   date_loss: string;
   location_loss: string;
-  user_id: string;
+  userId: string;
 }
 
 export class LostAnimal extends Animal {
@@ -18,7 +18,7 @@ export class LostAnimal extends Animal {
   constructor(animalProps: LostAnimalProps) {
     super();
 
-    this.requiredParams.push('date_loss', 'location_loss', 'user_id');
+    this.requiredParams.push('date_loss', 'location_loss', 'userId');
 
     const newAnimal = this.handle(animalProps);
 
