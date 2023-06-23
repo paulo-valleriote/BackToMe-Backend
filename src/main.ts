@@ -4,14 +4,7 @@ import * as cors from "cors"
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(
-    cors({
-      origin: 'http://localhost:3000' || 'https://api-backtome.onrender.com',
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-      credentials: true,
-    }),
-  );
-;
+ app.enableCors();
   await app.listen(3000);
 }
 bootstrap();

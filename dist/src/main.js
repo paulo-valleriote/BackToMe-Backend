@@ -5,7 +5,12 @@ const app_module_1 = require("./app.module");
 const cors = require("cors");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    app.use(cors());
+    app.use(cors({
+        origin: 'http://localhost:3000' || 'https://api-backtome.onrender.com',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        credentials: true,
+    }));
+    ;
     await app.listen(3000);
 }
 bootstrap();
