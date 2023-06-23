@@ -6,13 +6,12 @@ Este README tem como objetivo fornecer informações sobre as rotas e queries ut
 
 <https://app.swaggerhub.com/apis-docs/MAVIROLERO/BackToMe/1.0.0>
 
-## Rotas
-
 ### Informações gerais
 
 **Versão da API**: 1.0.0
 **Título**: Projeto de Animais Perdidos ou Doados
 **Descrição**: API para busca de animais perdidos e adoção de animais disponíveis.
+
 ### Servidores
 
 **Servidor local**: <http://localhost:3000>
@@ -32,7 +31,6 @@ Este README tem como objetivo fornecer informações sobre as rotas e queries ut
 **Tags**: Usuários
 **Descrição**: Rota para cadastrar um novo usuário.
 
-#### Corpo da requisição:
 ```
 Exemplo JSON:
 
@@ -74,8 +72,6 @@ Exemplo de tipo:
 **Tags**: Usuários
 **Descrição**: Rota de login do usuário.
 
-#### Corpo da requisição:
-
 ```
 Exemplo JSON:
 {
@@ -88,6 +84,7 @@ Exemplo de tipo:
   "password": "string"
 }
 ```
+
 **Respostas**:
 
 **200**: Usuário logado com sucesso!
@@ -102,7 +99,6 @@ Exemplo de tipo:
 **Parâmetros** de URL:
 **userId** (integer): ID do usuário
 
-#### Corpo da requisição:
 ```
 Exemplo JSON:
 {
@@ -129,6 +125,7 @@ Exemplo de tipo:
   }
 }
 ```
+
 **Respostas**:
 
 **200**: Dados do usuário atualizados com sucesso!
@@ -138,7 +135,9 @@ Exemplo de tipo:
 ### Buscar animais perdidos
 
 **Método**: GET
+
 **Rota**: /animals/lost
+
 **Tags**: Animais Perdidos
 **Descrição**: Rota para buscar animais perdidos.
 **Parâmetros** de consulta:
@@ -152,14 +151,14 @@ Exemplo de tipo:
 
 ### Buscar animais para adoção
 
-Método: GET
-Rota: /animals/available
-Tags: Animais para Adoção
-Descrição: Rota para buscar animais disponíveis para adoção.
-Parâmetros de consulta:
-especie (string): Espécie do animal (opcional)
-porte (string): Porte do animal (opcional)
-idade (integer): Idade do animal em meses (opcional)
+**Método**: GET
+**Rota**: /animals/available
+**Tags**: Animais para Adoção
+**Descrição**: Rota para buscar animais disponíveis para adoção.
+**Parâmetros** de consulta:
+**especie** (string): Espécie do animal (opcional)
+**porte** (string): Porte do animal (opcional)
+**idade** (integer): Idade do animal em meses (opcional)
 
 **Respostas**:
 
@@ -172,8 +171,6 @@ idade (integer): Idade do animal em meses (opcional)
 **Rota**: /animals/lost
 **Tags**: Animais Perdidos
 **Descrição**: Rota para cadastrar um animal perdido.
-
-#### Corpo da requisição:
 
 ```
 Exemplo JSON:
@@ -207,7 +204,7 @@ Exemplo de tipo:
 **Rota**: */animals/available*
 **Tags**: *Animais para Adoção*
 **Descrição**: *Rota para cadastrar um animal disponível para adoção.*
-#### Corpo da requisição:
+
 ```
 Exemplo JSON:
 {
@@ -231,7 +228,6 @@ Exemplo de tipo:
 
 **200**: Animal para adoção cadastrado com sucesso!
 **400**: Erro ao cadastrar animal para adoção!
-
 
 ## prisma.schema exemple
 
