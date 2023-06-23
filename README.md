@@ -26,13 +26,13 @@ Este README tem como objetivo fornecer informações sobre as rotas e queries ut
 
 ### Rotas
 
-Cadastrar novo usuário
-Método: POST
-Rota: /users/registered
-Tags: Usuários
-Descrição: Rota para cadastrar um novo usuário.
-Corpo da requisição:
+**Cadastrar** novo usuário
+**Método**: POST
+**Rota**: /users/registered
+**Tags**: Usuários
+**Descrição**: Rota para cadastrar um novo usuário.
 
+#### Corpo da requisição:
 ```
 Exemplo JSON:
 
@@ -101,7 +101,8 @@ Exemplo de tipo:
 **Descrição**: Rota para editar dados do usuário.
 **Parâmetros** de URL:
 **userId** (integer): ID do usuário
-**Corpo da requisição**:
+
+#### Corpo da requisição:
 ```
 Exemplo JSON:
 {
@@ -171,7 +172,8 @@ idade (integer): Idade do animal em meses (opcional)
 **Rota**: /animals/lost
 **Tags**: Animais Perdidos
 **Descrição**: Rota para cadastrar um animal perdido.
-**Corpo da requisição**:
+
+#### Corpo da requisição:
 
 ```
 Exemplo JSON:
