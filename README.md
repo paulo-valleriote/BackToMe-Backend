@@ -25,11 +25,11 @@ Este README tem como objetivo fornecer informações sobre as rotas e queries ut
 
 ### Rotas
 
-**Cadastrar** novo usuário
-**Método**: POST
-**Rota**: /users/registered
-**Tags**: Usuários
-**Descrição**: Rota para cadastrar um novo usuário.
+- **Cadastrar** novo usuário
+- **Método**: POST
+- **Rota**: /users/registered
+- **Tags**: Usuários
+- **Descrição**: Rota para cadastrar um novo usuário.
 
 ```
 Exemplo JSON:
@@ -62,15 +62,14 @@ Exemplo de tipo:
 **Respostas**:
 
 **200**: Usuário cadastrado com sucesso!
-
 **400**: Erro ao cadastrar usuário!
 
 ### Login do usuário
 
-**Método**: POST
-**Rota**: /users/login
-**Tags**: Usuários
-**Descrição**: Rota de login do usuário.
+- **Método**: POST
+- **Rota**: /users/login
+- **Tags**: Usuários
+- **Descrição**: Rota de login do usuário.
 
 ```
 Exemplo JSON:
@@ -92,12 +91,12 @@ Exemplo de tipo:
 
 ### Editar dados do usuário
 
-**Método**: PUT
-**Rota**: /users/{userId}
-**Tags**: Usuários
-**Descrição**: Rota para editar dados do usuário.
-**Parâmetros** de URL:
-**userId** (integer): ID do usuário
+- **Método**: PUT
+- **Rota**: /users/{userId}
+- **Tags**: Usuários
+- **Descrição**: Rota para editar dados do usuário.
+- **Parâmetros** de URL:
+- **userId** (integer): ID do usuário
 
 ```
 Exemplo JSON:
@@ -138,11 +137,11 @@ Exemplo de tipo:
 
 **Rota**: /animals/lost
 
-**Tags**: Animais Perdidos
-**Descrição**: Rota para buscar animais perdidos.
-**Parâmetros** de consulta:
-**status** (string): Status do animal (opcional)
-**cidade** (string): Nome da cidade onde o animal foi perdido (opcional)
+- **Tags**: Animais Perdidos
+- **Descrição**: Rota para buscar animais perdidos.
+- **Parâmetros** de consulta:
+- **status** (string): Status do animal (opcional)
+- **cidade** (string): Nome da cidade onde o animal foi perdido (opcional)
 
 **Respostas**:
 
@@ -151,14 +150,14 @@ Exemplo de tipo:
 
 ### Buscar animais para adoção
 
-**Método**: GET
-**Rota**: /animals/available
-**Tags**: Animais para Adoção
-**Descrição**: Rota para buscar animais disponíveis para adoção.
-**Parâmetros** de consulta:
-**especie** (string): Espécie do animal (opcional)
-**porte** (string): Porte do animal (opcional)
-**idade** (integer): Idade do animal em meses (opcional)
+- **Método**: GET
+- **Rota**: /animals/available
+- **Tags**: Animais para Adoção
+- **Descrição**: Rota para buscar animais disponíveis para adoção.
+- **Parâmetros** de consulta:
+- **especie** (string): Espécie do animal (opcional)
+- **porte** (string): Porte do animal (opcional)
+- **idade** (integer): Idade do animal em meses (opcional)
 
 **Respostas**:
 
@@ -167,10 +166,10 @@ Exemplo de tipo:
 
 ### Cadastrar animal perdido
 
-**Método**: POST
-**Rota**: /animals/lost
-**Tags**: Animais Perdidos
-**Descrição**: Rota para cadastrar um animal perdido.
+- **Método**: POST
+- **Rota**: /animals/lost
+- **Tags**: Animais Perdidos
+- **Descrição**: Rota para cadastrar um animal perdido.
 
 ```
 Exemplo JSON:
@@ -200,10 +199,10 @@ Exemplo de tipo:
 
 ### Cadastrar animal para adoção
 
-**Método**: *POST*
-**Rota**: */animals/available*
-**Tags**: *Animais para Adoção*
-**Descrição**: *Rota para cadastrar um animal disponível para adoção.*
+- **Método**: *POST*
+- **Rota**: */animals/available*
+- **Tags**: *Animais para Adoção*
+- **Descrição**: *Rota para cadastrar um animal disponível para adoção.*
 
 ```
 Exemplo JSON:
