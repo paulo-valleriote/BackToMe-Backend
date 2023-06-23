@@ -6,6 +6,228 @@ Este README tem como objetivo fornecer informações sobre as rotas e queries ut
 
 <https://app.swaggerhub.com/apis-docs/MAVIROLERO/BackToMe/1.0.0>
 
+### Informações gerais
+
+**Versão da API**: 1.0.0
+**Título**: Projeto de Animais Perdidos ou Doados
+**Descrição**: API para busca de animais perdidos e adoção de animais disponíveis.
+
+### Servidores
+
+**Servidor local**: <http://localhost:3000>
+**Servidor deploy**: <https://api-backtome.onrender.com/>
+
+### Tags
+
+- Usuários
+- Animais Perdidos
+- Animais para Adoção
+
+### Rotas
+
+- **Cadastrar** novo usuário
+- **Método**: POST
+- **Rota**: /users/registered
+- **Tags**: Usuários
+- **Descrição**: Rota para cadastrar um novo usuário.
+
+```
+Exemplo JSON:
+
+{
+  "name": "Nome do usuário",
+  "email": "<email@example.com>",
+  "cpf": "12345678900",
+  "phone": "123456789",
+  "password": "senha123",
+  "address": {
+    "cep": "25264253",
+    "complement": "502"
+  }
+}
+Exemplo de tipo:
+{
+  "name": "string",
+  "email": "string",
+  "cpf": "string",
+  "phone": "string",
+  "password": "string",
+  "address": {
+    "cep": "string",
+    "complement": "string"
+  }
+}
+```
+
+**Respostas**:
+
+**200**: Usuário cadastrado com sucesso!
+**400**: Erro ao cadastrar usuário!
+
+### Login do usuário
+
+- **Método**: POST
+- **Rota**: /users/login
+- **Tags**: Usuários
+- **Descrição**: Rota de login do usuário.
+
+```
+Exemplo JSON:
+{
+  "email": "<email@example.com>",
+  "password": "123456"
+}
+Exemplo de tipo:
+{
+  "email": "string",
+  "password": "string"
+}
+```
+
+**Respostas**:
+
+**200**: Usuário logado com sucesso!
+**400**: Erro ao realizar login!
+
+### Editar dados do usuário
+
+- **Método**: PUT
+- **Rota**: /users/{userId}
+- **Tags**: Usuários
+- **Descrição**: Rota para editar dados do usuário.
+- **Parâmetros** de URL:
+- **userId** (integer): ID do usuário
+
+```
+Exemplo JSON:
+{
+  "name": "Nome do usuário",
+  "email": "<email@example.com>",
+  "cpf": "12345678900",
+  "phone": "123456789",
+  "password": "senha123",
+  "address": {
+    "cep": "25264253",
+    "complement": "502"
+  }
+}
+Exemplo de tipo:
+{
+  "name": "string",
+  "email": "string",
+  "cpf": "string",
+  "phone": "string",
+  "password": "string",
+  "address": {
+    "cep": "string",
+    "complement": "string"
+  }
+}
+```
+
+**Respostas**:
+
+**200**: Dados do usuário atualizados com sucesso!
+**400**: Erro ao atualizar dados do usuário!
+**404**: Usuário não encontrado!
+
+### Buscar animais perdidos
+
+**Método**: GET
+
+**Rota**: /animals/lost
+
+- **Tags**: Animais Perdidos
+- **Descrição**: Rota para buscar animais perdidos.
+- **Parâmetros** de consulta:
+- **status** (string): Status do animal (opcional)
+- **cidade** (string): Nome da cidade onde o animal foi perdido (opcional)
+
+**Respostas**:
+
+**200**: Lista de animais perdidos encontrados com sucesso!
+**400**: Erro ao buscar animais perdidos!
+
+### Buscar animais para adoção
+
+- **Método**: GET
+- **Rota**: /animals/available
+- **Tags**: Animais para Adoção
+- **Descrição**: Rota para buscar animais disponíveis para adoção.
+- **Parâmetros** de consulta:
+- **especie** (string): Espécie do animal (opcional)
+- **porte** (string): Porte do animal (opcional)
+- **idade** (integer): Idade do animal em meses (opcional)
+
+**Respostas**:
+
+**200**: Lista de animais para adoção encontrados com sucesso!
+**400**: Erro ao buscar animais para adoção!
+
+### Cadastrar animal perdido
+
+- **Método**: POST
+- **Rota**: /animals/lost
+- **Tags**: Animais Perdidos
+- **Descrição**: Rota para cadastrar um animal perdido.
+
+```
+Exemplo JSON:
+{
+  "nome": "Nome do animal",
+  "especie": "Espécie do animal",
+  "porte": "Porte do animal",
+  "idade": 12,
+  "cidade": "Cidade onde foi perdido",
+  "descricao": "Descrição do animal perdido"
+}
+Exemplo de tipo:
+{
+  "nome": "string",
+  "especie": "string",
+  "porte": "string",
+  "idade": "integer",
+  "cidade": "string",
+  "descricao": "string"
+}
+```
+
+**Respostas**:
+
+**200**: Animal perdido cadastrado com sucesso!
+**400**: Erro ao cadastrar animal perdido!
+
+### Cadastrar animal para adoção
+
+- **Método**: *POST*
+- **Rota**: */animals/available*
+- **Tags**: *Animais para Adoção*
+- **Descrição**: *Rota para cadastrar um animal disponível para adoção.*
+
+```
+Exemplo JSON:
+{
+  "nome": "Nome do animal",
+  "especie": "Espécie do animal",
+  "porte": "Porte do animal",
+  "idade": 24,
+  "descricao": "Descrição do animal para adoção"
+}
+Exemplo de tipo:
+{
+  "nome": "string",
+  "especie": "string",
+  "porte": "string",
+  "idade": "integer",
+  "descricao": "string"
+}
+```
+
+ **Respostas**:
+
+**200**: Animal para adoção cadastrado com sucesso!
+**400**: Erro ao cadastrar animal para adoção!
+
 ## prisma.schema exemple
 
 ```

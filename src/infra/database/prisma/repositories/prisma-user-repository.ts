@@ -26,12 +26,14 @@ export class PrismaUserRepository implements UserRepository {
       },
     });
 
-    await this.prismaService.address.create({
-      data: {
-        ...address,
-        id,
-      },
-    });
+    if (address?.cep && address.complement) {
+      await this.prismaService.address.create({
+        data: {
+          ...address,
+          id,
+        },
+      });
+    }
   }
 
   async login(account: UserLoginDTO): Promise<string | Error> {
