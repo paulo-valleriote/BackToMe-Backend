@@ -69,7 +69,7 @@ export class UserService {
   }
 
   async validateEmail(email: string): Promise<void | Error> {
-    const emailExists = await this.userRepository.getByEmail(email);
+    const emailExists = await this.userRepository.validateEmail(email);
 
     if (!emailExists) {
       return new BadRequestException('Nenhum usuário foi encontrado', {
