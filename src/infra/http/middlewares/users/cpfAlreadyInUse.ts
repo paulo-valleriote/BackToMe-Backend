@@ -24,7 +24,7 @@ export class CpfAlreadyInUseMiddleware implements NestMiddleware {
     });
 
     if (databaseRegister?.cpf) {
-      throw new BadRequestException('Cpf already in use');
+      throw new BadRequestException('Cpf já está sendo usado');
     }
 
     next();

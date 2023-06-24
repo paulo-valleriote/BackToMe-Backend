@@ -54,7 +54,7 @@ export class PrismaUserRepository implements UserRepository {
         encryptedString: databaseStored.password,
       })
     ) {
-      return new BadRequestException('E-mail or password are incorrect');
+      return new BadRequestException('Email ou senha estão incorretos');
     }
 
     return sign({ id: databaseStored.id }, process.env.JWT_SECRET as string);
@@ -62,7 +62,7 @@ export class PrismaUserRepository implements UserRepository {
 
   async edit(userId: string, account: EditUserDTO): Promise<void | Error> {
     if (!userId) {
-      throw new BadRequestException('Invalid user identification');
+      throw new BadRequestException('Identificação inválida');
     }
 
     this.prismaService.user.update({

@@ -24,7 +24,7 @@ export class EmailAlreadyExistsMiddleware implements NestMiddleware {
     });
 
     if (databaseRegister?.email) {
-      throw new BadRequestException('Email already registered');
+      throw new BadRequestException('Email ou senha estão incorretos');
     }
 
     next();

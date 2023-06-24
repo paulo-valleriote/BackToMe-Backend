@@ -21,7 +21,7 @@ export class PrismaAdoptionAnimalsRepository
     const adoptionList = await this.prismaService.availableAnimal.findMany();
 
     if (adoptionList.length < 1) {
-      throw new NotFoundException('There are no animals to list');
+      throw new NotFoundException('Não existem animais para serem listados');
     }
 
     return adoptionList;

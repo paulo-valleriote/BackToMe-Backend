@@ -19,7 +19,7 @@ export class PrismaLostAnimalsRepository implements LostAnimalsRepository {
     const lostAnimals = await this.prismaService.lostAnimal.findMany();
 
     if (lostAnimals.length < 1) {
-      throw new NotFoundException('There are no animals to list');
+      throw new NotFoundException('Não existem animais para serem listados');
     }
 
     return lostAnimals;
