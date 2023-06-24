@@ -8,7 +8,7 @@ tags:
 - name: Usuários
 - name: Animais Perdidos
 - name: Animais para Adoção
-
+- name: Validações
 paths:
   /users/registered:
     post:

@@ -83,6 +83,23 @@ let PrismaUserRepository = exports.PrismaUserRepository = class PrismaUserReposi
             },
         });
     }
+    async findUserById(userId) {
+        const user = await this.prismaService.user.findFirst({
+            where: { id: userId },
+        });
+        if (!user) {
+            throw new common_1.BadRequestException('Usuário não encontrado');
+        }
+        return user;
+    }
+    async updatePassword(userId, newPassword) {
+        const user = await this.findUserById(userId);
+        this.prismaService.user.update({
+            where: { id: userId },
+            data: { password: newPassword },
+        });
+        return user;
+    }
 };
 exports.PrismaUserRepository = PrismaUserRepository = __decorate([
     (0, common_1.Injectable)(),

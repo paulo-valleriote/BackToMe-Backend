@@ -30,6 +30,9 @@ let UsersController = exports.UsersController = class UsersController {
     async edit(editUserDTO, id) {
         await this.userService.edit(id, editUserDTO);
     }
+    async editPassword(id, request) {
+        await this.userService.editPassword(id, request);
+    }
 };
 __decorate([
     (0, common_1.Post)('registered'),
@@ -53,6 +56,14 @@ __decorate([
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "edit", null);
+__decorate([
+    (0, common_1.Patch)(':id/password'),
+    __param(0, (0, common_1.Param)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "editPassword", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UserService])

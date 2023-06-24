@@ -62,6 +62,24 @@ let UserService = exports.UserService = class UserService {
             return editionGoneWrong;
         }
     }
+    async editPassword(id, request) {
+        if (!id) {
+            throw new common_1.BadRequestException('Identificação de usuário inválida');
+        }
+        const { currentPassword, newPassword } = request;
+        const user = await this.userRepository.findUserById(id);
+        if (!('password' in user)) {
+            throw new common_1.BadRequestException('Usuário não encontrado');
+        }
+        if (user.password !== currentPassword) {
+            throw new common_1.BadRequestException('Senha atual incorreta');
+        }
+        const updatedPassword = await this.userRepository.updatePassword(id, newPassword);
+        if (updatedPassword) {
+            return 'Senha alterada com sucesso!';
+        }
+        return 'Senha não foi alterada!';
+    }
 };
 exports.UserService = UserService = __decorate([
     (0, common_1.Injectable)(),

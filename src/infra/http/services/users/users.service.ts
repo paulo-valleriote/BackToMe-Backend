@@ -5,9 +5,10 @@ import { CpfValidator } from '@app/protocols/cpf/cpfValidator';
 import { PhoneValidator } from '@app/protocols/phone/phoneValidator';
 import { InvalidParamError } from '@app/errors/InvalidParamError';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
-import { z } from 'zod';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
+import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
+import { z } from 'zod';
 
 @Injectable()
 export class UserService {
@@ -19,7 +20,7 @@ export class UserService {
 
   async register(request: RegisterUserDTO): Promise<User | Error> {
     const newUser = new User(request);
-
+    
     const cpfIsValid = this.cpfValidator.execute(newUser.props?.cpf as string);
     const phoneIsValid = this.phoneValidator.execute(
       newUser.props?.phone as string,
@@ -66,5 +67,34 @@ export class UserService {
     if (editionGoneWrong instanceof Error) {
       return editionGoneWrong;
     }
+  }
+
+  async editPassword(id: string, request: EditPasswordDTO): Promise<string> {
+    if (!id) {
+      throw new BadRequestException('Identificação de usuário inválida');
+    }
+
+    const { currentPassword, newPassword } = request;
+
+    const user = await this.userRepository.findUserById(id);
+
+    if (!('password' in user)) {
+      throw new BadRequestException('Usuário não encontrado');
+    }
+
+    if (user.password !== currentPassword) {
+      throw new BadRequestException('Senha atual incorreta');
+    }
+
+    const updatedPassword = await this.userRepository.updatePassword(
+      id,
+      newPassword,
+    );
+
+    if (updatedPassword) {
+      return 'Senha alterada com sucesso!';
+    }
+
+    return 'Senha não foi alterada!';
   }
 }
