@@ -24,7 +24,7 @@ let PrismaLostAnimalsRepository = exports.PrismaLostAnimalsRepository = class Pr
     async find() {
         const lostAnimals = await this.prismaService.lostAnimal.findMany();
         if (lostAnimals.length < 1) {
-            throw new common_1.NotFoundException('There are no animals to list');
+            throw new common_1.NotFoundException('Não existem animais para serem listados');
         }
         return lostAnimals;
     }

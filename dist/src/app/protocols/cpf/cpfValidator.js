@@ -3,30 +3,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CpfValidator = void 0;
 class CpfValidator {
     execute(cpf) {
-        let Sum = 0;
-        let Rest = 0;
-        cpf = cpf.replace(/[^\d]+/g, '');
-        if (!cpf)
-            return false;
-        if (cpf.split('').every((digit) => cpf[0] === digit))
-            return false;
-        for (let i = 1; i <= 9; i++) {
-            Sum = Sum + parseInt(cpf.substring(i - 1, i)) * (11 - i);
+        if (!cpf) {
+            throw new Error('None CPF provided');
         }
-        Rest = (Sum * 10) % 11;
-        if (Rest === 10 || Rest === 11)
-            Rest = 0;
-        if (Rest !== parseInt(cpf.substring(9, 10)))
+        const formatedCpf = cpf.replace(/[^\d]+/g, '');
+        if (formatedCpf.length !== 11 || !!formatedCpf.match(/(\d)\1{10}/))
             return false;
-        Sum = 0;
-        for (let i = 1; i <= 10; i++)
-            Sum = Sum + parseInt(cpf.substring(i - 1, i)) * (12 - i);
-        Rest = (Sum * 10) % 11;
-        if (Rest === 10 || Rest === 11)
-            Rest = 0;
-        if (Rest !== parseInt(cpf.substring(10, 11)))
-            return false;
-        return true;
+        const rest = (count) => {
+            const slicedCpf = formatedCpf.slice(0, count - 12);
+            const digitArray = slicedCpf.split('').map((digit) => Number(digit));
+            const digitSum = digitArray.reduce((soma, el, index) => soma + el * (count - index), 0) *
+                10;
+            const cpfRest = (digitSum % 11) % 10;
+            return cpfRest.toString();
+        };
+        return rest(10) === cpf[9] && rest(11) === cpf[10];
     }
 }
 exports.CpfValidator = CpfValidator;

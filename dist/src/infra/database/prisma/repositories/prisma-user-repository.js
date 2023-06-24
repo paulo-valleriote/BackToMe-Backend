@@ -30,8 +30,11 @@ let PrismaUserRepository = exports.PrismaUserRepository = class PrismaUserReposi
         this.prismaService = prismaService;
     }
     async register(user) {
-        if (user.props instanceof Error || !user.props) {
-            throw new common_1.BadRequestException('Erro ao cadastrar usuário');
+        if (user instanceof Error) {
+            throw new common_1.BadRequestException(user.message, {
+                cause: user,
+                description: user.stack,
+            });
         }
         const _a = user.props, { address } = _a, userProps = __rest(_a, ["address"]);
         const { id } = await this.prismaService.user.create({
@@ -45,6 +48,7 @@ let PrismaUserRepository = exports.PrismaUserRepository = class PrismaUserReposi
                 data: Object.assign(Object.assign({}, address), { id }),
             });
         }
+        return id;
     }
     async login(account) {
         const databaseStored = await this.prismaService.user.findUnique({
@@ -55,14 +59,14 @@ let PrismaUserRepository = exports.PrismaUserRepository = class PrismaUserReposi
                 receivedString: account.password,
                 encryptedString: databaseStored.password,
             })) {
-            return new common_1.BadRequestException('E-mail or password are incorrect');
+            return new common_1.BadRequestException('Email ou senha estão incorretos');
         }
         return (0, jsonwebtoken_1.sign)({ id: databaseStored.id }, process.env.JWT_SECRET);
     }
     async edit(userId, account) {
         var _a, _b;
         if (!userId) {
-            throw new common_1.BadRequestException('Invalid user identification');
+            throw new common_1.BadRequestException('Identificação inválida');
         }
         this.prismaService.user.update({
             data: {
@@ -99,6 +103,17 @@ let PrismaUserRepository = exports.PrismaUserRepository = class PrismaUserReposi
             data: { password: newPassword },
         });
         return user;
+    }
+    async findByEmail(email) {
+        const databaseResponse = await this.prismaService.user.findUnique({
+            where: {
+                email,
+            },
+        });
+        if (!databaseResponse || Object.values(databaseResponse).length < 1) {
+            throw new common_1.BadRequestException('Nenhum usuário encontrado');
+        }
+        return databaseResponse.id;
     }
 };
 exports.PrismaUserRepository = PrismaUserRepository = __decorate([

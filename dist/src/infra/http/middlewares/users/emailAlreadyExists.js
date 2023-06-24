@@ -28,7 +28,7 @@ let EmailAlreadyExistsMiddleware = exports.EmailAlreadyExistsMiddleware = class 
             select: { email: true },
         });
         if (databaseRegister === null || databaseRegister === void 0 ? void 0 : databaseRegister.email) {
-            throw new common_1.BadRequestException('Email already registered');
+            throw new common_1.BadRequestException('Email ou senha estão incorretos');
         }
         next();
     }

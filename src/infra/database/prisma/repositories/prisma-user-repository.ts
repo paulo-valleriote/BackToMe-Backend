@@ -85,7 +85,6 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-<<<<<<< HEAD
   async findUserById(userId: string): Promise<any> {
     const user = await this.prismaService.user.findFirst({
       where: { id: userId },
@@ -95,7 +94,7 @@ export class PrismaUserRepository implements UserRepository {
       throw new BadRequestException('Usuário não encontrado');
     }
 
-    return user; 
+    return user;
   }
 
   async updatePassword(userId: string, newPassword: string): Promise<User> {
@@ -107,7 +106,8 @@ export class PrismaUserRepository implements UserRepository {
     });
 
     return user;
-=======
+  }
+
   async findByEmail(email: string): Promise<string> {
     const databaseResponse = await this.prismaService.user.findUnique({
       where: {
@@ -120,6 +120,5 @@ export class PrismaUserRepository implements UserRepository {
     }
 
     return databaseResponse.id;
->>>>>>> b39504d78415dda0a2d3df1c116f20332850d9b5
   }
 }

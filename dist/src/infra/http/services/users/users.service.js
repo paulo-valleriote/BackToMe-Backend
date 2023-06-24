@@ -16,6 +16,7 @@ const User_1 = require("../../../../domain/User/User");
 const cpfValidator_1 = require("../../../../app/protocols/cpf/cpfValidator");
 const phoneValidator_1 = require("../../../../app/protocols/phone/phoneValidator");
 const InvalidParamError_1 = require("../../../../app/errors/InvalidParamError");
+const MissingParamError_1 = require("../../../../app/errors/MissingParamError");
 const zod_1 = require("zod");
 let UserService = exports.UserService = class UserService {
     constructor(userRepository, phoneValidator, cpfValidator) {
@@ -79,6 +80,28 @@ let UserService = exports.UserService = class UserService {
             return 'Senha alterada com sucesso!';
         }
         return 'Senha não foi alterada!';
+    }
+    async validateEmail(email) {
+        const emailIsValid = await this.userRepository.findByEmail(email);
+        if (!emailIsValid) {
+            return 'Nenhum usuário foi cadastrado usando este E-mail';
+        }
+        return 'Já existe um usuário cadastrado com este E-mail';
+    }
+    async passwordRecovery(request) {
+        const bodySchema = zod_1.z.object({
+            email: zod_1.z.string().email({ message: 'E-mail' }),
+            cpf: zod_1.z.string(),
+        });
+        const requestBody = bodySchema.safeParse(request);
+        if (!requestBody.success) {
+            if (requestBody.error.message === 'E-mail') {
+                throw new InvalidParamError_1.InvalidParamError('E-mail');
+            }
+            throw new MissingParamError_1.MissingParamError(`${requestBody.error.errors[0].path[0]}`);
+        }
+        const userId = await this.userRepository.findByEmail(requestBody.data.email);
+        return `${process.env.FRONTEND_URL}/${userId}`;
     }
 };
 exports.UserService = UserService = __decorate([

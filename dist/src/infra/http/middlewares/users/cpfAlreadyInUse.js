@@ -28,7 +28,7 @@ let CpfAlreadyInUseMiddleware = exports.CpfAlreadyInUseMiddleware = class CpfAlr
             select: { cpf: true },
         });
         if (databaseRegister === null || databaseRegister === void 0 ? void 0 : databaseRegister.cpf) {
-            throw new common_1.BadRequestException('Cpf already in use');
+            throw new common_1.BadRequestException('Cpf já está sendo usado');
         }
         next();
     }

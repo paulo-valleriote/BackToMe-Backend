@@ -24,7 +24,7 @@ let PrismaAdoptionAnimalsRepository = exports.PrismaAdoptionAnimalsRepository = 
     async find() {
         const adoptionList = await this.prismaService.availableAnimal.findMany();
         if (adoptionList.length < 1) {
-            throw new common_1.NotFoundException('There are no animals to list');
+            throw new common_1.NotFoundException('Não existem animais para serem listados');
         }
         return adoptionList;
     }

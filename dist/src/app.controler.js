@@ -25,4 +25,4 @@ __decorate([
 exports.MessageController = MessageController = __decorate([
     (0, common_1.Controller)()
 ], MessageController);
-//# sourceMappingURL=message.controler.js.map
+//# sourceMappingURL=app.controler.js.map

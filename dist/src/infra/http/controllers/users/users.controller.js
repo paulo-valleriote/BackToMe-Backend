@@ -15,12 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("../../services/users/users.service");
+const MissingParamError_1 = require("../../../../app/errors/MissingParamError");
 let UsersController = exports.UsersController = class UsersController {
     constructor(userService) {
         this.userService = userService;
     }
     async register(registerUserDTO) {
-        await this.userService.register(registerUserDTO);
+        const id = await this.userService.register(registerUserDTO);
+        if (id instanceof Error)
+            throw new common_1.BadRequestException(id.message);
         return { message: 'Usuário cadastrado com sucesso!' };
     }
     async login(userLoginDTO) {
@@ -32,6 +35,20 @@ let UsersController = exports.UsersController = class UsersController {
     }
     async editPassword(id, request) {
         await this.userService.editPassword(id, request);
+    }
+    async validateEmail(email) {
+        if (!email) {
+            throw new MissingParamError_1.MissingParamError('email');
+        }
+        const emailIsValid = await this.userService.validateEmail(email);
+        return { email: emailIsValid };
+    }
+    async passwordRecovery(passwordRecoveryDTO) {
+        const verificationLink = await this.userService.passwordRecovery(passwordRecoveryDTO);
+        if (!verificationLink) {
+            throw new common_1.InternalServerErrorException('Ocorreu um erro ao recuperar sua senha');
+        }
+        return { link: verificationLink };
     }
 };
 __decorate([
@@ -64,6 +81,20 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "editPassword", null);
+__decorate([
+    (0, common_1.Post)('validate/email'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "validateEmail", null);
+__decorate([
+    (0, common_1.Post)('recoverypassword'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "passwordRecovery", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UserService])
