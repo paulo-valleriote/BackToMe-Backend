@@ -7,8 +7,10 @@ import { BadRequestException } from '@nestjs/common';
 export class inMemoryUserRepository implements UserRepository {
   public users: User[] = [];
 
-  async register(user: User): Promise<void> {
+  async register(user: User): Promise<string> {
     this.users.push(user);
+
+    return 'valid_id';
   }
 
   async login(account: UserLoginDTO): Promise<string | Error> {
