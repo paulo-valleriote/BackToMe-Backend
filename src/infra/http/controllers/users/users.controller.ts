@@ -47,11 +47,7 @@ export class UsersController {
 
     const emailIsValid = await this.userService.validateEmail(email);
 
-    if (emailIsValid instanceof Error) {
-      throw emailIsValid;
-    }
-
-    return { email: 'Já existe um usuário cadastrado com este e-mail' };
+    return { email: emailIsValid };
   }
 
   @Post('recoverypassword')

@@ -70,17 +70,14 @@ export class UserService {
     }
   }
 
-  async validateEmail(email: string): Promise<void | Error> {
+  async validateEmail(email: string): Promise<string> {
     const emailIsValid = await this.userRepository.findByEmail(email);
 
     if (!emailIsValid) {
-      return new BadRequestException('Nenhum usuário foi encontrado', {
-        cause: new BadRequestException(),
-        description: `${email} não é válido para nenhum usuário cadastrado`,
-      });
+      return 'Nenhum usuário foi cadastrado usando este E-mail';
     }
 
-    return;
+    return 'Já existe um usuário cadastrado com este e-mail';
   }
 
   async passwordRecovery(request: PasswordRecoveryDTO): Promise<string> {
