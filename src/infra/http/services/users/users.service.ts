@@ -77,7 +77,7 @@ export class UserService {
       return 'Nenhum usuário foi cadastrado usando este E-mail';
     }
 
-    return 'Já existe um usuário cadastrado com este e-mail';
+    return 'Já existe um usuário cadastrado com este E-mail';
   }
 
   async passwordRecovery(request: PasswordRecoveryDTO): Promise<string> {
