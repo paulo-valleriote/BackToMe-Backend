@@ -11,10 +11,14 @@ import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 export class PrismaUserRepository implements UserRepository {
   constructor(private prismaService: PrismaService) {}
 
-  async register(user: User): Promise<void> {
-    if (user.props instanceof Error || !user.props) {
-      throw new BadRequestException('Erro ao cadastrar usuário');
+  async register(user: User): Promise<string> {
+    if (user instanceof Error) {
+      throw new BadRequestException(user.message, {
+        cause: user,
+        description: user.stack,
+      });
     }
+
     const { address, ...userProps } = user.props;
 
     const { id } = await this.prismaService.user.create({
@@ -34,6 +38,8 @@ export class PrismaUserRepository implements UserRepository {
         },
       });
     }
+
+    return id;
   }
 
   async login(account: UserLoginDTO): Promise<string | Error> {
@@ -48,7 +54,7 @@ export class PrismaUserRepository implements UserRepository {
         encryptedString: databaseStored.password,
       })
     ) {
-      return new BadRequestException('E-mail or password are incorrect');
+      return new BadRequestException('Email ou senha estão incorretos');
     }
 
     return sign({ id: databaseStored.id }, process.env.JWT_SECRET as string);
@@ -56,7 +62,7 @@ export class PrismaUserRepository implements UserRepository {
 
   async edit(userId: string, account: EditUserDTO): Promise<void | Error> {
     if (!userId) {
-      throw new BadRequestException('Invalid user identification');
+      throw new BadRequestException('Identificação inválida');
     }
 
     this.prismaService.user.update({
@@ -79,6 +85,7 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
+<<<<<<< HEAD
   async findUserById(userId: string): Promise<any> {
     const user = await this.prismaService.user.findFirst({
       where: { id: userId },
@@ -100,5 +107,19 @@ export class PrismaUserRepository implements UserRepository {
     });
 
     return user;
+=======
+  async findByEmail(email: string): Promise<string> {
+    const databaseResponse = await this.prismaService.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!databaseResponse || Object.values(databaseResponse).length < 1) {
+      throw new BadRequestException('Nenhum usuário encontrado');
+    }
+
+    return databaseResponse.id;
+>>>>>>> b39504d78415dda0a2d3df1c116f20332850d9b5
   }
 }

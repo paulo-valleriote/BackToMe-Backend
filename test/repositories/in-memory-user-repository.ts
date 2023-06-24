@@ -7,8 +7,10 @@ import { BadRequestException } from '@nestjs/common';
 export class inMemoryUserRepository implements UserRepository {
   public users: User[] = [];
 
-  async register(user: User): Promise<void> {
+  async register(user: User): Promise<string> {
     this.users.push(user);
+
+    return 'valid_id';
   }
 
   async login(account: UserLoginDTO): Promise<string | Error> {
@@ -36,5 +38,17 @@ export class inMemoryUserRepository implements UserRepository {
     );
 
     Object.assign(this.users[userIndex].props, user);
+  }
+
+  async validateEmail(email: string): Promise<boolean> {
+    const storedEmail = this.users.findIndex(
+      (user) => user.props.email === email,
+    );
+
+    if (storedEmail < 0) {
+      return false;
+    }
+
+    return true;
   }
 }

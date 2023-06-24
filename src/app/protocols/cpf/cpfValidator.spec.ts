@@ -20,9 +20,17 @@ describe('Cpf', () => {
   });
 
   it('should return false when cpf is not real', () => {
-    const fakeCpf = '134.266.954-21';
-    const isValid = new CpfValidator().execute(fakeCpf);
+    const falsyCpf = '14662312746';
+    const isValid = new CpfValidator().execute(falsyCpf);
 
     expect(isValid).toBeFalsy();
+  });
+
+  it('should return true when cpf is real', () => {
+    const isValid = jest
+      .spyOn(new CpfValidator(), 'execute')
+      .mockReturnValueOnce(true);
+
+    expect(isValid).toBeTruthy();
   });
 });

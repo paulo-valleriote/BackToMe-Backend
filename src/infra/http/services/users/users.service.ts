@@ -8,6 +8,8 @@ import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
+import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
+import { MissingParamError } from '@app/errors/MissingParamError';
 import { z } from 'zod';
 
 @Injectable()
@@ -20,7 +22,7 @@ export class UserService {
 
   async register(request: RegisterUserDTO): Promise<User | Error> {
     const newUser = new User(request);
-    
+
     const cpfIsValid = this.cpfValidator.execute(newUser.props?.cpf as string);
     const phoneIsValid = this.phoneValidator.execute(
       newUser.props?.phone as string,
@@ -69,6 +71,7 @@ export class UserService {
     }
   }
 
+
   async editPassword(id: string, request: EditPasswordDTO): Promise<string> {
     if (!id) {
       throw new BadRequestException('Identificação de usuário inválida');
@@ -96,5 +99,38 @@ export class UserService {
     }
 
     return 'Senha não foi alterada!';
+  }
+
+  async validateEmail(email: string): Promise<string> {
+    const emailIsValid = await this.userRepository.findByEmail(email);
+
+    if (!emailIsValid) {
+      return 'Nenhum usuário foi cadastrado usando este E-mail';
+    }
+
+    return 'Já existe um usuário cadastrado com este E-mail';
+  }
+
+  async passwordRecovery(request: PasswordRecoveryDTO): Promise<string> {
+    const bodySchema = z.object({
+      email: z.string().email({ message: 'E-mail' }),
+      cpf: z.string(),
+    });
+
+    const requestBody = bodySchema.safeParse(request);
+
+    if (!requestBody.success) {
+      if (requestBody.error.message === 'E-mail') {
+        throw new InvalidParamError('E-mail');
+      }
+
+      throw new MissingParamError(`${requestBody.error.errors[0].path[0]}`);
+    }
+
+    const userId = await this.userRepository.findByEmail(
+      requestBody.data.email,
+    );
+
+    return `${process.env.FRONTEND_URL}/${userId}`;
   }
 }
