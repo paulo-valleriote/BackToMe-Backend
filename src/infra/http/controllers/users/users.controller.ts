@@ -1,4 +1,11 @@
-import { Body, Controller, Param, Post, Put } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 import { UserService } from '@infra/http/services/users/users.service';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
@@ -10,7 +17,9 @@ export class UsersController {
 
   @Post('registered')
   async register(@Body() registerUserDTO: RegisterUserDTO) {
-    await this.userService.register(registerUserDTO);
+    const id = await this.userService.register(registerUserDTO);
+
+    if (id instanceof Error) throw new BadRequestException(id.message);
 
     return { message: 'Usuário cadastrado com sucesso!' };
   }

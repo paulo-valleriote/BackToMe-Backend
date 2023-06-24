@@ -11,10 +11,14 @@ import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 export class PrismaUserRepository implements UserRepository {
   constructor(private prismaService: PrismaService) {}
 
-  async register(user: User): Promise<void> {
-    if (user.props instanceof Error || !user.props) {
-      throw new BadRequestException('Erro ao cadastrar usuário');
+  async register(user: User): Promise<string> {
+    if (user instanceof Error) {
+      throw new BadRequestException(user.message, {
+        cause: user,
+        description: user.stack,
+      });
     }
+
     const { address, ...userProps } = user.props;
 
     const { id } = await this.prismaService.user.create({
@@ -34,6 +38,8 @@ export class PrismaUserRepository implements UserRepository {
         },
       });
     }
+
+    return id;
   }
 
   async login(account: UserLoginDTO): Promise<string | Error> {
