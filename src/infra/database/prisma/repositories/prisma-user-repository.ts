@@ -84,4 +84,19 @@ export class PrismaUserRepository implements UserRepository {
       },
     });
   }
+
+  async validateEmail(email: string): Promise<boolean> {
+    const databaseResponse = await this.prismaService.user.findUnique({
+      where: {
+        email,
+      },
+      select: { email: true },
+    });
+
+    if (!databaseResponse || !databaseResponse.email) {
+      return false;
+    }
+
+    return true;
+  }
 }
