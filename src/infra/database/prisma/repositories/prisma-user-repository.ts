@@ -85,6 +85,29 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
+  async findUserById(userId: string): Promise<any> {
+    const user = await this.prismaService.user.findFirst({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new BadRequestException('Usuário não encontrado');
+    }
+
+    return user;
+  }
+
+  async updatePassword(userId: string, newPassword: string): Promise<User> {
+    const user = await this.findUserById(userId);
+
+    this.prismaService.user.update({
+      where: { id: userId },
+      data: { password: newPassword },
+    });
+
+    return user;
+  }
+
   async findByEmail(email: string): Promise<string> {
     const databaseResponse = await this.prismaService.user.findUnique({
       where: {
