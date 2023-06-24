@@ -2,7 +2,7 @@ import { PhoneValidator } from './phoneValidator';
 
 describe('Phone Validator', () => {
   it('should return false if invalid phone number', () => {
-    const phoneNumber = '111111111';
+    const phoneNumber = '9874264';
 
     const phoneNumberIsValid = new PhoneValidator().execute(phoneNumber);
 
@@ -10,7 +10,7 @@ describe('Phone Validator', () => {
   });
 
   it('should return verified phone number if is valid', () => {
-    const phoneNumber = '11 98765-4321';
+    const phoneNumber = '11 987654321';
 
     const phoneNumberIsValid = new PhoneValidator().execute(phoneNumber);
 
