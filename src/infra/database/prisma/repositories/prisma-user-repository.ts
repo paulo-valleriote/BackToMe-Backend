@@ -85,18 +85,17 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async validateEmail(email: string): Promise<boolean> {
+  async findByEmail(email: string): Promise<string> {
     const databaseResponse = await this.prismaService.user.findUnique({
       where: {
         email,
       },
-      select: { email: true },
     });
 
-    if (!databaseResponse || !databaseResponse.email) {
-      return false;
+    if (!databaseResponse || Object.values(databaseResponse).length < 1) {
+      throw new BadRequestException('Nenhum usuário encontrado');
     }
 
-    return true;
+    return databaseResponse.id;
   }
 }

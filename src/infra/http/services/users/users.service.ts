@@ -8,6 +8,8 @@ import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { z } from 'zod';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
+import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
+import { MissingParamError } from '@app/errors/MissingParamError';
 
 @Injectable()
 export class UserService {
@@ -68,16 +70,36 @@ export class UserService {
     }
   }
 
-  async validateEmail(email: string): Promise<void | Error> {
-    const emailExists = await this.userRepository.validateEmail(email);
+  async validateEmail(email: string): Promise<string> {
+    const emailIsValid = await this.userRepository.findByEmail(email);
 
-    if (!emailExists) {
-      return new BadRequestException('Nenhum usuário foi encontrado', {
-        cause: new BadRequestException(),
-        description: `${email} não é válido para nenhum usuário cadastrado`,
-      });
+    if (!emailIsValid) {
+      return 'Nenhum usuário foi cadastrado usando este E-mail';
     }
 
-    return;
+    return 'Já existe um usuário cadastrado com este E-mail';
+  }
+
+  async passwordRecovery(request: PasswordRecoveryDTO): Promise<string> {
+    const bodySchema = z.object({
+      email: z.string().email({ message: 'E-mail' }),
+      cpf: z.string(),
+    });
+
+    const requestBody = bodySchema.safeParse(request);
+
+    if (!requestBody.success) {
+      if (requestBody.error.message === 'E-mail') {
+        throw new InvalidParamError('E-mail');
+      }
+
+      throw new MissingParamError(`${requestBody.error.errors[0].path[0]}`);
+    }
+
+    const userId = await this.userRepository.findByEmail(
+      requestBody.data.email,
+    );
+
+    return `${process.env.FRONTEND_URL}/${userId}`;
   }
 }
