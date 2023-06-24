@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  InternalServerErrorException,
   Param,
   Post,
   Put,
@@ -10,6 +11,8 @@ import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 import { UserService } from '@infra/http/services/users/users.service';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
+import { MissingParamError } from '@app/errors/MissingParamError';
+import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
 
 @Controller('users')
 export class UsersController {
@@ -38,6 +41,10 @@ export class UsersController {
 
   @Post('validate/email')
   async validateEmail(@Body() email: string) {
+    if (!email) {
+      throw new MissingParamError('email');
+    }
+
     const emailIsValid = await this.userService.validateEmail(email);
 
     if (emailIsValid instanceof Error) {
@@ -45,5 +52,20 @@ export class UsersController {
     }
 
     return { email: 'Já existe um usuário cadastrado com este e-mail' };
+  }
+
+  @Post('recoverypassword')
+  async passwordRecovery(@Body() passwordRecoveryDTO: PasswordRecoveryDTO) {
+    const verificationLink = await this.userService.passwordRecovery(
+      passwordRecoveryDTO,
+    );
+
+    if (!verificationLink) {
+      throw new InternalServerErrorException(
+        'Ocorreu um erro ao recuperar sua senha',
+      );
+    }
+
+    return { link: verificationLink };
   }
 }
