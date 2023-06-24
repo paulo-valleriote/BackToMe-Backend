@@ -10,7 +10,7 @@ describe('Phone Validator', () => {
   });
 
   it('should return verified phone number if is valid', () => {
-    const phoneNumber = '11 987654321';
+    const phoneNumber = '11987654321';
 
     const phoneNumberIsValid = new PhoneValidator().execute(phoneNumber);
 

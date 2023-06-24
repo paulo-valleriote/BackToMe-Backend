@@ -35,4 +35,15 @@ export class UsersController {
   async edit(@Body() editUserDTO: EditUserDTO, @Param('id') id: string) {
     await this.userService.edit(id, editUserDTO);
   }
+
+  @Post('validate/email')
+  async validateEmail(@Body() email: string) {
+    const emailIsValid = await this.userService.validateEmail(email);
+
+    if (emailIsValid instanceof Error) {
+      throw emailIsValid;
+    }
+
+    return { email: 'Já existe um usuário cadastrado com este e-mail' };
+  }
 }

@@ -8,4 +8,6 @@ export abstract class UserRepository {
   abstract login(account: UserLoginDTO): Promise<string | Error>;
 
   abstract edit(userId: string, account: EditUserDTO): Promise<void | Error>;
+
+  abstract validateEmail(email: string): Promise<boolean>;
 }

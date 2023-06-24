@@ -67,4 +67,17 @@ export class UserService {
       return editionGoneWrong;
     }
   }
+
+  async validateEmail(email: string): Promise<void | Error> {
+    const emailExists = await this.userRepository.validateEmail(email);
+
+    if (!emailExists) {
+      return new BadRequestException('Nenhum usuário foi encontrado', {
+        cause: new BadRequestException(),
+        description: `${email} não é válido para nenhum usuário cadastrado`,
+      });
+    }
+
+    return;
+  }
 }
