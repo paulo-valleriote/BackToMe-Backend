@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { UserRepository } from '@app/repositories/User/user';
 import { User } from '@domain/User/User';
 import { CpfValidator } from '@app/protocols/cpf/cpfValidator';
@@ -82,11 +87,13 @@ export class UserService {
       sendedEmail.data,
     );
 
-    if (!emailIsValid) {
-      return 'Nenhum usuário foi cadastrado usando este E-mail';
+    if (emailIsValid) {
+      return 'Já existe um usuário cadastrado com este E-mail';
     }
 
-    return 'Já existe um usuário cadastrado com este E-mail';
+    throw new InternalServerErrorException(
+      'Algo deu errado ao validar este E-mail',
+    );
   }
 
   async passwordRecovery(request: PasswordRecoveryDTO): Promise<string> {
