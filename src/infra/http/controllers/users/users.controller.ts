@@ -7,11 +7,13 @@ import {
   Param,
   Post,
   Put,
+  Patch
 } from '@nestjs/common';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 import { UserService } from '@infra/http/services/users/users.service';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
+import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { MissingParamError } from '@app/errors/MissingParamError';
 import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
 
@@ -40,6 +42,13 @@ export class UsersController {
     await this.userService.edit(id, editUserDTO);
   }
 
+  @Patch(':id/password')
+  async editPassword(
+    @Param() id: string,
+    @Body() request: EditPasswordDTO,
+  ): Promise<any> {
+    await this.userService.editPassword(id,request)
+  }
   @Post('validate/email')
   @HttpCode(200)
   async validateEmail(@Body() { email }: { email: string }) {
