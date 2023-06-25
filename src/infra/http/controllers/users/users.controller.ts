@@ -49,7 +49,7 @@ export class UsersController {
     await this.userService.editPassword(id,request)
   }
   @Post('validate/email')
-  async validateEmail(@Body() email: string) {
+  async validateEmail(@Body() { email }: { email: string }) {
     if (!email) {
       throw new MissingParamError('email');
     }

@@ -102,7 +102,16 @@ export class UserService {
   }
 
   async validateEmail(email: string): Promise<string> {
-    const emailIsValid = await this.userRepository.findByEmail(email);
+    const bodySchema = z.string().email({ message: 'E-mail' });
+    const sendedEmail = bodySchema.safeParse(email);
+
+    if (!sendedEmail.success) {
+      throw new InvalidParamError(sendedEmail.error.message);
+    }
+
+    const emailIsValid = await this.userRepository.findByEmail(
+      sendedEmail.data,
+    );
 
     if (!emailIsValid) {
       return 'Nenhum usuário foi cadastrado usando este E-mail';
