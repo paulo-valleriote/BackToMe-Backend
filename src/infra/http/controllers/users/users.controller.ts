@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  HttpCode,
   InternalServerErrorException,
   Param,
   Post,
@@ -49,6 +50,7 @@ export class UsersController {
     await this.userService.editPassword(id,request)
   }
   @Post('validate/email')
+  @HttpCode(200)
   async validateEmail(@Body() { email }: { email: string }) {
     if (!email) {
       throw new MissingParamError('email');
@@ -56,7 +58,7 @@ export class UsersController {
 
     const emailIsValid = await this.userService.validateEmail(email);
 
-    return { email: emailIsValid };
+    return { message: emailIsValid };
   }
 
   @Post('recoverypassword')
