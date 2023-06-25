@@ -15,7 +15,7 @@ import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
 import { MissingParamError } from '@app/errors/MissingParamError';
 import { z } from 'zod';
-
+import env from 'src/env';
 @Injectable()
 export class UserService {
   constructor(
@@ -75,7 +75,6 @@ export class UserService {
     }
   }
 
-
   async editPassword(id: string, request: EditPasswordDTO): Promise<string> {
     if (!id) {
       throw new BadRequestException('Identificação de usuário inválida');
@@ -124,28 +123,5 @@ export class UserService {
     throw new InternalServerErrorException(
       'Algo deu errado ao validar este E-mail',
     );
-  }
-
-  async passwordRecovery(request: PasswordRecoveryDTO): Promise<string> {
-    const bodySchema = z.object({
-      email: z.string().email({ message: 'E-mail' }),
-      cpf: z.string(),
-    });
-
-    const requestBody = bodySchema.safeParse(request);
-
-    if (!requestBody.success) {
-      if (requestBody.error.message === 'E-mail') {
-        throw new InvalidParamError('E-mail');
-      }
-
-      throw new MissingParamError(`${requestBody.error.errors[0].path[0]}`);
-    }
-
-    const userId = await this.userRepository.findByEmail(
-      requestBody.data.email,
-    );
-
-    return `${process.env.FRONTEND_URL}/${userId}`;
   }
 }
