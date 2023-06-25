@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
-  NotFoundException,
 } from '@nestjs/common';
 import { UserRepository } from '@app/repositories/User/user';
 import { User } from '@domain/User/User';
