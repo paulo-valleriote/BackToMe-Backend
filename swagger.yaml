@@ -1,15 +1,48 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: Projeto de Animais Perdidos ou Doados
-  description: API para busca de animais perdidos e adoção de animais disponíveis.
+  title: BackToME API
+  description: API para busca de animais perdidos e adoção de animais.
+
+servers:
+  - url: http://localhost:3000
+    description: Servidor local
+
+  - url: https://api-backtome.onrender.com
+    description: Servidor Render
 
 tags:
+- name: Validações
 - name: Usuários
 - name: Animais Perdidos
 - name: Animais para Adoção
-- name: Validações
+
 paths:
+  /validate/email:
+    post:
+      tags:
+        - Validações
+      summary: Validar email
+      description: Verifica se o usuário existe no banco de dados
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ValidateEmail"
+            examples:
+              Example Json:
+                value:
+                  email: user@email.com
+              Example Type:
+                value:
+                  email: string
+      responses:
+        "200":
+          description: Não existe nenhum usuário cadastrado com este email
+        "400":
+          description: Já existe um cadastro com esse email
+
   /users/registered:
     post:
       tags:
@@ -123,7 +156,7 @@ paths:
           description: Usuário cadastrado com sucesso!
         "400":
           description: Erro interno!
-  /users/recoverypassword:
+  /users/recovery-password:
     post:
       tags:
         - Usuários
@@ -146,22 +179,46 @@ paths:
                   cpf: string
       responses:
         "200":
-          description: Rota para recuperar senha
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RecoveryPassword"
-              examples:
-                Example Json:
-                  value:
-                    email: user@email.com
-                    cpf: 111.111.111-11
-                Example Type:
-                  value:
-                    email: string
-                    cpf: string
+          description: Link para verificação
+
         "400":
           description: Erro recuperar senha
+  /users/change-password/{userId}:
+    post:
+      tags:
+        - Usuários
+      summary: Alterar a senha
+      description: Rota para recuperar senha
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        description: ID do usuário
+        schema:
+          type: integer
+          format: int64
+          example: 123
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePassword"
+            examples:
+              Example Json:
+                value:
+                  password: A123456@
+                  newPassword: B789456,
+              Example Type:
+                value:
+                  password: string
+                  newPassword: string
+      responses:
+        "200":
+          description: Senha alterada com sucesso
+
+        "400":
+          description: Erro ao alterar senha
 
   /animals-found/registered:
     post:
@@ -495,8 +552,6 @@ paths:
         "400":
           description: Erro ao buscar animais perdido
 
-
-
 components:
   schemas:
     UserRegistered:
@@ -555,6 +610,20 @@ components:
         email:
           type: string
         password:
+          type: string
+
+    ChangePassword:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    ValidateEmail:
+      type: object
+      properties:
+        email:
           type: string
 
     AnimalsFound:
