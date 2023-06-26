@@ -48,7 +48,7 @@ let UsersController = exports.UsersController = class UsersController {
         await this.userService.edit(id, editUserDTO);
     }
     async editPassword(id, request) {
-        return await this.userService.editPassword(id, request);
+        await this.userService.editPassword(id, request);
     }
     async resetPassword(id, request) {
         return await this.userService.resetPassword(id, request);

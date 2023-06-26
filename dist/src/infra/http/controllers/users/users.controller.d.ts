@@ -21,6 +21,6 @@ export declare class UsersController {
         link: string;
     }>;
     edit(editUserDTO: EditUserDTO, id: string): Promise<void>;
-    editPassword(id: string, request: EditPasswordDTO): Promise<any>;
-    resetPassword(id: string, request: ResetPasswordDTO): Promise<any>;
+    editPassword(id: string, request: EditPasswordDTO): Promise<string | void>;
+    resetPassword(id: string, request: ResetPasswordDTO): Promise<string | Error>;
 }
