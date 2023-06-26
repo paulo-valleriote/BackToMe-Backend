@@ -21,7 +21,7 @@ export class MailController {
     @InjectQueue('mail') private emailQueue: Queue,
   ) {}
 
-  @Post('users/recoverypassword')
+  @Post('users/recovery-password')
   @HttpCode(204)
   async sendMail(
     @Body() PasswordRecoveryDto: PasswordRecoveryDTO,
