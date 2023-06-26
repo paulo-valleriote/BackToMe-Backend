@@ -74,14 +74,16 @@ export class UserService {
     }
   }
 
-  async editPassword(id: string, request: EditPasswordDTO): Promise<string> {
-    if (!id) {
+  async editPassword(
+    userId: string,
+    request: EditPasswordDTO,
+  ): Promise<string> {
+    if (!userId) {
       throw new BadRequestException('Identificação de usuário inválida');
     }
-
     const { currentPassword, newPassword } = request;
 
-    const user = await this.userRepository.findUserById(id);
+    const user = await this.userRepository.findUserById(userId);
 
     if (!('password' in user)) {
       throw new BadRequestException('Usuário não encontrado');
@@ -92,7 +94,7 @@ export class UserService {
     }
 
     const updatedPassword = await this.userRepository.updatePassword(
-      id,
+      userId,
       newPassword,
     );
 

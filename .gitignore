@@ -35,4 +35,8 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 .env
+<<<<<<< HEAD
 dist
+=======
+dist
+>>>>>>> 4690624 (finalizado rota senhas-testado)
