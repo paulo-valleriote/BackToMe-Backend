@@ -105,7 +105,37 @@ export class UserService {
     return 'Senha não foi alterada!';
   }
 
+<<<<<<< HEAD
   async validateEmail(email: string): Promise<EmailValidationResponseDTO> {
+=======
+  async resetPassword(
+    userId: string,
+    request: ResetPasswordDTO,
+  ): Promise<string> {
+    const { password } = request;
+
+    if (!userId) {
+      return 'Identificação de usuário inválida';
+    }
+
+    const user = await this.userRepository.findUserById(userId);
+
+    if (!('password' in user)) {
+      return 'Usuário não encontrado';
+    }
+    const updatedPassword = await this.userRepository.updatePassword(
+      userId,
+      password,
+    );
+    console.log(updatedPassword)
+    if (!updatedPassword) {
+      return 'Erro ao alterar senha!';
+    }
+    return 'Senha alterada com sucesso!';
+  }
+
+  async validateEmail(email: string): Promise<string> {
+>>>>>>> 23e345a (alterado retorno da change-password)
     const bodySchema = z.string().email({ message: 'E-mail' });
     const sendedEmail = bodySchema.safeParse(email);
 

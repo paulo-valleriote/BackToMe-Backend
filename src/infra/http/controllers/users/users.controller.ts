@@ -60,6 +60,19 @@ export class UsersController {
     @Body() request: EditPasswordDTO,
   ): Promise<any> {
     return await this.userService.editPassword(id, request);
+<<<<<<< HEAD
+=======
+  }
+
+  @Patch(':id/change-password')
+  @HttpCode(201)
+  async resetPassword(
+    @Param('id') id: string,
+    @Body() request: ResetPasswordDTO,
+  ): Promise<any> {
+
+    return await this.userService.resetPassword(id, request);
+>>>>>>> 23e345a (alterado retorno da change-password)
   }
 
 

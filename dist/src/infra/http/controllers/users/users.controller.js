@@ -48,10 +48,10 @@ let UsersController = exports.UsersController = class UsersController {
         await this.userService.edit(id, editUserDTO);
     }
     async editPassword(id, request) {
-        await this.userService.editPassword(id, request);
+        return await this.userService.editPassword(id, request);
     }
     async resetPassword(id, request) {
-        await this.userService.resetPassword(id, request);
+        return await this.userService.resetPassword(id, request);
     }
 };
 __decorate([
@@ -99,7 +99,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "editPassword", null);
 __decorate([
-    (0, common_1.Patch)(':id/reset-password'),
+    (0, common_1.Patch)(':id/change-password'),
     (0, common_1.HttpCode)(201),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
