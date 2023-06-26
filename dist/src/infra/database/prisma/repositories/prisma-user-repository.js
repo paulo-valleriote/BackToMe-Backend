@@ -98,6 +98,7 @@ let PrismaUserRepository = exports.PrismaUserRepository = class PrismaUserReposi
     }
     async updatePassword(id, newPassword) {
         const encryptedPassword = (0, makeHash_1.makeHash)(newPassword);
+        console.log(encryptedPassword);
         const userUpdated = this.prismaService.user.update({
             where: { id },
             data: { password: encryptedPassword },

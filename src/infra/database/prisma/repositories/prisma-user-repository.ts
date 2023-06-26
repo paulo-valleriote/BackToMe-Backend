@@ -98,11 +98,11 @@ export class PrismaUserRepository implements UserRepository {
 
   async updatePassword(id: string, newPassword: string): Promise<boolean> {
     const encryptedPassword = makeHash(newPassword);
-
     const userUpdated = this.prismaService.user.update({
       where: { id },
       data: { password: encryptedPassword },
     });
+    
     if (!userUpdated) return false;
     return true;
   }

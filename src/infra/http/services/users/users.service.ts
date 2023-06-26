@@ -114,19 +114,19 @@ export class UserService {
     const { password } = request;
 
     if (!userId) {
-      throw new BadRequestException('Identificação de usuário inválida');
+      return 'Identificação de usuário inválida';
     }
 
     const user = await this.userRepository.findUserById(userId);
 
     if (!('password' in user)) {
-      throw new BadRequestException('Usuário não encontrado');
+      return 'Usuário não encontrado';
     }
-
     const updatedPassword = await this.userRepository.updatePassword(
       userId,
       password,
     );
+    console.log(updatedPassword)
     if (!updatedPassword) {
       return 'Erro ao alterar senha!';
     }
