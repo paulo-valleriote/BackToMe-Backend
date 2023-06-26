@@ -1,6 +1,7 @@
 import { PasswordRecoveryMailDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
 import { MailerService } from '@nestjs-modules/mailer';
 import {
+  OnQueueActive,
   OnQueueCompleted,
   OnQueueError,
   Process,
@@ -15,20 +16,22 @@ export class MailProcessorService {
   @Process('mail-job')
   sendMailJob(job: Job<PasswordRecoveryMailDTO>) {
     this.mailService.sendMail({
-      to: job.data.email,
       from: env.MAILER_SENDER,
+      to: job.data.email,
       subject: 'Redefinição de senha',
+      date: new Date(),
+      text: 'Redefinição',
       html: `Olá! Nós sentimos sua falta, <a href={${job.data.recoveryLink}} clique aqui</a> para redefinir sua senha\n\nBem vindo(a) de volta!`,
     });
   }
 
-  @OnQueueCompleted()
-  logCompletedQueue(job: Job) {
-    console.log('E-mail foi enviado!', job.data.email);
+  @OnQueueActive()
+  logEmailBeeingSent() {
+    console.log('O E-mail está sendo enviado');
   }
 
-  @OnQueueError()
-  logQueueError(job: Job) {
-    console.log('O E-mail não pode ser enviado, motivo:', job.failedReason);
+  @OnQueueCompleted()
+  logEmailSended() {
+    console.log('O E-mail foi enviado!');
   }
 }
