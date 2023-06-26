@@ -1,6 +1,8 @@
 import { User } from '@domain/User/User';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
+import { FindedUserDTO } from '@infra/http/dtos/User/findedUser.dto';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
+import { NotFoundException } from '@nestjs/common';
 
 export abstract class UserRepository {
   abstract register(user: User): Promise<string>;
@@ -13,5 +15,7 @@ export abstract class UserRepository {
 
   abstract updatePassword(userId: string, newPassword: string): Promise<User>;
 
-  abstract findByEmail(email: string): Promise<string>;
+  abstract findByEmail(
+    email: string,
+  ): Promise<FindedUserDTO | NotFoundException>;
 }

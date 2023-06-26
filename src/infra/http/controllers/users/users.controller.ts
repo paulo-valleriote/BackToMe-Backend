@@ -54,8 +54,8 @@ export class UsersController {
       throw new MissingParamError('email');
     }
 
-    const emailIsValid = await this.userService.validateEmail(email);
+    const emailIsAvailable = await this.userService.validateEmail(email);
 
-    return { message: emailIsValid };
+    return emailIsAvailable;
   }
 }
