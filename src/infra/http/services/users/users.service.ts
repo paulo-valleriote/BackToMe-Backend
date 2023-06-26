@@ -120,18 +120,19 @@ export class UserService {
 
     const user = await this.userRepository.findUserById(userId);
 
-    if (!('password' in user)) {
+    if (!user) {
       return 'Usuário não encontrado';
     }
+    
     const updatedPassword = await this.userRepository.updatePassword(
       userId,
       password,
     );
-    console.log(updatedPassword)
+
     if (!updatedPassword) {
       return 'Erro ao alterar senha!';
     }
-    return 'Senha alterada com sucesso!';
+    return "Senha alterada com sucesso!";
   }
 
   async validateEmail(email: string): Promise<string> {
