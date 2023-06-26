@@ -17,6 +17,8 @@ import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { MissingParamError } from '@app/errors/MissingParamError';
 import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
 
+import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
+
 @Controller('users')
 export class UsersController {
   constructor(private userService: UserService) {}
@@ -44,11 +46,10 @@ export class UsersController {
       throw new MissingParamError('email');
     }
 
+
     const emailIsAvailable = await this.userService.validateEmail(email);
 
     return emailIsAvailable;
-<<<<<<< HEAD
-=======
   }
 
   @Post('recovery-password')
@@ -64,7 +65,6 @@ export class UsersController {
     }
 
     return { link: verificationLink };
->>>>>>> 991a79d (merge)
   }
 
   @Put(':id')
@@ -78,10 +78,11 @@ export class UsersController {
     @Body() request: EditPasswordDTO,
   ): Promise<any> {
     return await this.userService.editPassword(id, request);
-<<<<<<< HEAD
-=======
+
   }
-<<<<<<< HEAD
+
+  }
+
 
   @Patch(':id/change-password')
   @HttpCode(201)
@@ -91,10 +92,6 @@ export class UsersController {
   ): Promise<any> {
 
     return await this.userService.resetPassword(id, request);
->>>>>>> 23e345a (alterado retorno da change-password)
   }
 
-
-=======
->>>>>>> 991a79d (merge)
 }

@@ -12,7 +12,10 @@ export declare class UsersController {
         message: string;
     }>;
     login(userLoginDTO: UserLoginDTO): Promise<string | Error>;
-    validateEmail(email: string): Promise<{
+
+    validateEmail({ email }: {
+        email: string;
+    }): Promise<{
         email: string;
     }>;
     passwordRecovery(passwordRecoveryDTO: PasswordRecoveryDTO): Promise<{

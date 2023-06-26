@@ -29,8 +29,9 @@ let UsersController = exports.UsersController = class UsersController {
     async login(userLoginDTO) {
         const token = await this.userService.login(userLoginDTO);
         return token;
-    }
+
     async validateEmail(email) {
+
         if (!email) {
             throw new MissingParamError_1.MissingParamError('email');
         }
@@ -70,9 +71,11 @@ __decorate([
 ], UsersController.prototype, "login", null);
 __decorate([
     (0, common_1.Post)('validate/email'),
+
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
+
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "validateEmail", null);
 __decorate([

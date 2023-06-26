@@ -10,7 +10,9 @@ import { UserRepository } from '@app/repositories/User/user';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { compareToEncrypted } from '@app/protocols/crypto/compare/compareToEncrypted';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
+
 import { FindedUserDTO } from '@infra/http/dtos/User/findedUser.dto';
+
 import { makeHash } from '@app/protocols/crypto/hash/makeHash';
 
 @Injectable()

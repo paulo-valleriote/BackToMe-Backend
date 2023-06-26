@@ -11,6 +11,7 @@ import { InvalidParamError } from '@app/errors/InvalidParamError';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
+import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
 import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { EmailValidationResponseDTO } from '@infra/http/dtos/User/emailValidationResponse.dto';
 import { z } from 'zod';
@@ -132,6 +133,7 @@ export class UserService {
     if (!updatedPassword) {
       return 'Erro ao alterar senha!';
     }
+
     return 'Senha alterada com sucesso!';
   }
 
@@ -158,6 +160,29 @@ export class UserService {
       isAvailable: false,
       message: 'Já existe um usuário cadastrado com este e-mail',
     };
+  }
+
+  async passwordRecovery(request: PasswordRecoveryDTO): Promise<string> {
+    const bodySchema = z.object({
+      email: z.string().email({ message: 'E-mail' }),
+      cpf: z.string(),
+    });
+
+    const requestBody = bodySchema.safeParse(request);
+
+    if (!requestBody.success) {
+      if (requestBody.error.message === 'E-mail') {
+        throw new InvalidParamError('E-mail');
+      }
+
+      throw new MissingParamError(`${requestBody.error.errors[0].path[0]}`);
+    }
+
+    const userId = await this.userRepository.findByEmail(
+      requestBody.data.email,
+    );
+
+    return `${process.env.FRONTEND_URL}/${userId}`;
   }
 
   async passwordRecovery(request: PasswordRecoveryDTO): Promise<string> {
