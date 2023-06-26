@@ -18,7 +18,7 @@ export declare class UsersController {
         email: string;
     }>;
     passwordRecovery(passwordRecoveryDTO: PasswordRecoveryDTO): Promise<{
-        link: any;
+        link: string;
     }>;
     edit(editUserDTO: EditUserDTO, id: string): Promise<void>;
     editPassword(id: string, request: EditPasswordDTO): Promise<any>;

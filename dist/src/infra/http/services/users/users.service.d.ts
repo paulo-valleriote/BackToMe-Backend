@@ -7,6 +7,7 @@ import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
 import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
+import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
 export declare class UserService {
     private userRepository;
     private phoneValidator;
@@ -18,4 +19,5 @@ export declare class UserService {
     editPassword(userId: string, request: EditPasswordDTO): Promise<string>;
     resetPassword(userId: string, request: ResetPasswordDTO): Promise<string>;
     validateEmail(email: string): Promise<string>;
+    passwordRecovery(request: PasswordRecoveryDTO): Promise<string>;
 }

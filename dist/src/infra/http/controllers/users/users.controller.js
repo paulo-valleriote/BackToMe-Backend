@@ -40,7 +40,7 @@ let UsersController = exports.UsersController = class UsersController {
     async passwordRecovery(passwordRecoveryDTO) {
         const verificationLink = await this.userService.passwordRecovery(passwordRecoveryDTO);
         if (!verificationLink) {
-            throw new InternalServerErrorException('Ocorreu um erro ao recuperar sua senha');
+            throw new common_1.InternalServerErrorException('Ocorreu um erro ao recuperar sua senha');
         }
         return { link: verificationLink };
     }

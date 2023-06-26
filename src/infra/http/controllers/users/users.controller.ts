@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   Patch,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 import { UserService } from '@infra/http/services/users/users.service';
@@ -84,4 +85,6 @@ export class UsersController {
   ): Promise<any> {
     await this.userService.resetPassword(id, request);
   }
+
+
 }
