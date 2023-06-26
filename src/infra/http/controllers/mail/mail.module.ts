@@ -14,4 +14,4 @@ import { UsersDatabaseModule } from '@infra/database/prisma/repositories/prisma-
   controllers: [MailController],
   providers: [MailProcessorService],
 })
-export class MailModule {}
+export class MailQueueModule {}

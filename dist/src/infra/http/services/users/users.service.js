@@ -97,16 +97,26 @@ let UserService = exports.UserService = class UserService {
         return "Senha alterada com sucesso!";
     }
     async validateEmail(email) {
-        const bodySchema = zod_1.z.string().email({ message: 'E-mail' });
-        const sendedEmail = bodySchema.safeParse(email);
-        if (!sendedEmail.success) {
-            throw new InvalidParamError_1.InvalidParamError(sendedEmail.error.message);
+        const emailIsValid = await this.userRepository.findByEmail(email);
+        if (!emailIsValid) {
+            return 'Nenhum usuário foi cadastrado usando este E-mail';
         }
-        const emailIsValid = await this.userRepository.findByEmail(sendedEmail.data);
-        if (emailIsValid) {
-            return 'Já existe um usuário cadastrado com este E-mail';
+        return 'Já existe um usuário cadastrado com este E-mail';
+    }
+    async passwordRecovery(request) {
+        const bodySchema = zod_1.z.object({
+            email: zod_1.z.string().email({ message: 'E-mail' }),
+            cpf: zod_1.z.string(),
+        });
+        const requestBody = bodySchema.safeParse(request);
+        if (!requestBody.success) {
+            if (requestBody.error.message === 'E-mail') {
+                throw new InvalidParamError_1.InvalidParamError('E-mail');
+            }
+            throw new MissingParamError_1.MissingParamError(`${requestBody.error.errors[0].path[0]}`);
         }
-        throw new common_1.InternalServerErrorException('Algo deu errado ao validar este E-mail');
+        const userId = await this.userRepository.findByEmail(requestBody.data.email);
+        return `${process.env.FRONTEND_URL}/${userId}`;
     }
     async passwordRecovery(request) {
         const bodySchema = zod_1.z.object({

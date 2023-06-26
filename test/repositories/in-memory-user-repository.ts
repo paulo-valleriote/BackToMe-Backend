@@ -51,4 +51,38 @@ export class inMemoryUserRepository implements UserRepository {
 
     return true;
   }
+
+  async findUserById(userId: string): Promise<User> {
+    const user = this.users[userId];
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    return user;
+  }
+
+  async updatePassword(userId: string, newPassword: string): Promise<User> {
+    if (!this.users[userId]) {
+      throw new Error('User not found');
+    }
+
+    this.users[userId].props.password = newPassword;
+
+    return this.users[userId];
+  }
+
+  async findByEmail(email: string): Promise<string> {
+    const userIndex = this.users.findIndex(
+      (user) => user.props.email === email,
+    );
+
+    if (userIndex < 0) {
+      throw new Error('User not found');
+    }
+
+    const id = this.users[userIndex].props.email;
+
+    return id;
+  }
 }
