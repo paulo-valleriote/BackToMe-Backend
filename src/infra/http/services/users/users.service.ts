@@ -129,4 +129,27 @@ export class UserService {
       message: 'Já existe um usuário cadastrado com este e-mail',
     };
   }
+
+  async passwordRecovery(request: PasswordRecoveryDTO): Promise<string> {
+    const bodySchema = z.object({
+      email: z.string().email({ message: 'E-mail' }),
+      cpf: z.string(),
+    });
+
+    const requestBody = bodySchema.safeParse(request);
+
+    if (!requestBody.success) {
+      if (requestBody.error.message === 'E-mail') {
+        throw new InvalidParamError('E-mail');
+      }
+
+      throw new MissingParamError(`${requestBody.error.errors[0].path[0]}`);
+    }
+
+    const userId = await this.userRepository.findByEmail(
+      requestBody.data.email,
+    );
+
+    return `${process.env.FRONTEND_URL}/${userId}`;
+  }
 }

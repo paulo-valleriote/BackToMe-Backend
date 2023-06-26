@@ -118,6 +118,21 @@ let UserService = exports.UserService = class UserService {
         const userId = await this.userRepository.findByEmail(requestBody.data.email);
         return `${process.env.FRONTEND_URL}/${userId}`;
     }
+    async passwordRecovery(request) {
+        const bodySchema = zod_1.z.object({
+            email: zod_1.z.string().email({ message: 'E-mail' }),
+            cpf: zod_1.z.string(),
+        });
+        const requestBody = bodySchema.safeParse(request);
+        if (!requestBody.success) {
+            if (requestBody.error.message === 'E-mail') {
+                throw new InvalidParamError_1.InvalidParamError('E-mail');
+            }
+            throw new MissingParamError_1.MissingParamError(`${requestBody.error.errors[0].path[0]}`);
+        }
+        const userId = await this.userRepository.findByEmail(requestBody.data.email);
+        return `${process.env.FRONTEND_URL}/${userId}`;
+    }
 };
 exports.UserService = UserService = __decorate([
     (0, common_1.Injectable)(),
