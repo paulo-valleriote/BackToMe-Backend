@@ -10,11 +10,6 @@ import { UserRepository } from '@app/repositories/User/user';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { compareToEncrypted } from '@app/protocols/crypto/compare/compareToEncrypted';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
-<<<<<<< HEAD
-import { FindedUserDTO } from '@infra/http/dtos/User/findedUser.dto';
-import { makeHash } from '@app/protocols/crypto/hash/makeHash';
-=======
->>>>>>> dfc469b (refatorando rotas do usuário)
 import { FindedUserDTO } from '@infra/http/dtos/User/findedUser.dto';
 import { makeHash } from '@app/protocols/crypto/hash/makeHash';
 
@@ -118,15 +113,7 @@ export class PrismaUserRepository implements UserRepository {
     return true;
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   async findByEmail(email: string): Promise<FindedUserDTO | NotFoundException> {
-=======
-  async findByEmail(email: string): Promise<FindedUserDTO> {
->>>>>>> 991a79d (merge)
-=======
-  async findByEmail(email: string): Promise<FindedUserDTO | NotFoundException> {
->>>>>>> dfc469b (refatorando rotas do usuário)
     const databaseResponse = await this.prismaService.user.findUnique({
       where: {
         email,

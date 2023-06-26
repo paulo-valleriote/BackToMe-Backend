@@ -14,11 +14,9 @@ import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { EmailValidationResponseDTO } from '@infra/http/dtos/User/emailValidationResponse.dto';
 import { z } from 'zod';
-<<<<<<< HEAD
-=======
-import { MissingParamError } from '@app/errors/MissingParamError';
+import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
 import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
->>>>>>> 991a79d (merge)
+import { MissingParamError } from '@app/errors/MissingParamError';
 
 @Injectable()
 export class UserService {
@@ -110,9 +108,6 @@ export class UserService {
     return 'Senha não foi alterada!';
   }
 
-<<<<<<< HEAD
-  async validateEmail(email: string): Promise<EmailValidationResponseDTO> {
-=======
   async resetPassword(
     userId: string,
     request: ResetPasswordDTO,
@@ -140,12 +135,7 @@ export class UserService {
     return 'Senha alterada com sucesso!';
   }
 
-<<<<<<< HEAD
-  async validateEmail(email: string): Promise<string> {
->>>>>>> 23e345a (alterado retorno da change-password)
-=======
   async validateEmail(email: string): Promise<EmailValidationResponseDTO> {
->>>>>>> 991a79d (merge)
     const bodySchema = z.string().email({ message: 'E-mail' });
     const sendedEmail = bodySchema.safeParse(email);
 
