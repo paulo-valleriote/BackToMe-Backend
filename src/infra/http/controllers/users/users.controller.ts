@@ -74,16 +74,17 @@ export class UsersController {
     @Param('id') id: string,
     @Body() request: EditPasswordDTO,
   ): Promise<any> {
-    await this.userService.editPassword(id, request);
+    return await this.userService.editPassword(id, request);
   }
 
-  @Patch(':id/reset-password')
+  @Patch(':id/change-password')
   @HttpCode(201)
   async resetPassword(
     @Param('id') id: string,
     @Body() request: ResetPasswordDTO,
   ): Promise<any> {
-    await this.userService.resetPassword(id, request);
+
+    return await this.userService.resetPassword(id, request);
   }
 
 

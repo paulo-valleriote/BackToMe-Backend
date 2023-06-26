@@ -2,11 +2,11 @@ import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
 import { InvalidParamError } from '@app/errors/InvalidParamError';
 import { MissingParamError } from '@app/errors/MissingParamError';
-import { z } from 'zod';
 import { UserRepository } from '@app/repositories/User/user';
-import env from 'src/env';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import env from 'src/env';
+import { z } from 'zod';
 
 @Controller()
 export class MailController {
