@@ -1,11 +1,16 @@
 import { sign } from 'jsonwebtoken';
 import { PrismaService } from '../prisma.service';
 import { User } from '@domain/User/User';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UserRepository } from '@app/repositories/User/user';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { compareToEncrypted } from '@app/protocols/crypto/compare/compareToEncrypted';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
+import { FindedUserDTO } from '@infra/http/dtos/User/findedUser.dto';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
@@ -108,7 +113,7 @@ export class PrismaUserRepository implements UserRepository {
     return user;
   }
 
-  async findByEmail(email: string): Promise<string> {
+  async findByEmail(email: string): Promise<FindedUserDTO | NotFoundException> {
     const databaseResponse = await this.prismaService.user.findUnique({
       where: {
         email,
@@ -116,9 +121,9 @@ export class PrismaUserRepository implements UserRepository {
     });
 
     if (!databaseResponse || Object.values(databaseResponse).length < 1) {
-      throw new BadRequestException('Nenhum usuário encontrado');
+      return new NotFoundException('Nenhum usuário encontrado');
     }
 
-    return databaseResponse.id;
+    return databaseResponse;
   }
 }
