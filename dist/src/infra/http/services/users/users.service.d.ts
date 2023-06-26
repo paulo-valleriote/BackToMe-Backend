@@ -5,6 +5,7 @@ import { PhoneValidator } from '@app/protocols/phone/phoneValidator';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
+import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
 import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
 export declare class UserService {
@@ -15,7 +16,8 @@ export declare class UserService {
     register(request: RegisterUserDTO): Promise<User | Error>;
     login(request: UserLoginDTO): Promise<string | Error>;
     edit(userId: string, request: EditUserDTO): Promise<void | Error>;
-    editPassword(id: string, request: EditPasswordDTO): Promise<string>;
+    editPassword(userId: string, request: EditPasswordDTO): Promise<string>;
+    resetPassword(userId: string, request: ResetPasswordDTO): Promise<string>;
     validateEmail(email: string): Promise<string>;
     passwordRecovery(request: PasswordRecoveryDTO): Promise<string>;
 }

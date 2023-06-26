@@ -30,12 +30,6 @@ let UsersController = exports.UsersController = class UsersController {
         const token = await this.userService.login(userLoginDTO);
         return token;
     }
-    async edit(editUserDTO, id) {
-        await this.userService.edit(id, editUserDTO);
-    }
-    async editPassword(id, request) {
-        await this.userService.editPassword(id, request);
-    }
     async validateEmail(email) {
         if (!email) {
             throw new MissingParamError_1.MissingParamError('email');
@@ -49,6 +43,15 @@ let UsersController = exports.UsersController = class UsersController {
             throw new common_1.InternalServerErrorException('Ocorreu um erro ao recuperar sua senha');
         }
         return { link: verificationLink };
+    }
+    async edit(editUserDTO, id) {
+        await this.userService.edit(id, editUserDTO);
+    }
+    async editPassword(id, request) {
+        await this.userService.editPassword(id, request);
+    }
+    async resetPassword(id, request) {
+        await this.userService.resetPassword(id, request);
     }
 };
 __decorate([
@@ -66,6 +69,20 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "login", null);
 __decorate([
+    (0, common_1.Post)('validate/email'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "validateEmail", null);
+__decorate([
+    (0, common_1.Post)('recovery-password'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "passwordRecovery", null);
+__decorate([
     (0, common_1.Put)(':id'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Param)('id')),
@@ -75,26 +92,21 @@ __decorate([
 ], UsersController.prototype, "edit", null);
 __decorate([
     (0, common_1.Patch)(':id/password'),
-    __param(0, (0, common_1.Param)()),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "editPassword", null);
 __decorate([
-    (0, common_1.Post)('validate/email'),
-    __param(0, (0, common_1.Body)()),
+    (0, common_1.Patch)(':id/reset-password'),
+    (0, common_1.HttpCode)(201),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
-], UsersController.prototype, "validateEmail", null);
-__decorate([
-    (0, common_1.Post)('recoverypassword'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], UsersController.prototype, "passwordRecovery", null);
+], UsersController.prototype, "resetPassword", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UserService])

@@ -63,23 +63,38 @@ let UserService = exports.UserService = class UserService {
             return editionGoneWrong;
         }
     }
-    async editPassword(id, request) {
-        if (!id) {
+    async editPassword(userId, request) {
+        if (!userId) {
             throw new common_1.BadRequestException('Identificação de usuário inválida');
         }
         const { currentPassword, newPassword } = request;
-        const user = await this.userRepository.findUserById(id);
+        const user = await this.userRepository.findUserById(userId);
         if (!('password' in user)) {
             throw new common_1.BadRequestException('Usuário não encontrado');
         }
         if (user.password !== currentPassword) {
             throw new common_1.BadRequestException('Senha atual incorreta');
         }
-        const updatedPassword = await this.userRepository.updatePassword(id, newPassword);
+        const updatedPassword = await this.userRepository.updatePassword(userId, newPassword);
         if (updatedPassword) {
             return 'Senha alterada com sucesso!';
         }
         return 'Senha não foi alterada!';
+    }
+    async resetPassword(userId, request) {
+        const { password } = request;
+        if (!userId) {
+            throw new common_1.BadRequestException('Identificação de usuário inválida');
+        }
+        const user = await this.userRepository.findUserById(userId);
+        if (!('password' in user)) {
+            throw new common_1.BadRequestException('Usuário não encontrado');
+        }
+        const updatedPassword = await this.userRepository.updatePassword(userId, password);
+        if (!updatedPassword) {
+            return 'Erro ao alterar senha!';
+        }
+        return 'Senha alterada com sucesso!';
     }
     async validateEmail(email) {
         const emailIsValid = await this.userRepository.findByEmail(email);

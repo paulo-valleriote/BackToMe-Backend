@@ -4,6 +4,7 @@ import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
+import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
 export declare class UsersController {
     private userService;
     constructor(userService: UserService);
@@ -11,12 +12,13 @@ export declare class UsersController {
         message: string;
     }>;
     login(userLoginDTO: UserLoginDTO): Promise<string | Error>;
-    edit(editUserDTO: EditUserDTO, id: string): Promise<void>;
-    editPassword(id: string, request: EditPasswordDTO): Promise<any>;
     validateEmail(email: string): Promise<{
         email: string;
     }>;
     passwordRecovery(passwordRecoveryDTO: PasswordRecoveryDTO): Promise<{
         link: string;
     }>;
+    edit(editUserDTO: EditUserDTO, id: string): Promise<void>;
+    editPassword(id: string, request: EditPasswordDTO): Promise<any>;
+    resetPassword(id: string, request: ResetPasswordDTO): Promise<any>;
 }

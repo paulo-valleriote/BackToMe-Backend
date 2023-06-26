@@ -9,7 +9,7 @@ export declare class PrismaUserRepository implements UserRepository {
     register(user: User): Promise<string>;
     login(account: UserLoginDTO): Promise<string | Error>;
     edit(userId: string, account: EditUserDTO): Promise<void | Error>;
-    findUserById(userId: string): Promise<any>;
-    updatePassword(userId: string, newPassword: string): Promise<User>;
+    findUserById(id: string): Promise<any>;
+    updatePassword(id: string, newPassword: string): Promise<boolean>;
     findByEmail(email: string): Promise<string>;
 }

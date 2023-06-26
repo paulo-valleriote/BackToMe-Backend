@@ -6,7 +6,8 @@ import {
   Param,
   Post,
   Put,
-  Patch
+  Patch,
+  HttpCode,
 } from '@nestjs/common';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 import { UserService } from '@infra/http/services/users/users.service';
@@ -15,6 +16,7 @@ import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { MissingParamError } from '@app/errors/MissingParamError';
 import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
+import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
 
 @Controller('users')
 export class UsersController {
@@ -36,18 +38,6 @@ export class UsersController {
     return token;
   }
 
-  @Put(':id')
-  async edit(@Body() editUserDTO: EditUserDTO, @Param('id') id: string) {
-    await this.userService.edit(id, editUserDTO);
-  }
-
-  @Patch(':id/password')
-  async editPassword(
-    @Param() id: string,
-    @Body() request: EditPasswordDTO,
-  ): Promise<any> {
-    await this.userService.editPassword(id,request)
-  }
   @Post('validate/email')
   async validateEmail(@Body() email: string) {
     if (!email) {
@@ -59,7 +49,7 @@ export class UsersController {
     return { email: emailIsValid };
   }
 
-  @Post('recoverypassword')
+  @Post('recovery-password')
   async passwordRecovery(@Body() passwordRecoveryDTO: PasswordRecoveryDTO) {
     const verificationLink = await this.userService.passwordRecovery(
       passwordRecoveryDTO,
@@ -72,5 +62,27 @@ export class UsersController {
     }
 
     return { link: verificationLink };
+  }
+
+  @Put(':id')
+  async edit(@Body() editUserDTO: EditUserDTO, @Param('id') id: string) {
+    await this.userService.edit(id, editUserDTO);
+  }
+
+  @Patch(':id/password')
+  async editPassword(
+    @Param('id') id: string,
+    @Body() request: EditPasswordDTO,
+  ): Promise<any> {
+    await this.userService.editPassword(id, request);
+  }
+
+  @Patch(':id/reset-password')
+  @HttpCode(201)
+  async resetPassword(
+    @Param('id') id: string,
+    @Body() request: ResetPasswordDTO,
+  ): Promise<any> {
+    await this.userService.resetPassword(id, request);
   }
 }

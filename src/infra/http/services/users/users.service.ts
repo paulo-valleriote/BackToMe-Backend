@@ -7,6 +7,7 @@ import { InvalidParamError } from '@app/errors/InvalidParamError';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
+import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
 import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
 import { MissingParamError } from '@app/errors/MissingParamError';
@@ -71,15 +72,16 @@ export class UserService {
     }
   }
 
-
-  async editPassword(id: string, request: EditPasswordDTO): Promise<string> {
-    if (!id) {
+  async editPassword(
+    userId: string,
+    request: EditPasswordDTO,
+  ): Promise<string> {
+    if (!userId) {
       throw new BadRequestException('Identificação de usuário inválida');
     }
-
     const { currentPassword, newPassword } = request;
 
-    const user = await this.userRepository.findUserById(id);
+    const user = await this.userRepository.findUserById(userId);
 
     if (!('password' in user)) {
       throw new BadRequestException('Usuário não encontrado');
@@ -90,7 +92,7 @@ export class UserService {
     }
 
     const updatedPassword = await this.userRepository.updatePassword(
-      id,
+      userId,
       newPassword,
     );
 
@@ -99,6 +101,32 @@ export class UserService {
     }
 
     return 'Senha não foi alterada!';
+  }
+
+  async resetPassword(
+    userId: string,
+    request: ResetPasswordDTO,
+  ): Promise<string> {
+    const { password } = request;
+
+    if (!userId) {
+      throw new BadRequestException('Identificação de usuário inválida');
+    }
+
+    const user = await this.userRepository.findUserById(userId);
+
+    if (!('password' in user)) {
+      throw new BadRequestException('Usuário não encontrado');
+    }
+
+    const updatedPassword = await this.userRepository.updatePassword(
+      userId,
+      password,
+    );
+    if (!updatedPassword) {
+      return 'Erro ao alterar senha!';
+    }
+    return 'Senha alterada com sucesso!';
   }
 
   async validateEmail(email: string): Promise<string> {

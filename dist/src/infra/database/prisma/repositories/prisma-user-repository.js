@@ -25,6 +25,7 @@ const jsonwebtoken_1 = require("jsonwebtoken");
 const prisma_service_1 = require("../prisma.service");
 const common_1 = require("@nestjs/common");
 const compareToEncrypted_1 = require("../../../../app/protocols/crypto/compare/compareToEncrypted");
+const makeHash_1 = require("../../../../app/protocols/crypto/hash/makeHash");
 let PrismaUserRepository = exports.PrismaUserRepository = class PrismaUserRepository {
     constructor(prismaService) {
         this.prismaService = prismaService;
@@ -87,22 +88,23 @@ let PrismaUserRepository = exports.PrismaUserRepository = class PrismaUserReposi
             },
         });
     }
-    async findUserById(userId) {
+    async findUserById(id) {
         const user = await this.prismaService.user.findFirst({
-            where: { id: userId },
+            where: { id },
         });
-        if (!user) {
+        if (!user)
             throw new common_1.BadRequestException('Usuário não encontrado');
-        }
         return user;
     }
-    async updatePassword(userId, newPassword) {
-        const user = await this.findUserById(userId);
-        this.prismaService.user.update({
-            where: { id: userId },
-            data: { password: newPassword },
+    async updatePassword(id, newPassword) {
+        const encryptedPassword = (0, makeHash_1.makeHash)(newPassword);
+        const userUpdated = this.prismaService.user.update({
+            where: { id },
+            data: { password: encryptedPassword },
         });
-        return user;
+        if (!userUpdated)
+            return false;
+        return true;
     }
     async findByEmail(email) {
         const databaseResponse = await this.prismaService.user.findUnique({
