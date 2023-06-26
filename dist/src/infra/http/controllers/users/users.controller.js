@@ -30,7 +30,7 @@ let UsersController = exports.UsersController = class UsersController {
         const token = await this.userService.login(userLoginDTO);
         return token;
     }
-    async validateEmail(email) {
+    async validateEmail({ email }) {
         if (!email) {
             throw new MissingParamError_1.MissingParamError('email');
         }
@@ -40,7 +40,7 @@ let UsersController = exports.UsersController = class UsersController {
     async passwordRecovery(passwordRecoveryDTO) {
         const verificationLink = await this.userService.passwordRecovery(passwordRecoveryDTO);
         if (!verificationLink) {
-            throw new common_1.InternalServerErrorException('Ocorreu um erro ao recuperar sua senha');
+            throw new InternalServerErrorException('Ocorreu um erro ao recuperar sua senha');
         }
         return { link: verificationLink };
     }
@@ -70,9 +70,10 @@ __decorate([
 ], UsersController.prototype, "login", null);
 __decorate([
     (0, common_1.Post)('validate/email'),
+    (0, common_1.HttpCode)(200),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "validateEmail", null);
 __decorate([

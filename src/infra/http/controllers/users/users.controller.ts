@@ -2,12 +2,11 @@ import {
   BadRequestException,
   Body,
   Controller,
-  InternalServerErrorException,
+  HttpCode,
   Param,
   Post,
   Put,
   Patch,
-  HttpCode,
 } from '@nestjs/common';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 import { UserService } from '@infra/http/services/users/users.service';
@@ -17,7 +16,6 @@ import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { MissingParamError } from '@app/errors/MissingParamError';
 import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
 import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
-
 @Controller('users')
 export class UsersController {
   constructor(private userService: UserService) {}
@@ -39,7 +37,8 @@ export class UsersController {
   }
 
   @Post('validate/email')
-  async validateEmail(@Body() email: string) {
+  @HttpCode(200)
+  async validateEmail(@Body() { email }: { email: string }) {
     if (!email) {
       throw new MissingParamError('email');
     }

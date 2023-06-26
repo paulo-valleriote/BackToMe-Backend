@@ -12,9 +12,10 @@ import { CpfValidator } from '@app/protocols/cpf/cpfValidator';
 import { EmailAlreadyExistsMiddleware } from '@infra/http/middlewares/users/emailAlreadyExists';
 import { CpfAlreadyInUseMiddleware } from '@infra/http/middlewares/users/cpfAlreadyInUse';
 import { PrismaService } from '@infra/database/prisma/prisma.service';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
-  imports: [UsersDatabaseModule],
+  imports: [UsersDatabaseModule, MailModule],
   controllers: [UsersController],
   providers: [UserService, PhoneValidator, CpfValidator, PrismaService],
 })
