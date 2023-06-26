@@ -16,6 +16,9 @@ import env from 'src/env';
             user: env.MAILER_USER,
             pass: env.MAILER_PASS,
           },
+          tls: {
+            rejectUnauthorized: false,
+          },
         },
       }),
     }),
