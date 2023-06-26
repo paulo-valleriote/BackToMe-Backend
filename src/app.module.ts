@@ -27,10 +27,8 @@ import { MailModule } from '@infra/http/controllers/mail/mail.module';
     MailerModule.forRootAsync({
       useFactory: () => ({
         defaults: {
-          from: 'Equipe BackToMe',
+          From: '<Equipe BackToMe>',
         },
-        catch: (err) => console.log(err),
-        finally: () => console.log('email has been sent'),
         transport: {
           host: env.MAILER_HOST,
           port: Number(env.MAILER_PORT),
