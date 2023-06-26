@@ -14,6 +14,11 @@ import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { EmailValidationResponseDTO } from '@infra/http/dtos/User/emailValidationResponse.dto';
 import { z } from 'zod';
+<<<<<<< HEAD
+=======
+import { MissingParamError } from '@app/errors/MissingParamError';
+import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
+>>>>>>> 991a79d (merge)
 
 @Injectable()
 export class UserService {
@@ -123,7 +128,7 @@ export class UserService {
     if (!user) {
       return 'Usuário não encontrado';
     }
-    
+
     const updatedPassword = await this.userRepository.updatePassword(
       userId,
       password,
@@ -132,11 +137,15 @@ export class UserService {
     if (!updatedPassword) {
       return 'Erro ao alterar senha!';
     }
-    return "Senha alterada com sucesso!";
+    return 'Senha alterada com sucesso!';
   }
 
+<<<<<<< HEAD
   async validateEmail(email: string): Promise<string> {
 >>>>>>> 23e345a (alterado retorno da change-password)
+=======
+  async validateEmail(email: string): Promise<EmailValidationResponseDTO> {
+>>>>>>> 991a79d (merge)
     const bodySchema = z.string().email({ message: 'E-mail' });
     const sendedEmail = bodySchema.safeParse(email);
 

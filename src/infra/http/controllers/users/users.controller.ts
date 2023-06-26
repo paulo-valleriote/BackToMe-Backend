@@ -47,6 +47,24 @@ export class UsersController {
     const emailIsAvailable = await this.userService.validateEmail(email);
 
     return emailIsAvailable;
+<<<<<<< HEAD
+=======
+  }
+
+  @Post('recovery-password')
+  async passwordRecovery(@Body() passwordRecoveryDTO: PasswordRecoveryDTO) {
+    const verificationLink = await this.userService.passwordRecovery(
+      passwordRecoveryDTO,
+    );
+
+    if (!verificationLink) {
+      throw new InternalServerErrorException(
+        'Ocorreu um erro ao recuperar sua senha',
+      );
+    }
+
+    return { link: verificationLink };
+>>>>>>> 991a79d (merge)
   }
 
   @Put(':id')
@@ -63,6 +81,7 @@ export class UsersController {
 <<<<<<< HEAD
 =======
   }
+<<<<<<< HEAD
 
   @Patch(':id/change-password')
   @HttpCode(201)
@@ -76,4 +95,6 @@ export class UsersController {
   }
 
 
+=======
+>>>>>>> 991a79d (merge)
 }

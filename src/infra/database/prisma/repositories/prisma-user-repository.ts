@@ -12,6 +12,7 @@ import { compareToEncrypted } from '@app/protocols/crypto/compare/compareToEncry
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { FindedUserDTO } from '@infra/http/dtos/User/findedUser.dto';
 import { makeHash } from '@app/protocols/crypto/hash/makeHash';
+import { FindedUserDTO } from '@infra/http/dtos/User/findedUser.dto';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
@@ -113,7 +114,11 @@ export class PrismaUserRepository implements UserRepository {
     return true;
   }
 
+<<<<<<< HEAD
   async findByEmail(email: string): Promise<FindedUserDTO | NotFoundException> {
+=======
+  async findByEmail(email: string): Promise<FindedUserDTO> {
+>>>>>>> 991a79d (merge)
     const databaseResponse = await this.prismaService.user.findUnique({
       where: {
         email,
