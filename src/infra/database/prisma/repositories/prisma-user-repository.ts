@@ -6,6 +6,7 @@ import { UserRepository } from '@app/repositories/User/user';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { compareToEncrypted } from '@app/protocols/crypto/compare/compareToEncrypted';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
+import { makeHash } from '@app/protocols/crypto/hash/makeHash';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
@@ -85,27 +86,25 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async findUserById(userId: string): Promise<any> {
+  async findUserById(id: string): Promise<any> {
     const user = await this.prismaService.user.findFirst({
-      where: { id: userId },
+      where: { id },
     });
 
-    if (!user) {
-      throw new BadRequestException('Usuário não encontrado');
-    }
+    if (!user) throw new BadRequestException('Usuário não encontrado');
 
     return user;
   }
 
-  async updatePassword(userId: string, newPassword: string): Promise<User> {
-    const user = await this.findUserById(userId);
+  async updatePassword(id: string, newPassword: string): Promise<boolean> {
+    const encryptedPassword = makeHash(newPassword);
 
-    this.prismaService.user.update({
-      where: { id: userId },
-      data: { password: newPassword },
+    const userUpdated = this.prismaService.user.update({
+      where: { id },
+      data: { password: encryptedPassword },
     });
-
-    return user;
+    if (!userUpdated) return false;
+    return true;
   }
 
   async findByEmail(email: string): Promise<string> {
