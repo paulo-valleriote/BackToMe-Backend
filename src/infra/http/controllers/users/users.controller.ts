@@ -50,21 +50,6 @@ export class UsersController {
     return emailIsAvailable;
   }
 
-  @Post('recovery-password')
-  async passwordRecovery(@Body() passwordRecoveryDTO: PasswordRecoveryDTO) {
-    const verificationLink = await this.userService.passwordRecovery(
-      passwordRecoveryDTO,
-    );
-
-    if (!verificationLink) {
-      throw new InternalServerErrorException(
-        'Ocorreu um erro ao recuperar sua senha',
-      );
-    }
-
-    return { link: verificationLink };
-  }
-
   @Put(':id')
   async edit(@Body() editUserDTO: EditUserDTO, @Param('id') id: string) {
     await this.userService.edit(id, editUserDTO);
