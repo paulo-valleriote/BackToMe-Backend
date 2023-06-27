@@ -42,7 +42,7 @@ export class UserService {
     return newUser;
   }
 
-  async login(request: UserLoginDTO): Promise<string | Error> {
+  async login(request: UserLoginDTO): Promise<string> {
     const requestSchema = z.object({
       email: z.string().email().min(6, { message: 'Invalid' }),
       password: z.string(),
@@ -51,7 +51,7 @@ export class UserService {
     const loginProps = requestSchema.safeParse(request);
 
     if (!loginProps.success) {
-      return new BadRequestException('Erro ao realizar login', {
+      throw new BadRequestException('Erro ao realizar login', {
         cause: new BadRequestException(),
         description: loginProps.error.errors[0].message,
       });
@@ -59,8 +59,8 @@ export class UserService {
 
     const userLoginResponse = await this.userRepository.login(loginProps.data);
 
-    if (userLoginResponse instanceof BadRequestException) {
-      return userLoginResponse;
+    if (userLoginResponse instanceof Error) {
+      throw userLoginResponse;
     }
 
     return userLoginResponse;

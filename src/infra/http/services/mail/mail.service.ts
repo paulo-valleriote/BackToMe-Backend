@@ -1,3 +1,4 @@
+import { recoveryPasswordTemplate } from '@app/email-templates/recovery-password-template';
 import { PasswordRecoveryMailDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
 import { MailerService } from '@nestjs-modules/mailer';
 import {
@@ -20,7 +21,7 @@ export class MailProcessorService {
       to: job.data.email,
       subject: 'Redefinição de senha',
       date: new Date(),
-      html: `Olá! Nós sentimos sua falta, <a href="${job.data.recoveryLink}">clique aqui</a> para redefinir sua senha\n\nBem vindo(a) de volta!`,
+      html: recoveryPasswordTemplate(job.data.recoveryLink),
     });
   }
 
