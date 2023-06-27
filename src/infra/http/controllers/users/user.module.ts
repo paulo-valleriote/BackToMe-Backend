@@ -12,6 +12,7 @@ import { CpfValidator } from '@app/protocols/cpf/cpfValidator';
 import { EmailAlreadyExistsMiddleware } from '@infra/http/middlewares/users/emailAlreadyExists';
 import { CpfAlreadyInUseMiddleware } from '@infra/http/middlewares/users/cpfAlreadyInUse';
 import { PrismaService } from '@infra/database/prisma/prisma.service';
+import { ValidateToken } from '@infra/http/middlewares/users/validateToken';
 
 @Module({
   imports: [UsersDatabaseModule],
@@ -24,6 +25,11 @@ export class UsersModule implements NestModule {
       .apply(EmailAlreadyExistsMiddleware)
       .forRoutes({ path: '/users/registered', method: RequestMethod.POST })
       .apply(CpfAlreadyInUseMiddleware)
-      .forRoutes({ path: '/users/registered', method: RequestMethod.POST });
+      .forRoutes({ path: '/users/registered', method: RequestMethod.POST })
+      .apply(ValidateToken)
+      .forRoutes(
+        { path: '/users/*', method: RequestMethod.PUT },
+        { path: '/users/*', method: RequestMethod.PATCH },
+      );
   }
 }
