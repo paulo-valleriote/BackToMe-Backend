@@ -7,7 +7,6 @@ import {
   Post,
   Put,
   Patch,
-  InternalServerErrorException,
 } from '@nestjs/common';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 import { UserService } from '@infra/http/services/users/users.service';
@@ -15,7 +14,6 @@ import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { MissingParamError } from '@app/errors/MissingParamError';
-import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
 import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
 
 @Controller('users')
