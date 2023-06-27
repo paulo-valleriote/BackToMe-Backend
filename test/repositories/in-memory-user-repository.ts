@@ -1,8 +1,9 @@
 import { UserRepository } from '@app/repositories/User/user';
 import { User } from '@domain/User/User';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
+import { FindedUserDTO } from '@infra/http/dtos/User/findedUser.dto';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 export class inMemoryUserRepository implements UserRepository {
   public users: User[] = [];
@@ -72,7 +73,7 @@ export class inMemoryUserRepository implements UserRepository {
     return this.users[userId];
   }
 
-  async findByEmail(email: string): Promise<string> {
+  async findByEmail(email: string): Promise<FindedUserDTO | NotFoundException> {
     const userIndex = this.users.findIndex(
       (user) => user.props.email === email,
     );
@@ -81,8 +82,11 @@ export class inMemoryUserRepository implements UserRepository {
       throw new Error('User not found');
     }
 
-    const id = this.users[userIndex].props.email;
+    const user = this.users[userIndex].props;
 
-    return id;
+    return {
+      id: 'any',
+      ...user,
+    };
   }
 }
