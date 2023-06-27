@@ -115,7 +115,7 @@ export class UserService {
     const { password } = request;
 
     if (!userId) {
-      throw new BadRequestException('Identificação de usuário inválida');
+      throw new BadRequestException('Identificação de usuário inválida!');
     }
 
     const user = await this.userRepository.findUserById(userId);
@@ -133,7 +133,7 @@ export class UserService {
       return 'Senha alterada com sucesso!';
     }
 
-    throw new BadRequestException('Erro ao alterar senha');
+    throw new BadRequestException('Erro ao alterar senha!');
   }
 
   async validateEmail(email: string): Promise<string> {

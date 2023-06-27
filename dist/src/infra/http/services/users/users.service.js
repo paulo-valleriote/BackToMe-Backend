@@ -84,7 +84,7 @@ let UserService = exports.UserService = class UserService {
     async resetPassword(userId, request) {
         const { password } = request;
         if (!userId) {
-            throw new common_1.BadRequestException('Identificação de usuário inválida');
+            throw new common_1.BadRequestException('Identificação de usuário inválida!');
         }
         const user = await this.userRepository.findUserById(userId);
         if (!user) {
@@ -94,7 +94,7 @@ let UserService = exports.UserService = class UserService {
         if (updatedPassword) {
             return 'Senha alterada com sucesso!';
         }
-        throw new common_1.BadRequestException('Erro ao alterar senha');
+        throw new common_1.BadRequestException('Erro ao alterar senha!');
     }
     async validateEmail(email) {
         const bodySchema = zod_1.z.string().email({ message: 'E-mail' });
