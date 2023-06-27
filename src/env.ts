@@ -23,5 +23,6 @@ export default {
   MAILER_PORT: process.env.MAILER_PORT as string,
   MAILER_USER: process.env.MAILER_USER as string,
   MAILER_PASS: process.env.MAILER_PASS as string,
+  MAILER_SENDER: process.env.MAILER_SENDER as string,
   FRONTEND_URL: process.env.FRONTEND_URL as string,
 };

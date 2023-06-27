@@ -16,7 +16,6 @@ const User_1 = require("../../../../domain/User/User");
 const cpfValidator_1 = require("../../../../app/protocols/cpf/cpfValidator");
 const phoneValidator_1 = require("../../../../app/protocols/phone/phoneValidator");
 const InvalidParamError_1 = require("../../../../app/errors/InvalidParamError");
-const MissingParamError_1 = require("../../../../app/errors/MissingParamError");
 const zod_1 = require("zod");
 let UserService = exports.UserService = class UserService {
     constructor(userRepository, phoneValidator, cpfValidator) {
@@ -103,25 +102,16 @@ let UserService = exports.UserService = class UserService {
             throw new InvalidParamError_1.InvalidParamError(sendedEmail.error.message);
         }
         const emailIsValid = await this.userRepository.findByEmail(sendedEmail.data);
-        if (emailIsValid) {
-            return 'Já existe um usuário cadastrado com este E-mail';
+        if (emailIsValid instanceof common_1.NotFoundException) {
+            return {
+                isAvailable: true,
+                message: 'Nenhum usuário está cadastrado com este e-mail',
+            };
         }
-        throw new common_1.InternalServerErrorException('Algo deu errado ao validar este E-mail');
-    }
-    async passwordRecovery(request) {
-        const bodySchema = zod_1.z.object({
-            email: zod_1.z.string().email({ message: 'E-mail' }),
-            cpf: zod_1.z.string(),
-        });
-        const requestBody = bodySchema.safeParse(request);
-        if (!requestBody.success) {
-            if (requestBody.error.message === 'E-mail') {
-                throw new InvalidParamError_1.InvalidParamError('E-mail');
-            }
-            throw new MissingParamError_1.MissingParamError(`${requestBody.error.errors[0].path[0]}`);
-        }
-        const userId = await this.userRepository.findByEmail(requestBody.data.email);
-        return `${process.env.FRONTEND_URL}/${userId}`;
+        return {
+            isAvailable: false,
+            message: 'Já existe um usuário cadastrado com este e-mail',
+        };
     }
 };
 exports.UserService = UserService = __decorate([

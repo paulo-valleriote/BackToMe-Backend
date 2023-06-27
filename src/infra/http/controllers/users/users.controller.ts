@@ -7,7 +7,6 @@ import {
   Post,
   Put,
   Patch,
-  InternalServerErrorException,
 } from '@nestjs/common';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 import { UserService } from '@infra/http/services/users/users.service';
@@ -15,8 +14,8 @@ import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { MissingParamError } from '@app/errors/MissingParamError';
-import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
 import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
+
 @Controller('users')
 export class UsersController {
   constructor(private userService: UserService) {}
@@ -44,24 +43,9 @@ export class UsersController {
       throw new MissingParamError('email');
     }
 
-    const emailIsValid = await this.userService.validateEmail(email);
+    const emailIsAvailable = await this.userService.validateEmail(email);
 
-    return { email: emailIsValid };
-  }
-
-  @Post('recovery-password')
-  async passwordRecovery(@Body() passwordRecoveryDTO: PasswordRecoveryDTO) {
-    const verificationLink = await this.userService.passwordRecovery(
-      passwordRecoveryDTO,
-    );
-
-    if (!verificationLink) {
-      throw new InternalServerErrorException(
-        'Ocorreu um erro ao recuperar sua senha',
-      );
-    }
-
-    return { link: verificationLink };
+    return emailIsAvailable;
   }
 
   @Put(':id')
@@ -73,8 +57,8 @@ export class UsersController {
   async editPassword(
     @Param('id') id: string,
     @Body() request: EditPasswordDTO,
-  ): Promise<string |void> {
-     await this.userService.editPassword(id, request);
+  ): Promise<string | void> {
+    await this.userService.editPassword(id, request);
   }
 
   @Patch(':id/change-password')
@@ -83,6 +67,7 @@ export class UsersController {
     @Param('id') id: string,
     @Body() request: ResetPasswordDTO,
   ): Promise<string | Error> {
-    return await this.userService.resetPassword(id, request);
+    const resetedPassword = await this.userService.resetPassword(id, request);
+    return resetedPassword;
   }
 }

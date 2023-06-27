@@ -1,4 +1,10 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+} from '@nestjs/common';
 import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
 import { InvalidParamError } from '@app/errors/InvalidParamError';
 import { MissingParamError } from '@app/errors/MissingParamError';
@@ -15,7 +21,7 @@ export class MailController {
     @InjectQueue('mail') private emailQueue: Queue,
   ) {}
 
-  @Post('users/recoverypassword')
+  @Post('users/recovery-password')
   @HttpCode(204)
   async sendMail(
     @Body() PasswordRecoveryDto: PasswordRecoveryDTO,
@@ -35,10 +41,18 @@ export class MailController {
       throw new MissingParamError(`${requestBody.error.errors[0].path[0]}`);
     }
 
-    const userId = await this.userRepository.findByEmail(
-      requestBody.data.email,
-    );
-    const recoveryLink = `${env.FRONTEND_URL}/${userId}`;
+    const user = await this.userRepository.findByEmail(requestBody.data.email);
+
+    if (user instanceof Error) {
+      throw user;
+    }
+
+    if (user.cpf !== requestBody.data.cpf) {
+      throw new BadRequestException(
+        'Requisição inválida, confira os dados fornecidos',
+      );
+    }
+    const recoveryLink = `${env.FRONTEND_URL}/${user.id}`;
     this.emailQueue.add('mail-job', {
       email: requestBody.data.email,
       recoveryLink,

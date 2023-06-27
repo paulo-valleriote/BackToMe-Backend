@@ -1,7 +1,7 @@
 import {
   BadRequestException,
   Injectable,
-  InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { UserRepository } from '@app/repositories/User/user';
 import { User } from '@domain/User/User';
@@ -13,10 +13,12 @@ import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
 import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
+import { EmailValidationResponseDTO } from '@infra/http/dtos/User/emailValidationResponse.dto';
+
 import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
 import { MissingParamError } from '@app/errors/MissingParamError';
 import { z } from 'zod';
-import env from 'src/env';
+
 @Injectable()
 export class UserService {
   constructor(
@@ -136,7 +138,7 @@ export class UserService {
     throw new BadRequestException('Erro ao alterar senha!');
   }
 
-  async validateEmail(email: string): Promise<string> {
+  async validateEmail(email: string): Promise<EmailValidationResponseDTO> {
     const bodySchema = z.string().email({ message: 'E-mail' });
     const sendedEmail = bodySchema.safeParse(email);
 
@@ -148,35 +150,16 @@ export class UserService {
       sendedEmail.data,
     );
 
-    if (emailIsValid) {
-      return 'Já existe um usuário cadastrado com este E-mail';
+    if (emailIsValid instanceof NotFoundException) {
+      return {
+        isAvailable: true,
+        message: 'Nenhum usuário está cadastrado com este e-mail',
+      };
     }
 
-    throw new InternalServerErrorException(
-      'Algo deu errado ao validar este E-mail',
-    );
-  }
-
-  async passwordRecovery(request: PasswordRecoveryDTO): Promise<string> {
-    const bodySchema = z.object({
-      email: z.string().email({ message: 'E-mail' }),
-      cpf: z.string(),
-    });
-
-    const requestBody = bodySchema.safeParse(request);
-
-    if (!requestBody.success) {
-      if (requestBody.error.message === 'E-mail') {
-        throw new InvalidParamError('E-mail');
-      }
-
-      throw new MissingParamError(`${requestBody.error.errors[0].path[0]}`);
-    }
-
-    const userId = await this.userRepository.findByEmail(
-      requestBody.data.email,
-    );
-
-    return `${process.env.FRONTEND_URL}/${userId}`;
+    return {
+      isAvailable: false,
+      message: 'Já existe um usuário cadastrado com este e-mail',
+    };
   }
 }

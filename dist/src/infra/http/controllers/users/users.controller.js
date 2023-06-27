@@ -34,15 +34,8 @@ let UsersController = exports.UsersController = class UsersController {
         if (!email) {
             throw new MissingParamError_1.MissingParamError('email');
         }
-        const emailIsValid = await this.userService.validateEmail(email);
-        return { email: emailIsValid };
-    }
-    async passwordRecovery(passwordRecoveryDTO) {
-        const verificationLink = await this.userService.passwordRecovery(passwordRecoveryDTO);
-        if (!verificationLink) {
-            throw new common_1.InternalServerErrorException('Ocorreu um erro ao recuperar sua senha');
-        }
-        return { link: verificationLink };
+        const emailIsAvailable = await this.userService.validateEmail(email);
+        return emailIsAvailable;
     }
     async edit(editUserDTO, id) {
         await this.userService.edit(id, editUserDTO);
@@ -51,7 +44,8 @@ let UsersController = exports.UsersController = class UsersController {
         await this.userService.editPassword(id, request);
     }
     async resetPassword(id, request) {
-        return await this.userService.resetPassword(id, request);
+        const resetedPassword = await this.userService.resetPassword(id, request);
+        return resetedPassword;
     }
 };
 __decorate([
@@ -76,13 +70,6 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "validateEmail", null);
-__decorate([
-    (0, common_1.Post)('recovery-password'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], UsersController.prototype, "passwordRecovery", null);
 __decorate([
     (0, common_1.Put)(':id'),
     __param(0, (0, common_1.Body)()),
