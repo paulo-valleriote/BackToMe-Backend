@@ -57,8 +57,8 @@ export class UsersController {
   async editPassword(
     @Param('id') id: string,
     @Body() request: EditPasswordDTO,
-  ): Promise<any> {
-    return await this.userService.editPassword(id, request);
+  ): Promise<string | void> {
+    await this.userService.editPassword(id, request);
   }
 
   @Patch(':id/change-password')
@@ -66,7 +66,8 @@ export class UsersController {
   async resetPassword(
     @Param('id') id: string,
     @Body() request: ResetPasswordDTO,
-  ): Promise<any> {
-    return await this.userService.resetPassword(id, request);
+  ): Promise<string | Error> {
+    const resetedPassword = await this.userService.resetPassword(id, request);
+    return resetedPassword;
   }
 }

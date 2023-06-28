@@ -85,6 +85,7 @@ export class UserService {
     if (!userId) {
       throw new BadRequestException('Identificação de usuário inválida');
     }
+
     const { currentPassword, newPassword } = request;
 
     const user = await this.userRepository.findUserById(userId);
@@ -106,7 +107,7 @@ export class UserService {
       return 'Senha alterada com sucesso!';
     }
 
-    return 'Senha não foi alterada!';
+    throw new BadRequestException('Erro ao alterar senha');
   }
 
   async resetPassword(
@@ -116,13 +117,13 @@ export class UserService {
     const { password } = request;
 
     if (!userId) {
-      return 'Identificação de usuário inválida';
+      throw new BadRequestException('Identificação de usuário inválida!');
     }
 
     const user = await this.userRepository.findUserById(userId);
 
     if (!user) {
-      return 'Usuário não encontrado';
+      throw new BadRequestException('Usuário não encontrado');
     }
 
     const updatedPassword = await this.userRepository.updatePassword(
@@ -130,11 +131,11 @@ export class UserService {
       password,
     );
 
-    if (!updatedPassword) {
-      return 'Erro ao alterar senha!';
+    if (updatedPassword) {
+      return 'Senha alterada com sucesso!';
     }
 
-    return 'Senha alterada com sucesso!';
+    throw new BadRequestException('Erro ao alterar senha!');
   }
 
   async validateEmail(email: string): Promise<EmailValidationResponseDTO> {
