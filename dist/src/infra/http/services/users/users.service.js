@@ -42,14 +42,14 @@ let UserService = exports.UserService = class UserService {
         });
         const loginProps = requestSchema.safeParse(request);
         if (!loginProps.success) {
-            return new common_1.BadRequestException('Erro ao realizar login', {
+            throw new common_1.BadRequestException('Erro ao realizar login', {
                 cause: new common_1.BadRequestException(),
                 description: loginProps.error.errors[0].message,
             });
         }
         const userLoginResponse = await this.userRepository.login(loginProps.data);
-        if (userLoginResponse instanceof common_1.BadRequestException) {
-            return userLoginResponse;
+        if (userLoginResponse instanceof Error) {
+            throw userLoginResponse;
         }
         return userLoginResponse;
     }

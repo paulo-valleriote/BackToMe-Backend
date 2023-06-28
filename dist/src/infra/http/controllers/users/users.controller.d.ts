@@ -10,7 +10,7 @@ export declare class UsersController {
     register(registerUserDTO: RegisterUserDTO): Promise<{
         message: string;
     }>;
-    login(userLoginDTO: UserLoginDTO): Promise<string | Error>;
+    login(userLoginDTO: UserLoginDTO): Promise<string>;
     validateEmail({ email }: {
         email: string;
     }): Promise<import("../../dtos/User/emailValidationResponse.dto").EmailValidationResponseDTO>;
