@@ -27,11 +27,11 @@ export class MailProcessorService {
 
   @OnQueueActive()
   logEmailBeeingSent() {
-    console.log('O E-mail está sendo enviado');
+    return 'O E-mail está sendo enviado';
   }
 
   @OnQueueCompleted()
   logEmailSended() {
-    console.log('O E-mail foi enviado!');
+    return 'O E-mail foi enviado!';
   }
 }
