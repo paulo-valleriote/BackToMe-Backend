@@ -8,16 +8,31 @@ datasource db {
 }
 
 model User {
-  id              String            @id @default(uuid())
-  name            String
-  email           String            @unique
-  cpf             String
-  phone           String
-  password        String
-  address         Address?
-  AnimalFound     AnimalFound[]
-  LostAnimal      LostAnimal[]
-  AvailableAnimal AvailableAnimal[]
+  id         String  @id @default(uuid())
+  name       String
+  email      String  @unique
+  cpf        String
+  phone      String
+  password   String
+  isVerified Boolean @default(false)
+
+  address          Address?
+  animalsFound     AnimalFound[]
+  lostAnimals      LostAnimal[]
+  availableAnimals AvailableAnimal[]
+  sendedMessages   Message[]         @relation(name: "sendMessages")
+  receivedMessages Message[]         @relation(name: "receivedMessages")
+}
+
+model Message {
+  id       String @id @default(uuid())
+  title    String
+  content  String
+  senderId String
+
+  receiverId String
+  sender     User?  @relation(fields: [senderId], references: [id], name: "sendMessages")
+  receiver   User?  @relation(fields: [receiverId], references: [id], name: "receivedMessages")
 }
 
 model Address {
