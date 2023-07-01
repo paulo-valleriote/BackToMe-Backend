@@ -14,9 +14,6 @@ import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
 import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { EmailValidationResponseDTO } from '@infra/http/dtos/User/emailValidationResponse.dto';
-
-import { PasswordRecoveryDTO } from '@infra/http/dtos/User/passwordRecovery.dto';
-import { MissingParamError } from '@app/errors/MissingParamError';
 import { z } from 'zod';
 
 @Injectable()
