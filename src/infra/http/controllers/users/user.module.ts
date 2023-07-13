@@ -27,6 +27,10 @@ export class UsersModule implements NestModule {
       .apply(CpfAlreadyInUseMiddleware)
       .forRoutes({ path: '/users/registered', method: RequestMethod.POST })
       .apply(ValidateToken)
+      .exclude({
+        path: '/users/:id/change-password',
+        method: RequestMethod.PATCH,
+      })
       .forRoutes(
         { path: '/users/*', method: RequestMethod.PUT },
         { path: '/users/*', method: RequestMethod.PATCH },
