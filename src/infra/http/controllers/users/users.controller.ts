@@ -16,7 +16,7 @@ import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { MissingParamError } from '@app/errors/MissingParamError';
 import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
 
-@Controller('users')
+@Controller('users')z
 export class UsersController {
   constructor(private userService: UserService) {}
 
