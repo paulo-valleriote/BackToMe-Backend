@@ -12,6 +12,7 @@ model User {
   name       String
   email      String  @unique
   cpf        String
+  age        String?
   phone      String
   password   String
   isVerified Boolean @default(false)
@@ -39,6 +40,7 @@ model Address {
   id         String  @id @default(uuid())
   cep        String
   complement String?
+  number     String?
   userId     String? @unique
   user       User?   @relation(fields: [userId], references: [id])
 }
@@ -49,7 +51,7 @@ model AnimalFound {
   found_location              String
   species                     String
   race                        String
-  age                         String
+  age                         String 
   color                       String
   size                        String
   distinctive_characteristics String
@@ -82,4 +84,12 @@ model AvailableAnimal {
   personality_description     String
   userId                      String
   user                        User?  @relation(fields: [userId], references: [id])
+}
+
+
+model Ongs {
+  id String @id @default(uuid())
+  name String
+  age String
+  text  String
 }

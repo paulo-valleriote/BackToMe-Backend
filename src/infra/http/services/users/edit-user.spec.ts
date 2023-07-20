@@ -29,9 +29,11 @@ describe('Edit user service', () => {
       cpf: '11111111111',
       password: 'any_password',
       phone: 'any_phone',
+      age:'any_age',
       address: {
         cep: 'any_cep',
         complement: 'any_complement',
+        number: 'any_number'
       },
     });
 

@@ -7,6 +7,8 @@ import {
   Post,
   Put,
   Patch,
+  Get,
+  Delete
 } from '@nestjs/common';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 import { UserService } from '@infra/http/services/users/users.service';
@@ -16,7 +18,7 @@ import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { MissingParamError } from '@app/errors/MissingParamError';
 import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
 
-@Controller('users')z
+@Controller('users')
 export class UsersController {
   constructor(private userService: UserService) {}
 
@@ -47,6 +49,17 @@ export class UsersController {
 
     return emailIsAvailable;
   }
+  
+  @Get(':id')
+  async findUserById(@Param('id') id:string){
+  const user = await this.userService.findUsers(id)
+  return user
+}
+  @Delete(':id')
+  async deleteUserById(@Param('id') id:string){
+   await this.userService.deleteUser(id)
+  return "Usuario deletado!"
+}
 
   @Put(':id')
   async edit(@Body() editUserDTO: EditUserDTO, @Param('id') id: string) {

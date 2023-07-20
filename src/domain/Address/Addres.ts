@@ -3,7 +3,8 @@ import { z } from 'zod';
 
 interface AddressProps {
   cep: string;
-  complement: string;
+  complement?: string;
+  number?: string
 }
 
 interface NewAddress {
@@ -50,6 +51,7 @@ export class Address {
     const addressSchema = z.object({
       cep: z.string(),
       complement: z.string(),
+      number:z.string()
     });
 
     const userIsValid = addressSchema.safeParse(params);

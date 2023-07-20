@@ -15,7 +15,8 @@ interface UserCreationProps {
 interface UserProps extends UserCreationProps {
   address?: {
     cep: string;
-    complement: string;
+    complement?: string;
+    number?:string
   };
 }
 

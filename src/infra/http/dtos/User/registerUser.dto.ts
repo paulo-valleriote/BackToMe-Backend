@@ -6,6 +6,7 @@ export interface RegisterUserDTO {
   password: string;
   address?: {
     cep: string;
-    complement: string;
+    complement?: string;
+    number?:string;
   };
 }

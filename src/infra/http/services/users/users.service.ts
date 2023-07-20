@@ -75,6 +75,18 @@ export class UserService {
     }
   }
 
+  async findUsers(userId:string){
+    if (!userId) {
+      throw new BadRequestException('Identificação de usuário inválida');
+    }
+    const user = await this.userRepository.findUserById(userId);
+    if (!('password' in user)) {
+      throw new BadRequestException('Usuário não encontrado');
+    }
+    return user
+
+  }
+
   async editPassword(
     userId: string,
     request: EditPasswordDTO,
@@ -159,4 +171,18 @@ export class UserService {
       message: 'Já existe um usuário cadastrado com este e-mail',
     };
   }
+  async deleteUser(id: string): Promise<void> {
+    // Check if the user exists before deleting
+    const user = await this.userRepository.findUserById(id);
+
+    // If the user is not found, throw a NotFoundException
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Delete the user from the repository
+    await this.userRepository.deleteUser(id);
+}
+
+
 }

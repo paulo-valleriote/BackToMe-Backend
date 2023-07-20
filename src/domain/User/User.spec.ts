@@ -16,6 +16,7 @@ describe('User', () => {
         cpf: '11111111111',
         phone: '11 11111-1111',
         password: 'any_password',
+        age:'any_age',
         address: {
           cep: 'any_cep',
           complement: 'any_complement',
