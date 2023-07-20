@@ -88,8 +88,11 @@ model AvailableAnimal {
 
 
 model Ongs {
-  id String @id @default(uuid())
-  name String
-  age String
-  text  String
+  id          String  @id @default(uuid())
+  name        String
+  address     String
+  contact     String
+  website     String?
+  description String?
+  logo        String?
 }

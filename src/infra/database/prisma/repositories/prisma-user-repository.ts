@@ -104,7 +104,6 @@ export class PrismaUserRepository implements UserRepository {
     const address = await this.prismaService.address.findFirst({
       where: { userId: id },
     });
-    console.log({ ...user, address });
     return { ...user, address };
   }
 
