@@ -16,6 +16,7 @@ tags:
 - name: Usuários
 - name: Animais Perdidos
 - name: Animais para Adoção
+- name: Ongs
 
 paths:
   /validate/email:
@@ -156,6 +157,55 @@ paths:
           description: Usuário cadastrado com sucesso!
         "400":
           description: Erro interno!
+
+  /users/{userId}/find:
+    get:
+      tags:
+      - Usuários
+      summary: Buscar dados do usuário
+      description: Rota para listar dados do usuário.
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        description: ID do usuário
+        schema:
+          type: integer
+          format: int64
+          example: 123
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserList"
+            examples:
+              Example Json:
+                value:
+                  name: "Nome do usuário"
+                  email: "email@example.com"
+                  cpf: "12345678900"
+                  phone: "123456789"
+                  password: "senha123"
+                  address:
+                    cep: "25264253"
+                    complement: "502"
+              Exemple Type:
+                value:
+                  name: "string"
+                  email: "string"
+                  cpf: "string"
+                  phone: "string"
+                  password: "string"
+                  address:
+                    cep: "string"
+                    complement: "string"
+      responses:
+        "200":
+          description: Usuário cadastrado com sucesso!
+        "400":
+          description: Erro interno!
+
   /users/recovery-password:
     post:
       tags:
@@ -487,7 +537,7 @@ paths:
                     user_id: "id usuario"
         "400":
           description: Erro ao buscar animais para adoção
-  /lost-animal/find:
+  /lost-animals/find:
     get:
       tags:
       - Animais Perdidos
@@ -551,7 +601,111 @@ paths:
                     user_id: "id usuario"
         "400":
           description: Erro ao buscar animais perdido
+  /ongs:
+    get:
+      tags:
+        - ONGs
+      summary: Listar todas as ONGs
+      description: Rota para listar todas as Organizações Não Governamentais (ONGs).
+      responses:
+        "200":
+          description: Lista de ONGs encontrada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ongs"
 
+    post:
+      tags:
+        - ONGs
+      summary: Cadastrar nova ONG
+      description: Rota para cadastrar uma nova Organização Não Governamental (ONG).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Ongs"
+      responses:
+        "200":
+          description: ONG cadastrada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ongs"
+        "400":
+          description: Erro ao cadastrar ONG
+
+  /ongs/{id}:
+    get:
+      tags:
+        - ONGs
+      summary: Buscar ONG pelo ID
+      description: Rota para buscar uma Organização Não Governamental (ONG) pelo ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID da ONG a ser buscada
+      responses:
+        "200":
+          description: ONG encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ongs"
+        "404":
+          description: ONG não encontrada
+
+    put:
+      tags:
+        - ONGs
+      summary: Editar ONG pelo ID
+      description: Rota para editar uma Organização Não Governamental (ONG) pelo ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID da ONG a ser editada
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Ongs"
+      responses:
+        "200":
+          description: ONG editada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ongs"
+        "404":
+          description: ONG não encontrada
+
+    delete:
+      tags:
+        - ONGs
+      summary: Remover ONG pelo ID
+      description: Rota para remover uma Organização Não Governamental (ONG) pelo ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID da ONG a ser removida
+      responses:
+        "204":
+          description: ONG removida com sucesso
+        "404":
+          description: ONG não encontrada
 components:
   schemas:
     UserRegistered:
@@ -584,6 +738,27 @@ components:
           type: string
 
     UserEdited:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        cpf:
+          type: string
+        phone:
+          type: string
+        password:
+          type: string
+        address:
+          type: object
+          properties:
+            cep:
+              type: string
+            complement:
+              type: string
+
+    UserList:
       type: object
       properties:
         name:
@@ -732,4 +907,23 @@ components:
         informacoes_personalidade:
           type: string
         user_id:
+          type: string
+
+    Ongs:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        address:
+          type: string
+        contact:
+          type: string
+        website:
+          type: string
+        description:
+          type: string
+        logo:
           type: string

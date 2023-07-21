@@ -49,8 +49,8 @@ export class UsersController {
 
     return emailIsAvailable;
   }
-  
-  @Get(':id')
+
+  @Get(':id/find')
   async findUserById(@Param('id') id:string){
   const user = await this.userService.findUsers(id)
   return user
