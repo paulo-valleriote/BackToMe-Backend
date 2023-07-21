@@ -5,6 +5,7 @@ import { FoundAnimalsModule } from './controllers/animals/found-animals.module';
 import { AdoptionAnimalsModule } from './controllers/animals/adoption-animals.module';
 import { ImagesModule } from './controllers/images/images.module';
 import { MailQueueModule } from './controllers/mail/mail.module';
+import { OngsModule } from './controllers/ong\'s/ong.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { MailQueueModule } from './controllers/mail/mail.module';
     MailQueueModule,
     AdoptionAnimalsModule,
     ImagesModule,
+    OngsModule
   ],
 })
 export class HttpModule {}

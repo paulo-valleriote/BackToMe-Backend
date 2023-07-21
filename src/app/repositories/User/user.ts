@@ -13,9 +13,10 @@ export abstract class UserRepository {
 
   abstract findUserById(userId: string): Promise<User>;
 
-  abstract updatePassword(userId: string, newPassword: string): Promise<boolean>;
+  abstract updatePassword(userId: string, newPassword: string): Promise<User |boolean | Error>;
 
   abstract findByEmail(
     email: string,
   ): Promise<FindedUserDTO | NotFoundException>;
+  abstract deleteUser(userId: string): Promise<void>
 }

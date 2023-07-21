@@ -36,6 +36,7 @@ describe('Address', () => {
       body: {
         cep: 'any_cep',
         complement: 'any_complement',
+        number:'any_number'
       },
     };
     const sut = makeSut(httpRequest);

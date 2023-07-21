@@ -53,6 +53,15 @@ export class inMemoryUserRepository implements UserRepository {
     return true;
   }
 
+  async findUser(userId: string): Promise<User> {
+    const user = this.users[userId];
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    return user;
+  }
   async findUserById(userId: string): Promise<User> {
     const user = this.users[userId];
 
@@ -62,8 +71,9 @@ export class inMemoryUserRepository implements UserRepository {
 
     return user;
   }
+  
 
-  async updatePassword(userId: string, newPassword: string): Promise<User> {
+  async updatePassword(userId: string, newPassword: string): Promise<User | boolean> {
     if (!this.users[userId]) {
       throw new Error('User not found');
     }
@@ -88,5 +98,15 @@ export class inMemoryUserRepository implements UserRepository {
       id: 'any',
       ...user,
     };
+  }
+  async deleteUser(id: string): Promise<void> {
+    const userIndex = this.users.findIndex((user) => user.props.name === id);
+
+    if (userIndex < 0) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Remove the user from the users array
+    this.users.splice(userIndex, 1);
   }
 }

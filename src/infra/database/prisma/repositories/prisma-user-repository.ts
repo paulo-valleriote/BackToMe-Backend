@@ -84,6 +84,7 @@ export class PrismaUserRepository implements UserRepository {
           update: {
             cep: account.address?.cep,
             complement: account.address?.complement,
+            number: account.address?.number,
           },
         },
       },
@@ -100,9 +101,29 @@ export class PrismaUserRepository implements UserRepository {
 
     if (!user) throw new BadRequestException('Usuário não encontrado');
 
-    return user;
+    const address = await this.prismaService.address.findFirst({
+      where: { userId: id },
+    });
+    return { ...user, address };
   }
 
+  async  deleteUser(id: string): Promise<void> {
+    const user = await this.prismaService.user.findUnique({
+      where: { id },
+    });
+  
+    if (!user) {
+      throw new Error('Usuário não encontrado');
+    }
+  
+    await this.prismaService.address.deleteMany({
+      where: { userId: id },
+    });
+  
+    await this.prismaService.user.delete({
+      where: { id },
+    });
+  }
   async updatePassword(id: string, newPassword: string): Promise<boolean> {
     const encryptedPassword = makeHash(newPassword);
 

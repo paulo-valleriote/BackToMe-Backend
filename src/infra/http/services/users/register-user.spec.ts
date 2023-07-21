@@ -31,6 +31,7 @@ describe('User', () => {
       address: {
         cep: 'any_cep',
         complement: 'any_complement',
+        number: 'any_number',
       },
     });
 

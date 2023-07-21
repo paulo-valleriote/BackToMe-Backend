@@ -4,6 +4,8 @@ import { Controller, Get } from '@nestjs/common';
 export class MessageController {
   @Get()
   message() {
-    return 'Bem vindo a api BackToMe';
+    const swaggerLink =
+      'https://app.swaggerhub.com/apis-docs/MAVIROLERO/BackToMe/1.0.0';
+    return `Bem-vindo à API BackToMe! Acesse nossa documentação das rotas: <a href="${swaggerLink}">${swaggerLink}</a>`;
   }
 }
