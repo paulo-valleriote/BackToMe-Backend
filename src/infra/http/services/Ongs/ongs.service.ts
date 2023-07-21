@@ -2,8 +2,7 @@ import { OngsRepository } from '@app/repositories/Ongs/ongs';
 import { Ong } from "@domain/Ong's/Ongs";
 import {
   Injectable,
-  BadRequestException,
-  NotFoundException,
+  
 } from '@nestjs/common';
 
 @Injectable()
