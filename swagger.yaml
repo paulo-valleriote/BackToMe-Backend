@@ -16,7 +16,7 @@ tags:
 - name: Usuários
 - name: Animais Perdidos
 - name: Animais para Adoção
-- name: Ongs
+- name: ONGs
 
 paths:
   /validate/email:
@@ -616,96 +616,9 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Ongs"
-
-    post:
-      tags:
-        - ONGs
-      summary: Cadastrar nova ONG
-      description: Rota para cadastrar uma nova Organização Não Governamental (ONG).
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Ongs"
-      responses:
-        "200":
-          description: ONG cadastrada com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Ongs"
-        "400":
-          description: Erro ao cadastrar ONG
-
-  /ongs/{id}:
-    get:
-      tags:
-        - ONGs
-      summary: Buscar ONG pelo ID
-      description: Rota para buscar uma Organização Não Governamental (ONG) pelo ID.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-          description: ID da ONG a ser buscada
-      responses:
-        "200":
-          description: ONG encontrada
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Ongs"
         "404":
           description: ONG não encontrada
 
-    put:
-      tags:
-        - ONGs
-      summary: Editar ONG pelo ID
-      description: Rota para editar uma Organização Não Governamental (ONG) pelo ID.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-          description: ID da ONG a ser editada
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Ongs"
-      responses:
-        "200":
-          description: ONG editada com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Ongs"
-        "404":
-          description: ONG não encontrada
-
-    delete:
-      tags:
-        - ONGs
-      summary: Remover ONG pelo ID
-      description: Rota para remover uma Organização Não Governamental (ONG) pelo ID.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-          description: ID da ONG a ser removida
-      responses:
-        "204":
-          description: ONG removida com sucesso
-        "404":
-          description: ONG não encontrada
 components:
   schemas:
     UserRegistered:
