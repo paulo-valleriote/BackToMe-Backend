@@ -2,16 +2,17 @@ import { InvalidParamError } from '@app/errors/InvalidParamError';
 import { MissingParamError } from '@app/errors/MissingParamError';
 import { z } from 'zod';
 
-interface OngCreationProps {
-  name: string;
-  address: string;
-  contact: string;
+interface OngProps {
+  name: String;
+  address: String;
+  contact: String;
+  website?: string;
+  description?: string;
+  logo?: string;
 }
 
-interface OngProps extends OngCreationProps {}
-
 interface NewOng {
-  body: OngCreationProps;
+  body: OngProps;
   statusCode: number;
 }
 
@@ -24,7 +25,7 @@ interface IsValidMethodReturn {
 export class Ong {
   props: OngProps;
 
-  constructor(props: OngCreationProps) {
+  constructor(props: OngProps) {
     const newOng = this.handle(props);
 
     if (newOng.statusCode >= 300) {
@@ -34,7 +35,7 @@ export class Ong {
     this.props = newOng.body;
   }
 
-  private handle(props: OngCreationProps): NewOng {
+  private handle(props: OngProps): NewOng {
     const { isValid, body, statusCode } = this.isValid(props);
 
     if (!isValid) {
@@ -50,7 +51,7 @@ export class Ong {
     };
   }
 
-  private isValid(params: OngCreationProps): IsValidMethodReturn {
+  private isValid(params: OngProps): IsValidMethodReturn {
     const ongSchema = z.object({
       name: z.string().min(3, { message: 'Invalid' }),
       address: z.string().min(3, { message: 'Invalid' }),
