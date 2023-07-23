@@ -14,7 +14,7 @@ export class inMemoryUserRepository implements UserRepository {
     return 'valid_id';
   }
 
-  async login(account: UserLoginDTO): Promise<string | Error> {
+  async login(account: UserLoginDTO): Promise<User | Error> {
     const userIndex = this.users.findIndex(
       (user) => user.props.email === account.email,
     );
@@ -26,7 +26,7 @@ export class inMemoryUserRepository implements UserRepository {
       return new BadRequestException('E-mail or password are incorrect');
     }
 
-    return 'random_token';
+    return userIndex;
   }
 
   async edit(userId: string, user: EditUserDTO): Promise<void | Error> {
@@ -71,7 +71,7 @@ export class inMemoryUserRepository implements UserRepository {
 
     return user;
   }
-  
+
 
   async updatePassword(userId: string, newPassword: string): Promise<User | boolean> {
     if (!this.users[userId]) {

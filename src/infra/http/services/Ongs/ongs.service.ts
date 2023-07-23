@@ -1,9 +1,6 @@
+import { Injectable } from '@nestjs/common';
 import { OngsRepository } from '@app/repositories/Ongs/ongs';
 import { Ong } from "@domain/Ong's/Ongs";
-import {
-  Injectable,
-  
-} from '@nestjs/common';
 
 @Injectable()
 export class OngsService {

@@ -50,7 +50,7 @@ export class PrismaUserRepository implements UserRepository {
     return id;
   }
 
-  async login(account: UserLoginDTO): Promise<string | Error> {
+  async login(account: UserLoginDTO): Promise<User| Error> {
     const databaseStored = await this.prismaService.user.findUnique({
       where: { email: account.email },
     });
@@ -65,7 +65,7 @@ export class PrismaUserRepository implements UserRepository {
       return new BadRequestException('Email ou senha estão incorretos');
     }
 
-    return sign({ id: databaseStored.id }, process.env.JWT_SECRET as string);
+    return new User(databaseStored);
   }
 
   async edit(userId: string, account: EditUserDTO): Promise<void | Error> {
@@ -111,15 +111,15 @@ export class PrismaUserRepository implements UserRepository {
     const user = await this.prismaService.user.findUnique({
       where: { id },
     });
-  
+
     if (!user) {
       throw new Error('Usuário não encontrado');
     }
-  
+
     await this.prismaService.address.deleteMany({
       where: { userId: id },
     });
-  
+
     await this.prismaService.user.delete({
       where: { id },
     });
