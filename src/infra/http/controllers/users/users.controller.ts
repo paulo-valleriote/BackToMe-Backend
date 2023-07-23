@@ -33,9 +33,9 @@ export class UsersController {
 
   @Post('login')
   async login(@Body() userLoginDTO: UserLoginDTO) {
-    const token = await this.userService.login(userLoginDTO);
-
-    return token;
+    const userData = await this.userService.login(userLoginDTO);
+    console.log(userData)
+    return userData;
   }
 
   @Post('validate/email')
