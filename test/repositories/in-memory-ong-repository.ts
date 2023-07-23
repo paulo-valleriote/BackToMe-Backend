@@ -6,9 +6,9 @@ import { Ongs } from '@prisma/client';
 export class InMemoryOngsRepository implements OngsRepository {
   private ongs: Ongs[] = [];
 
-  async findAllOngs(): Promise<Ongs[]> {
+  async findAllOngs(): Promise<any> {
     return this.ongs;
   }
 }
 
-  
+

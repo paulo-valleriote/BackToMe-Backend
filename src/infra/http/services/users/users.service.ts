@@ -39,7 +39,7 @@ export class UserService {
     return newUser;
   }
 
-  async login(request: UserLoginDTO): Promise<string> {
+  async login(request: UserLoginDTO): Promise<User> {
     const requestSchema = z.object({
       email: z.string().email().min(6, { message: 'Invalid' }),
       password: z.string(),
@@ -60,7 +60,7 @@ export class UserService {
       throw userLoginResponse;
     }
 
-    return userLoginResponse;
+    return new User(userLoginResponse.props);
   }
 
   async edit(userId: string, request: EditUserDTO): Promise<void | Error> {
