@@ -15,6 +15,7 @@ import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
 import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { EmailValidationResponseDTO } from '@infra/http/dtos/User/emailValidationResponse.dto';
 import { z } from 'zod';
+import { sign } from 'jsonwebtoken';
 
 @Injectable()
 export class UserService {
@@ -39,7 +40,7 @@ export class UserService {
     return newUser;
   }
 
-  async login(request: UserLoginDTO): Promise<User> {
+  async login(request: UserLoginDTO): Promise<any> {
     const requestSchema = z.object({
       email: z.string().email().min(6, { message: 'Invalid' }),
       password: z.string(),
@@ -59,8 +60,24 @@ export class UserService {
     if (userLoginResponse instanceof Error) {
       throw userLoginResponse;
     }
+    const user = new User(userLoginResponse.props);
+    function removeSensitiveData(userLoginResponse: any) {
+      const { email, cpf, phone, ...userPropsWithoutSensitiveData } =
+        userLoginResponse.props;
 
-    return new User(userLoginResponse.props);
+      const userWithoutSensitiveData = {
+        ...userPropsWithoutSensitiveData,
+        token: sign(
+          { id: userLoginResponse.id },
+          process.env.JWT_SECRET as string,
+        ),
+      };
+
+      delete userWithoutSensitiveData.password;
+
+      return userWithoutSensitiveData;
+    }
+    return removeSensitiveData(user);
   }
 
   async edit(userId: string, request: EditUserDTO): Promise<void | Error> {
@@ -75,7 +92,7 @@ export class UserService {
     }
   }
 
-  async findUsers(userId:string){
+  async findUsers(userId: string) {
     if (!userId) {
       throw new BadRequestException('Identificação de usuário inválida');
     }
@@ -83,8 +100,7 @@ export class UserService {
     if (!('password' in user)) {
       throw new BadRequestException('Usuário não encontrado');
     }
-    return user
-
+    return user;
   }
 
   async editPassword(
@@ -172,17 +188,12 @@ export class UserService {
     };
   }
   async deleteUser(id: string): Promise<void> {
-    // Check if the user exists before deleting
     const user = await this.userRepository.findUserById(id);
 
-    // If the user is not found, throw a NotFoundException
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    // Delete the user from the repository
     await this.userRepository.deleteUser(id);
-}
-
-
+  }
 }
