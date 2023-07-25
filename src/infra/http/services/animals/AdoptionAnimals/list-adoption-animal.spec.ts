@@ -14,6 +14,7 @@ describe('Adoption Animal', () => {
       age: 'Filhote',
       color: 'any_color',
       size: 'any_size',
+      photo: 'any_number',
       distinctive_characteristics: 'any_characteristic',
       personality_description: 'any_description',
       userId: 'any_id',

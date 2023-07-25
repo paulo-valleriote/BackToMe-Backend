@@ -14,7 +14,7 @@ export class inMemoryUserRepository implements UserRepository {
     return 'valid_id';
   }
 
-  async login(account: UserLoginDTO): Promise<User | Error> {
+  async login(account: UserLoginDTO): Promise<any | Error> {
     const userIndex = this.users.findIndex(
       (user) => user.props.email === account.email,
     );

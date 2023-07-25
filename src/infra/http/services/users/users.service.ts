@@ -80,7 +80,7 @@ export class UserService {
     return removeSensitiveData(user);
   }
 
-  async edit(userId: string, request: EditUserDTO): Promise<void | Error> {
+  async edit(userId: string, request: EditUserDTO): Promise<any| Error> {
     if (!userId) {
       return new BadRequestException('Identificação de usuário inválida');
     }

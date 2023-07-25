@@ -7,6 +7,7 @@ interface AdoptionAnimalProps extends HttpRequest {
     race: string;
     age: string;
     color: string;
+    photo: string;
     size: string;
     distinctive_characteristics: string;
     personality_description: string;
@@ -29,6 +30,7 @@ describe('Lost Animal', () => {
         age: 'any_age',
         color: 'any_color',
         size: 'any_size',
+        photo: 'any_url',
         distinctive_characteristics: 'any_characteristic',
         personality_description: 'any_description',
         userId: 'any_id',
@@ -46,6 +48,7 @@ describe('Lost Animal', () => {
         age: 'Filhote',
         color: 'any_color',
         size: 'any_size',
+        photo: 'any_url',
         distinctive_characteristics: 'any_characteristic',
         personality_description: 'any_description',
         userId: 'any_id',

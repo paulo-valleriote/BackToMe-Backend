@@ -15,6 +15,7 @@ export class PrismaOngRepository implements OngsRepository {
       name: ong.name,
       address: ong.address,
       contact: ong.contact,
+      photo: ong.photo ? ong.photo : "",
       website: ong.website ? ong.website : undefined,
       description: ong.description ? ong.description : undefined,
       logo: ong.logo ? ong.logo : undefined,

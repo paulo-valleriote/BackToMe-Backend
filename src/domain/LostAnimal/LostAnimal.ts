@@ -6,6 +6,7 @@ interface LostAnimalProps extends AnimalProps {
   race: string;
   age: string;
   color: string;
+  photo: string;
   size: string;
   distinctive_characteristics: string;
   date_loss: string;
@@ -24,6 +25,7 @@ export class LostAnimal extends Animal {
         age: z.string({ required_error: 'Idade não foi informada' }),
         color: z.string({ required_error: 'Cor não foi informada' }),
         size: z.string({ required_error: 'Tamanho não foi informado' }),
+        photo: z.string({ required_error: 'Foto não foi informado' }),
         distinctive_characteristics: z.string({
           required_error: 'Características não foram informadas',
         }),
