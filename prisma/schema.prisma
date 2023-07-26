@@ -96,3 +96,8 @@ model Ongs {
   description String?
   logo        String?
 }
+
+model Report {
+   id          String  @id @default(uuid())
+  name        String
+}
