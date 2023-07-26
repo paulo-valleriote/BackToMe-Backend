@@ -8,7 +8,6 @@ interface LostAnimalProps extends HttpRequest {
     age: string;
     color: string;
     size: string;
-    photo: string;
     distinctive_characteristics: string;
     date_loss: string;
     location_loss: string;
@@ -31,7 +30,6 @@ describe('Lost Animal', () => {
         age: 'any_age',
         color: 'any_color',
         size: 'any_size',
-        photo: 'any_url',
         distinctive_characteristics: 'any_characteristic',
         date_loss: 'any_date',
         location_loss: 'any_location',
@@ -50,7 +48,6 @@ describe('Lost Animal', () => {
         age: 'Filhote',
         color: 'any_color',
         size: 'any_size',
-        photo: 'any_url',
         distinctive_characteristics: 'any_characteristic',
         date_loss: 'any_date',
         location_loss: 'any_location',

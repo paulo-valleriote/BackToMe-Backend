@@ -6,7 +6,6 @@ interface AdoptionAnimalProps extends AnimalProps {
   race: string;
   age: string;
   color: string;
-  photo:string
   size: string;
   distinctive_characteristics: string;
   personality_description: string;
@@ -24,7 +23,6 @@ export class AdoptionAnimal extends Animal {
         age: z.string({ required_error: 'Idade não foi informada' }),
         color: z.string({ required_error: 'Cor não foi informada' }),
         size: z.string({ required_error: 'Tamanho não foi informado' }),
-        photo: z.string({ required_error: 'Photo não foi informado' }),
         distinctive_characteristics: z.string({
           required_error: 'Características não foram informadas',
         }),

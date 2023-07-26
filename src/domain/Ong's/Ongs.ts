@@ -6,7 +6,6 @@ interface OngProps {
   name: String;
   address: String;
   contact: String;
-  photo: string
   website?: string;
   description?: string;
   logo?: string;
@@ -57,8 +56,6 @@ export class Ong {
       name: z.string().min(3, { message: 'Invalid' }),
       address: z.string().min(3, { message: 'Invalid' }),
       contact: z.string().min(9, { message: 'Invalid' }),
-      photo: z.string().min(9, { message: 'Invalid' }),
-      
     });
 
     const ongIsValid = ongSchema.safeParse(params);

@@ -17,11 +17,10 @@ describe('User', () => {
         phone: '11 11111-1111',
         password: 'any_password',
         age: 'any_age',
+        photo: 'any_photo',
         address: {
           cep: 'any_cep',
           complement: 'any_complement',
-          number: 'any_number',
-
         },
       },
     };
@@ -37,11 +36,10 @@ describe('User', () => {
         phone: '11 11111-1111',
         password: 'any_password',
         age: 'any_age',
+        photo: 'any_photo',
         address: {
           cep: 'any_cep',
           complement: 'any_complement',
-          number: 'any_number',
-
         },
       },
     };
@@ -57,12 +55,10 @@ describe('User', () => {
         phone: '11 11111-1111',
         password: 'any_password',
         age: 'any_age',
-
+        photo: 'any_photo',
         address: {
           cep: 'any_cep',
           complement: 'any_complement',
-          number: 'any_number',
-
         },
       },
     };
@@ -78,12 +74,10 @@ describe('User', () => {
         cpf: '11111111111',
         password: 'any_password',
         age: 'any_age',
-
+        photo: 'any_photo',
         address: {
           cep: 'any_cep',
           complement: 'any_complement',
-          number: 'any_number',
-
         },
       },
     };
@@ -99,11 +93,10 @@ describe('User', () => {
         cpf: '11111111111',
         phone: '11 11111-1111',
         age: 'any_age',
-
+        photo: 'any_photo',
         address: {
           cep: 'any_cep',
           complement: 'any_complement',
-          number: 'any_number',
         },
       },
     };
@@ -121,7 +114,7 @@ describe('User', () => {
         cpf: '11111111111',
         phone: '11 11111-1111',
         age: 'any_age',
-
+        photo: 'any_photo',
         password: 'any_password',
       },
     };
@@ -141,11 +134,10 @@ describe('User', () => {
         phone: '11 11111-1111',
         password: 'any_password',
         age: 'any_age',
-
+        photo: 'any_photo',
         address: {
           cep: 'any_cep',
           complement: 'any_complement',
-          number: 'any_number',
         },
       },
     };

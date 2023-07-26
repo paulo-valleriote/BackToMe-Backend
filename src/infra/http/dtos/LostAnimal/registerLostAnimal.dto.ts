@@ -3,7 +3,6 @@ export interface RegisterLostAnimalDTO {
   race: string;
   age: string;
   color: string;
-  photo: string
   size: string;
   distinctive_characteristics: string;
   date_loss: string;

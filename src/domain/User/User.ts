@@ -9,13 +9,11 @@ interface UserCreationProps {
   email: string;
   cpf: string;
   phone: string;
-  password:string;
-
+  password: string;
 }
 
 interface UserProps extends UserCreationProps {
-  photo?: string
-  age?:string
+  
   address?: {
     cep: string;
     complement?: string;
@@ -53,7 +51,6 @@ export class User {
 
     this.props = {
       ...newUser.body,
-      photo: "",
       password: makeHash(newUser.body.password),
       address: this.address && this.address.props,
     };

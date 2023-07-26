@@ -29,12 +29,9 @@ describe('User', () => {
       cpf: '11111111111',
       password: 'any_password',
       phone: 'any_phone',
-      photo: 'any_photo',
-      age: 'any_age',
       address: {
         cep: 'any_cep',
         complement: 'any_complement',
-        number: 'any_number'
       },
     });
 
@@ -55,15 +52,14 @@ describe('User', () => {
     const user = await makeSud();
     const password = 'not_valid';
 
-    try {
-      await userRepository.login({
-        email: user.props.email,
-        password,
-      });
-    } catch (error: any) {
-      expect(error).toBeInstanceOf(BadRequestException);
-      expect(error.message).toEqual('E-mail or password are incorrect');
-    }
+    const userLoginResponse = await userRepository.login({
+      email: user.props.email,
+      password,
+    });
+
+    expect(userLoginResponse).toEqual(
+      new BadRequestException('E-mail or password are incorrect'),
+    );
   });
 
   it('should receive a token when user be able to sign in', async () => {

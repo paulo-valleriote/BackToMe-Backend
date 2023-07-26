@@ -64,30 +64,30 @@ export class PrismaUserRepository implements UserRepository {
     ) {
       return new BadRequestException('Email ou senha estão incorretos');
     }
-
-    return { token: sign({ id: databaseStored.id },process.env.JWT_SECRET as string), ...databaseStored };
+    const user = new User(databaseStored);
+    return { password: '', token: sign({ id: databaseStored.id },process.env.JWT_SECRET as string), ...user };
   }
-
 
   async edit(userId: string, account: EditUserDTO): Promise<any | Error> {
     if (!userId) {
       throw new BadRequestException('Identificação inválida');
     }
 
-    const user = await this.prismaService.user.update({
+    const update = await this.prismaService.user.update({
       data: {
         name: account.name,
         email: account.email,
-        password: account.password,
-        photo: account.photo  ?? "url",
+      password:  makeHash(account.password as string),
+
         phone: account.phone,
+        photo: account.photo,
+        age: account.age,
         cpf: account.cpf,
-        age:account.age,
         address: {
           update: {
-            cep: account.address?.cep ,
-            complement: account.address?.complement ??"",
-            number: account.address?.number ??"",
+            cep: account.address?.cep,
+            complement: account.address?.complement,
+            number: account.address?.number,
           },
         },
       },
@@ -95,10 +95,8 @@ export class PrismaUserRepository implements UserRepository {
         id: userId,
       },
     });
-    return user
+    return update
   }
-
-
 
   async findUserById(id: string): Promise<any> {
     const user = await this.prismaService.user.findFirst({

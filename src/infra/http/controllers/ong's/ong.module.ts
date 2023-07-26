@@ -19,7 +19,7 @@ export class OngsModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(ValidateToken)
-      .exclude({ path: '/ongs/*', method: RequestMethod.GET })
+      .exclude({ path: '/ongs/all', method: RequestMethod.GET })
       .forRoutes(OngsController);
   }
 }
