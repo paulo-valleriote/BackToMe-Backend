@@ -64,7 +64,7 @@ export class PrismaUserRepository implements UserRepository {
     ) {
       return new BadRequestException('Email ou senha estão incorretos');
     }
-    const user = new User(databaseStored);
+    const {...user} = new User(databaseStored);
     return { password: '', token: sign({ id: databaseStored.id },process.env.JWT_SECRET as string), ...user };
   }
 
@@ -73,30 +73,52 @@ export class PrismaUserRepository implements UserRepository {
       throw new BadRequestException('Identificação inválida');
     }
 
-    const update = await this.prismaService.user.update({
+    const updatedUser = await this.prismaService.user.update({
       data: {
         name: account.name,
         email: account.email,
-      password:  makeHash(account.password as string),
-
+        password: makeHash(account.password as string),
         phone: account.phone,
         photo: account.photo,
         age: account.age,
         cpf: account.cpf,
-        address: {
-          update: {
-            cep: account.address?.cep,
-            complement: account.address?.complement,
-            number: account.address?.number,
-          },
-        },
       },
       where: {
         id: userId,
       },
     });
-    return update
+    const addressExist = await this.prismaService.address.findFirst({
+      where: {
+        userId: userId,
+      },
+    });
+
+    if (addressExist && account.address){
+        await this.prismaService.address.update({
+          data: {
+            cep: account.address.cep,
+            complement: account.address.complement,
+            number: account.address.number,
+          },
+          where: {
+            userId,
+          },
+        });
+      }
+      if (!addressExist && account.address){
+        await this.prismaService.address.create({
+          data: {
+            cep: account?.address.cep,
+            complement: account?.address.complement,
+            number: account?.address.number,
+            userId
+          },
+        });
+      }
+
+    return updatedUser;
   }
+
 
   async findUserById(id: string): Promise<any> {
     const user = await this.prismaService.user.findFirst({
