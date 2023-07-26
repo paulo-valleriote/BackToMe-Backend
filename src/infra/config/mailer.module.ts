@@ -1,6 +1,6 @@
 import { MailerModule } from '@nestjs-modules/mailer';
 import { Module } from '@nestjs/common';
-import env from 'src/env';
+import env from './../../env';
 
 @Module({
   imports: [

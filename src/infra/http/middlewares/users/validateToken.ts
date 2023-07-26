@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
-import env from 'src/env';
+import env from './../../../../env';
 
 @Injectable()
 export class ValidateToken implements NestMiddleware {
