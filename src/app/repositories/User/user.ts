@@ -9,7 +9,7 @@ export abstract class UserRepository {
 
   abstract login(account: UserLoginDTO): Promise<any | Error>;
 
-  abstract edit(userId: string, account: EditUserDTO): Promise<void | Error>;
+  abstract edit(userId: string, account: EditUserDTO, photoFile?: Express.Multer.File): Promise<void | Error>;
 
   abstract findUserById(userId: string): Promise<User>;
 

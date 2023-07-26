@@ -1,4 +1,5 @@
 import { sign } from 'jsonwebtoken';
+import { UploadedFile } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { User } from '@domain/User/User';
 import {
@@ -68,7 +69,8 @@ export class PrismaUserRepository implements UserRepository {
     return { password: '', token: sign({ id: databaseStored.id },process.env.JWT_SECRET as string), ...user };
   }
 
-  async edit(userId: string, account: EditUserDTO): Promise<any | Error> {
+  async edit(userId: string, account: EditUserDTO, @UploadedFile() photoFile: Express.Multer.File): Promise<any | Error> {
+  
     if (!userId) {
       throw new BadRequestException('Identificação inválida');
     }
@@ -79,7 +81,6 @@ export class PrismaUserRepository implements UserRepository {
         email: account.email,
         password: makeHash(account.password as string),
         phone: account.phone,
-        photo: account.photo,
         age: account.age,
         cpf: account.cpf,
       },
@@ -87,6 +88,18 @@ export class PrismaUserRepository implements UserRepository {
         id: userId,
       },
     });
+    if (photoFile) {
+
+      const imagePath = `uploads/${photoFile.filename}`;
+      await this.prismaService.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          photo: imagePath,
+        },
+      });
+    }
     const addressExist = await this.prismaService.address.findFirst({
       where: {
         userId: userId,
