@@ -11,7 +11,7 @@ import { MissingParamError } from '@app/errors/MissingParamError';
 import { UserRepository } from '@app/repositories/User/user';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
-import env from 'src/env';
+import env from './../../../../env';
 import { z } from 'zod';
 
 @Controller()
