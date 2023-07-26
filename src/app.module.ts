@@ -4,7 +4,7 @@ import { HttpModule } from '@infra/http/http.module';
 import { ConfigModule } from '@nestjs/config';
 import { BullConfigModule } from './infra/config/bull.module';
 import { MailerConfigModule } from './infra/config/mailer.module';
-import { MessageController } from 'src/app.controler';
+import { MessageController } from './app.controler';
 
 @Module({
   imports: [
