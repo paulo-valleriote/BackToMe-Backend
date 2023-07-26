@@ -4,7 +4,8 @@ import { HttpModule } from '@infra/http/http.module';
 import { ConfigModule } from '@nestjs/config';
 import { BullConfigModule } from './infra/config/bull.module';
 import { MailerConfigModule } from './infra/config/mailer.module';
-import { MessageController } from './app.controler';
+import { MessageController } from 'src/app.controler';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -13,6 +14,10 @@ import { MessageController } from './app.controler';
     MailerConfigModule,
     HttpModule,
     DatabaseModule,
+    MulterModule.register({
+      dest: 'uploads/',
+    }),
+
   ],
   controllers: [MessageController],
   providers: [],

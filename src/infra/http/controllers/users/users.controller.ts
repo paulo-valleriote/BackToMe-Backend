@@ -8,7 +8,9 @@ import {
   Put,
   Patch,
   Get,
-  Delete
+  Delete,
+  UseInterceptors,
+  UploadedFile
 } from '@nestjs/common';
 import { RegisterUserDTO } from '@infra/http/dtos/User/registerUser.dto';
 import { UserService } from '@infra/http/services/users/users.service';
@@ -17,6 +19,7 @@ import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { MissingParamError } from '@app/errors/MissingParamError';
 import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('users')
 export class UsersController {
@@ -34,7 +37,7 @@ export class UsersController {
   @Post('login')
   async login(@Body() userLoginDTO: UserLoginDTO) {
     const userData = await this.userService.login(userLoginDTO);
-   
+
     return userData;
   }
 
@@ -60,11 +63,18 @@ export class UsersController {
   return "Usuario deletado!"
 }
 
-  @Put(':id')
-  async edit(@Body() editUserDTO: EditUserDTO, @Param('id') id: string) {
-     await this.userService.edit(id, editUserDTO);
-    return "Dados editados com sucesso!"
+@Put(':id')
+@UseInterceptors(FileInterceptor('photo'))
+async edit(@Param('id') id: string, @Body() editUserDTO: EditUserDTO, @UploadedFile() photoFile: Express.Multer.File) {
+  if (photoFile) {
+    const imagePath = `uploads/${photoFile.filename}`;
+    editUserDTO.photo = imagePath;
   }
+
+  await this.userService.edit(id, editUserDTO);
+
+  return 'Dados editados com sucesso!';
+}
 
   @Patch(':id/password')
   async editPassword(
