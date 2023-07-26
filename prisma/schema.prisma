@@ -13,6 +13,7 @@ model User {
   email      String  @unique
   cpf        String
   age        String?
+  photo      String?
   phone      String
   password   String
   isVerified Boolean @default(false)
@@ -51,7 +52,7 @@ model AnimalFound {
   found_location              String
   species                     String
   race                        String
-  age                         String 
+  age                         String
   color                       String
   size                        String
   distinctive_characteristics String

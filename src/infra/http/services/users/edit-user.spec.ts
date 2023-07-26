@@ -30,6 +30,7 @@ describe('Edit user service', () => {
       password: 'any_password',
       phone: 'any_phone',
       age:'any_age',
+      photo: 'any_photo',
       address: {
         cep: 'any_cep',
         complement: 'any_complement',

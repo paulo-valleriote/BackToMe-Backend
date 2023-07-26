@@ -34,12 +34,11 @@ export class UsersController {
   @Post('login')
   async login(@Body() userLoginDTO: UserLoginDTO) {
     const userData = await this.userService.login(userLoginDTO);
-    console.log(userData)
+   
     return userData;
   }
 
   @Post('validate/email')
-  @HttpCode(200)
   async validateEmail(@Body() { email }: { email: string }) {
     if (!email) {
       throw new MissingParamError('email');
@@ -63,7 +62,8 @@ export class UsersController {
 
   @Put(':id')
   async edit(@Body() editUserDTO: EditUserDTO, @Param('id') id: string) {
-    await this.userService.edit(id, editUserDTO);
+     await this.userService.edit(id, editUserDTO);
+    return "Dados editados com sucesso!"
   }
 
   @Patch(':id/password')

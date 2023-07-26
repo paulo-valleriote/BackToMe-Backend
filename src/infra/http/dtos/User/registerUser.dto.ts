@@ -4,6 +4,8 @@ export interface RegisterUserDTO {
   cpf: string;
   phone: string;
   password: string;
+  age?: string;
+  photo?: string;
   address?: {
     cep: string;
     complement?: string;

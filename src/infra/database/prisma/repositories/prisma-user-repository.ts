@@ -68,17 +68,20 @@ export class PrismaUserRepository implements UserRepository {
     return { password: '', token: sign({ id: databaseStored.id },process.env.JWT_SECRET as string), ...user };
   }
 
-  async edit(userId: string, account: EditUserDTO): Promise<void | Error> {
+  async edit(userId: string, account: EditUserDTO): Promise<any | Error> {
     if (!userId) {
       throw new BadRequestException('Identificação inválida');
     }
 
-    this.prismaService.user.update({
+    const update = await this.prismaService.user.update({
       data: {
         name: account.name,
         email: account.email,
-        password: account.password,
+      password:  makeHash(account.password as string),
+
         phone: account.phone,
+        photo: account.photo,
+        age: account.age,
         cpf: account.cpf,
         address: {
           update: {
@@ -92,6 +95,7 @@ export class PrismaUserRepository implements UserRepository {
         id: userId,
       },
     });
+    return update
   }
 
   async findUserById(id: string): Promise<any> {
