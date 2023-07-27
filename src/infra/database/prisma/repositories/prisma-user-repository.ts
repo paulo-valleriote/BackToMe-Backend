@@ -70,7 +70,7 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async edit(userId: string, account: EditUserDTO, @UploadedFile() photoFile: Express.Multer.File): Promise<any | Error> {
-  
+
     if (!userId) {
       throw new BadRequestException('Identificação inválida');
     }
