@@ -6,6 +6,7 @@ import { BullConfigModule } from './infra/config/bull.module';
 import { MailerConfigModule } from './infra/config/mailer.module';
 import { MessageController } from 'src/app.controler';
 import { MulterModule } from '@nestjs/platform-express';
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -14,7 +15,7 @@ import { MulterModule } from '@nestjs/platform-express';
     HttpModule,
     DatabaseModule,
     MulterModule.register({
-      dest: 'uploads/', // Defina o diretório onde os arquivos enviados serão temporariamente salvos
+      dest: 'uploads/',
     }),
 
   ],

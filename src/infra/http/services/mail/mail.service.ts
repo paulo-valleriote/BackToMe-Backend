@@ -9,7 +9,7 @@ import {
   Processor,
 } from '@nestjs/bull';
 import { Job } from 'bull';
-import env from 'src/env';
+import env from './../../../../env';
 
 @Processor('mail')
 export class MailProcessorService {
