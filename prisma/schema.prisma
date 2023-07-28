@@ -8,22 +8,24 @@ datasource db {
 }
 
 model User {
-  id         String  @id @default(uuid())
-  name       String
-  email      String  @unique
-  cpf        String
-  age        String?
-  photo      String?
-  phone      String
-  password   String
-  isVerified Boolean @default(false)
-
+  id               String            @id @default(uuid())
+  name             String
+  email            String            @unique
+  cpf              String
+  age              String?
+  photo            String?
+  phone            String
+  password         String
+  isVerified       Boolean           @default(false)
+  active           Boolean           @default(true)
   address          Address?
   animalsFound     AnimalFound[]
   lostAnimals      LostAnimal[]
   availableAnimals AvailableAnimal[]
-  sendedMessages   Message[]         @relation(name: "sendMessages")
-  receivedMessages Message[]         @relation(name: "receivedMessages")
+  sendedMessages   Message[]         @relation("sendMessages")
+  receivedMessages Message[]         @relation("receivedMessages")
+  reportedReports  Report[]          @relation("ReportsByUser")
+  receivedReports  Report[]          @relation("ReportsAboutUser")
 }
 
 model Message {
@@ -35,6 +37,7 @@ model Message {
   receiverId String
   sender     User?  @relation(fields: [senderId], references: [id], name: "sendMessages")
   receiver   User?  @relation(fields: [receiverId], references: [id], name: "receivedMessages")
+  reportMessage Report[] 
 }
 
 model Address {
@@ -87,7 +90,6 @@ model AvailableAnimal {
   user                        User?  @relation(fields: [userId], references: [id])
 }
 
-
 model Ongs {
   id          String  @id @default(uuid())
   name        String
@@ -99,6 +101,15 @@ model Ongs {
 }
 
 model Report {
-   id          String  @id @default(uuid())
-  name        String
+  id              String   @id @default(uuid())
+  reportingUser   User?     @relation("ReportsByUser", fields: [reportingUserId], references: [id])
+  reportingUserId String
+  reportedUser    User?     @relation("ReportsAboutUser", fields: [reportedUserId], references: [id])
+  reportedUserId  String
+  messageId       String?  @map("messageId")
+  reason          String
+  resolved        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  message         Message? @relation(fields: [messageId], references: [id])
 }
+
