@@ -4,6 +4,8 @@ import { LostAnimalsDatabaseModule } from './prisma/repositories/prisma-lost-ani
 import { AdoptionAnimalsDatabaseModule } from './prisma/repositories/prisma-adoption-animal-database.module';
 import { FoundAnimalsDatabaseModule } from './prisma/repositories/prisma-found-animals-database.module';
 import { OngsDatabaseModule } from './prisma/repositories/prisma-ong-database.module';
+import { ReportsDatabaseModule } from './prisma/repositories/prisma-report-database.module';
+import { MessagesDatabaseModule } from './prisma/repositories/prisma-message-database.module';
 
 @Module({
   imports: [
@@ -11,7 +13,9 @@ import { OngsDatabaseModule } from './prisma/repositories/prisma-ong-database.mo
     LostAnimalsDatabaseModule,
     AdoptionAnimalsDatabaseModule,
     FoundAnimalsDatabaseModule,
-    OngsDatabaseModule
+    OngsDatabaseModule,
+    ReportsDatabaseModule,
+    MessagesDatabaseModule
   ],
 })
 export class DatabaseModule {}

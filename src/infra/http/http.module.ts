@@ -6,6 +6,8 @@ import { AdoptionAnimalsModule } from './controllers/animals/adoption-animals.mo
 import { ImagesModule } from './controllers/images/images.module';
 import { MailQueueModule } from './controllers/mail/mail.module';
 import { OngsModule } from './controllers/ong\'s/ong.module';
+import { ReportsModule } from './controllers/reports/report.module';
+import { MessagesModule } from './controllers/message/message.module';
 
 @Module({
   imports: [
@@ -15,7 +17,9 @@ import { OngsModule } from './controllers/ong\'s/ong.module';
     MailQueueModule,
     AdoptionAnimalsModule,
     ImagesModule,
-    OngsModule
+    OngsModule,
+    ReportsModule,
+    MessagesModule
   ],
 })
 export class HttpModule {}

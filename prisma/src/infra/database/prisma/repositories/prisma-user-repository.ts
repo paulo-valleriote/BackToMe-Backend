@@ -1,6 +1,5 @@
 import { sign } from 'jsonwebtoken';
 import { UploadedFile } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
 import { User } from '@domain/User/User';
 import {
   BadRequestException,
@@ -15,6 +14,7 @@ import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { FindedUserDTO } from '@infra/http/dtos/User/findedUser.dto';
 
 import { makeHash } from '@app/protocols/crypto/hash/makeHash';
+import { PrismaService } from '@infra/database/prisma/prisma.service';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {

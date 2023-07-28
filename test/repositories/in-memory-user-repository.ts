@@ -14,7 +14,7 @@ export class inMemoryUserRepository implements UserRepository {
     return 'valid_id';
   }
 
-  async login(account: UserLoginDTO): Promise<User | Error> {
+  async login(account: UserLoginDTO): Promise<number| Error> {
     const userIndex = this.users.findIndex(
       (user) => user.props.email === account.email,
     );
@@ -106,7 +106,6 @@ export class inMemoryUserRepository implements UserRepository {
       throw new NotFoundException('User not found');
     }
 
-    // Remove the user from the users array
     this.users.splice(userIndex, 1);
   }
 }
