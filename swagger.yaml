@@ -5,24 +5,48 @@ info:
   description: API para busca de animais perdidos e adoção de animais.
 
 servers:
-  - url: http://localhost:3000
-    description: Servidor local
+- url: http://localhost:3000
+  description: Servidor local
 
-  - url: https://api-backtome.onrender.com
-    description: Servidor Render
+- url: https://btm-backtend.onrender.com
+  description: Servidor Render
 
 tags:
+- name: Uploads
 - name: Validações
 - name: Usuários
 - name: Animais Perdidos
 - name: Animais para Adoção
 - name: ONGs
+- name: Report
+- name: Message
 
 paths:
+  /image/upload:
+    patch:
+      tags:
+        - Uploads
+      summary: Salvar arquivo
+      description: Salva arquivo no banco de dados
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:  
+            schema:
+              type: object
+              properties:
+                file:       # Nome do campo do arquivo
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Arquivo salvo com sucesso
+        "400":
+          description: Erro ao salvar arquivo
   /validate/email:
     post:
       tags:
-        - Validações
+      - Validações
       summary: Validar email
       description: Verifica se o usuário existe no banco de dados
       requestBody:
@@ -64,10 +88,6 @@ paths:
                   cpf: "12345678900"
                   phone: "123456789"
                   password: "senha123"
-                  address:
-                    cep: "25264253"
-                    complement: "502"
-
               Exemple Type:
                 value:
                   name: "string"
@@ -75,9 +95,7 @@ paths:
                   cpf: "string"
                   phone: "string"
                   password: "string"
-                  address:
-                    cep: "string"
-                    complement: "string"
+
       responses:
         "200":
           description: Usuário cadastrado com sucesso!
@@ -107,9 +125,23 @@ paths:
 
       responses:
         "200":
-          description: Usuário cadastrado com sucesso!
+          description: Dados Usuário
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserList"
+              examples:
+                Example Json:
+                  value:
+                    id: "be89466a-361e-4e56-9ca9-89ace992fac0"
+                    name: "Marcus Roza"
+                    age: "1990-05-12"
+                    photo: "https://scontent-gig4-1.xx.fbcdn.net/v/t39.30808-6/346087374_248780904489604_1788490239312052550_n.jpg?_nc_cat=105&cb=99be929b-59f725be&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeF6ort8evUhObIwCKXOggMEn_y7x-wmkvyf_LvH7CaS_JlYf40jAQoimHSym_NAbPy16QDs-i2Mw29M_y3e-zb1&_nc_ohc=5RELifs8iVUAX8-C-im&_nc_ht=scontent-gig4-1.xx&oh=00_AfAZBi3UgqCHJe0MqKKMKH9J7mDntHBlcMOhKBZwj6Gclg&oe=64C61EBE"
+                    isVerified: false,
+                    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTA0NzIyMjR9.waD5hRyJ8MLUzMA3BykDcV0sXYFnprGh7My136j5Slo"
+
         "400":
-          description: Erro ao cadastrar usuário!
+          description: Erro ao logar usuário!
   /users/{userId}:
     put:
       tags:
@@ -139,19 +171,18 @@ paths:
                   cpf: "12345678900"
                   phone: "123456789"
                   password: "senha123"
-                  address:
+                  age: "1990-05-12"
+                  photo: "https://scontent-gig4-1.xx.fbcdn.net/v/t39.30808-6/346087374_248780904489604_1788490239312052550_n.jpg?_nc_cat=105&cb=99be929b-59f725be&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeF6ort8evUhObIwCKXOggMEn_y7x-wmkvyf_LvH7CaS_JlYf40jAQoimHSym_NAbPy16QDs-i2Mw29M_y3e-zb1&_nc_ohc=5RELifs8iVUAX8-C-im&_nc_ht=scontent-gig4-1.xx&oh=00_AfAZBi3UgqCHJe0MqKKMKH9J7mDntHBlcMOhKBZwj6Gclg&oe=64C61EBE"
+                  address: 
                     cep: "25264253"
                     complement: "502"
+                    number: "202"
               Exemple Type:
                 value:
                   name: "string"
                   email: "string"
                   cpf: "string"
-                  phone: "string"
                   password: "string"
-                  address:
-                    cep: "string"
-                    complement: "string"
       responses:
         "200":
           description: Usuário cadastrado com sucesso!
@@ -173,43 +204,39 @@ paths:
           type: integer
           format: int64
           example: 123
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserList"
-            examples:
-              Example Json:
-                value:
-                  name: "Nome do usuário"
-                  email: "email@example.com"
-                  cpf: "12345678900"
-                  phone: "123456789"
-                  password: "senha123"
-                  address:
-                    cep: "25264253"
-                    complement: "502"
-              Exemple Type:
-                value:
-                  name: "string"
-                  email: "string"
-                  cpf: "string"
-                  phone: "string"
-                  password: "string"
-                  address:
-                    cep: "string"
-                    complement: "string"
       responses:
         "200":
-          description: Usuário cadastrado com sucesso!
+          description: Dados do Usuário
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserList"
+              examples:
+                Example Json:
+                  value: 
+                   name: "Nome do usuário"
+                   email: "email@example.com"
+                   cpf: "12345678900"
+                   phone: "123456789"
+                   photo : "url"
+                   age: "12/05/1990"
+                   password: "senha123"
+                   address: 
+                    cep: "25264253"
+                    complement: "502"
+                    number: "202"
         "400":
           description: Erro interno!
+          content:
+            application/json:
+              examples:
+                Example Json:
+                  value: '{"message": "Erro interno na API."}'
 
   /users/recovery-password:
     post:
       tags:
-        - Usuários
+      - Usuários
       summary: Recuperar senha
       description: Rota para recuperar senha
       requestBody:
@@ -236,7 +263,7 @@ paths:
   /users/change-password/{userId}:
     post:
       tags:
-        - Usuários
+      - Usuários
       summary: Alterar a senha
       description: Rota para recuperar senha
       parameters:
@@ -269,6 +296,27 @@ paths:
 
         "400":
           description: Erro ao alterar senha
+
+  /users/{userId}/delete:
+    delete:
+      tags:
+      - Usuários
+      summary: Deletar usuário por ID
+      description: Rota para deletar um usuário pelo ID.
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        description: ID do usuário a ser deletado
+        schema:
+          type: integer
+          format: int64
+          example: 123
+      responses:
+        "204":
+          description: Usuário deletado com sucesso.
+        "404":
+          description: Usuário não encontrado.
 
   /animals-found/registered:
     post:
@@ -316,7 +364,7 @@ paths:
                 Example Json:
                   value:
                     id: 1
-                    foto: "Caminho para a foto do animal"
+                    photo: "Caminho para a foto do animal"
                     local_encontrado: "Descrição ou endereço do local encontrado"
                     species: "Espécie do animal"
                     race: "Raça do animal"
@@ -601,10 +649,10 @@ paths:
                     user_id: "id usuario"
         "400":
           description: Erro ao buscar animais perdido
-  /ongs:
+  /ongs/all:
     get:
       tags:
-        - ONGs
+      - ONGs
       summary: Listar todas as ONGs
       description: Rota para listar todas as Organizações Não Governamentais (ONGs).
       responses:
@@ -616,9 +664,112 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Ongs"
+              examples:
+                ExampleJson:
+                  value:
+                  - id: "9e80e60c-0f6f-411e-8cba-44f82911c3df"
+                    name: "Ong 1"
+                    address: "Address 1"
+                    contact: "Contact 1"
+                    website: "Website 1"
+                    description: "Description 1"
+                    logo: "Logo URL 1"
+                  - id: "ee0529fb-b4cc-4c92-9f11-7c7adf666ec0"
+                    name: "Ong 2"
+                    address: "Address 2"
+                    contact: "Contact 2"
+                    website: "Website 2"
+                    description: "Description 2"
+                    logo: "Logo URL 2"
         "404":
           description: ONG não encontrada
+  /report:
+    post:
+      tags:
+        - Report
+      summary: Cria um novo relatório
+      description: Rota para criar um novo relatório
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportInput"
+            examples:
+              Example Json:
+                value:
+                  reportingUserId: "92d43331-87ef-4a9e-ad44-34c3b277628b"
+                  reportedUserId: "be89466a-361e-4e56-9ca9-89ace992fac0"
+                  messageId: "d50dcf33-2933-413d-98b4-e69fd8f7b18f"
+                  reason: "Insira o motivo do relatório aqui"
+      responses:
+        "200":
+          description: Relatório criado com sucesso
 
+  /message:
+    post:
+      tags:
+        - Message
+      summary: Cria uma nova mensagem
+      description: Rota para criar uma nova mensagem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessageInput"
+            examples:
+              Example Json:
+                value:
+                  title: "Título da mensagem teste 5"
+                  content: "Conteúdo da mensagem"
+                  senderId: "92d43331-87ef-4a9e-ad44-34c3b277628b"
+                  receiverId: "be89466a-361e-4e56-9ca9-89ace992fac0"
+      responses:
+        "200":
+          description: Mensagem registrada  
+  /message/{id}:
+    get:
+      tags:
+      - Message
+      summary: Buscar mensagem por ID
+      description: Rota para buscar uma mensagem pelo ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID da mensagem
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Mensagem encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        "404":
+          description: Mensagem não encontrada
+
+  /message/{id}/delete:
+    delete:
+      tags:
+      - Message
+      summary: Deletar mensagem por ID
+      description: Rota para deletar uma mensagem pelo ID.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID da mensagem
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Mensagem deletada com sucesso
+        "404":
+          description: Mensagem não encontrada
+        
 components:
   schemas:
     UserRegistered:
@@ -840,3 +991,61 @@ components:
           type: string
         logo:
           type: string
+    
+    ReportInput:
+      type: object
+      properties:
+        reportingUserId:
+          type: string
+        reportedUserId:
+          type: string
+        messageId:
+          type: string
+        reason:
+          type: string
+
+    MessageInput:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        senderId:
+          type: string
+        receiverId:
+          type: string      
+    
+    Message:
+      type: object
+      properties:
+        id:
+          type: string
+        content:
+          type: string
+        senderId:
+          type: string
+        receiverId:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+
+    Report:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        reportingUserId:
+          type: string
+        reportedUserId:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string      

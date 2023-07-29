@@ -11,13 +11,13 @@ export class MessagesController {
   }
 
 
-  @Get(':id')
+  @Get(':id/find')
   async findMessageById(@Param('id') id: string) {
     return this.messageService.findMessageById(id);
   }
 
 
-  @Delete(':id')
+  @Delete(':id/delete')
   async deleteMessage(@Param('messageId') messageId: string,@Param('senderId')senderId: string) {
     return this.messageService.deleteMessage(messageId,senderId);
   }
