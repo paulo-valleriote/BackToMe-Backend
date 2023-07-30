@@ -21,7 +21,7 @@ export class FileService {
 
   constructor() {}
 
-  async uploadPhoto(file: Express.Multer.File): Promise<string | any> {
+  async uploadFile(file: Express.Multer.File): Promise<string | any> {
     try {
       return this.s3_upload({
         file: file,
