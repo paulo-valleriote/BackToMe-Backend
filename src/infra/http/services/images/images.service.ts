@@ -9,7 +9,7 @@ interface S3UploadInterface {
 }
 
 @Injectable()
-export class ImageService {
+export class FileService {
   private AWS_S3_BUCKET = process.env.AWS_S3_BUCKET as string;
   private s3 = new AWS.S3({
     credentials: {

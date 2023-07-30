@@ -22,7 +22,7 @@ tags:
 - name: Message
 
 paths:
-  /image/upload:
+  /file/upload:
     patch:
       tags:
         - Uploads

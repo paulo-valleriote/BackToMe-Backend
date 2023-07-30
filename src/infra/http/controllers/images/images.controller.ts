@@ -5,11 +5,11 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ImageService } from '@infra/http/services/images/images.service';
+import { FileService } from '@infra/http/services/images/images.service';
 
-@Controller('image')
+@Controller('file')
 export class ImagesController {
-  constructor(private imageService: ImageService) {}
+  constructor(private imageService: FileService) {}
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
