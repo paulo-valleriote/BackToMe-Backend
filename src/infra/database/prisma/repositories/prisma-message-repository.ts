@@ -39,7 +39,7 @@ export class PrismaMessagesRepository implements MessageRepository {
       });
       return message;
     } catch (error) {
-      throw new Error('Erro ao buscar mensagem');
+      throw new Error('Erro ao buscar mensagem do Usuario');
     }
   }
   async findMessageById(id: string): Promise<any | Error> {
@@ -55,24 +55,22 @@ export class PrismaMessagesRepository implements MessageRepository {
     }
   }
 
-  async deleteMessage(messageId: string, senderId: string): Promise<void> {
-    try {
+  async deleteMessage(messageId: string, senderId: string): Promise<string | Error> {
       const message = await this.prismaService.message.findUnique({
         where: { id: messageId },
       });
 
       if (!message) {
-        throw new Error('Messagem não encontrada');
+        throw new BadRequestException('Messagem não encontrada');
       }
       if (message.senderId === senderId) {
         await this.prismaService.message.delete({
           where: { id: messageId },
         });
+        return "Mensagem deletada"
       } else {
-        throw new BadRequestException('Erro ao deletar');
+        throw new BadRequestException('Mensagem não corresponde ao usuário!');
       }
-    } catch (error) {
-      throw new Error('Erro ao excluir messagem');
-    }
+  
   }
 }

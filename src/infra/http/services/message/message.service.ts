@@ -30,19 +30,16 @@ export class MessageService {
     return message;
   }
 
-  async deleteMessage(messageId: string, userId: string): Promise<void> {
-    const messages: any[] = await this.messageRepository.findMessageById(
-      userId,
-    );
+  async deleteMessage(messageId: string, userId: string): Promise<string | Error> {
+    const messages: any[] = await this.messageRepository.findMessageById(messageId);
 
     const messageToDelete = messages.find(
       (message) => message.id === messageId,
     );
-    console.log(messageToDelete, messageId, userId);
     if (!messageToDelete) {
       throw new NotFoundException('Message not found');
     }
 
-    await this.messageRepository.deleteMessage(messageId, userId);
+    return await this.messageRepository.deleteMessage(messageId, userId);
   }
 }
