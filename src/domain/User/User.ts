@@ -1,3 +1,6 @@
+import {
+  BadRequestException
+} from '@nestjs/common'
 import { InvalidParamError } from '@app/errors/InvalidParamError';
 import { MissingParamError } from '@app/errors/MissingParamError';
 import { makeHash } from '@app/protocols/crypto/hash/makeHash';
@@ -48,7 +51,6 @@ export class User {
     if (newUser.statusCode >= 300) {
       throw newUser.body;
     }
-
     this.props = {
       ...newUser.body,
       password: makeHash(newUser.body.password),

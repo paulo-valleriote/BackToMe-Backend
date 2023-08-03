@@ -85,6 +85,8 @@ export class UserService {
     if (!userId) {
       return new BadRequestException('Identificação de usuário inválida');
     }
+    if (request && Number(request.password?.length) < 6)
+      throw new BadRequestException('Senha deve ter pelo menos 6 caracteres!');
 
     const editionGoneWrong = await this.userRepository.edit(userId, request);
 
@@ -123,6 +125,8 @@ export class UserService {
     if (user.password !== currentPassword) {
       throw new BadRequestException('Senha atual incorreta');
     }
+    if (Number(user.password?.length) < 6)
+      throw new BadRequestException('Senha deve ter pelo menos 6 caracteres!');
 
     const updatedPassword = await this.userRepository.updatePassword(
       userId,
@@ -151,6 +155,8 @@ export class UserService {
     if (!user) {
       throw new BadRequestException('Usuário não encontrado');
     }
+    if (Number(password?.length) < 6)
+      throw new BadRequestException('Senha deve ter pelo menos 6 caracteres!');
 
     const updatedPassword = await this.userRepository.updatePassword(
       userId,
@@ -195,6 +201,6 @@ export class UserService {
       throw new NotFoundException('User not found');
     }
 
-    await this.userRepository.deleteUser(request,id);
+    await this.userRepository.deleteUser(request, id);
   }
 }
