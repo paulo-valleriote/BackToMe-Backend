@@ -57,7 +57,7 @@ export class UsersController {
   const user = await this.userService.findUsers(id)
   return user
 }
-  @Delete(':id')
+  @Delete(':id/delete')
   async deleteUserById(@Param('id') id:string){
    await this.userService.deleteUser(id)
   return "Usuario deletado!"

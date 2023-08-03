@@ -23,8 +23,12 @@ export class FoundAnimal extends Animal {
         race: z.string({ required_error: 'Raça não foi informada' }),
         age: z.string({ required_error: 'Idade não foi informada' }),
         color: z.string({ required_error: 'Cor não foi informada' }),
+
         size: z.string({ required_error: 'Tamanho não foi informado' }),
         distinctive_characteristics: z.string({
+          required_error: 'Características não foram informadas',
+        }),
+        personality_description: z.string({
           required_error: 'Características não foram informadas',
         }),
         photo: z.string({

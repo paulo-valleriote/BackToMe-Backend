@@ -11,6 +11,7 @@ interface MessageProps {
 
 interface NewMessage {
   body: MessageProps;
+  createAt:Date;
   statusCode: number;
 }
 
@@ -39,12 +40,14 @@ export class Message {
     if (!isValid) {
       return {
         body: body,
+        createAt: new Date(),
         statusCode: statusCode,
       };
     }
 
     return {
       body: props,
+      createAt: new Date(),
       statusCode: 200,
     };
   }

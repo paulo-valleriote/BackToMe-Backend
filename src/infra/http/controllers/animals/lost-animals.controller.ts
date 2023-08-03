@@ -7,8 +7,8 @@ export class LostAnimalsController {
   constructor(private lostAnimalsSerivce: LostAnimalService) {}
 
   @Post('registered')
-  async register(@Body() registerLostAnimalDTO: RegisterLostAnimalDTO) {
-    return this.lostAnimalsSerivce.register(registerLostAnimalDTO);
+  async register(@Body() registerLostAnimalDTO: RegisterLostAnimalDTO ) {
+    return (await this.lostAnimalsSerivce.register(registerLostAnimalDTO)).props;
   }
 
   @Get('find')
