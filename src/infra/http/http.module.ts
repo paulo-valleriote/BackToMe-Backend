@@ -7,7 +7,7 @@ import { MailQueueModule } from './controllers/mail/mail.module';
 import { OngsModule } from "./controllers/ong's/ong.module";
 import { ReportsModule } from './controllers/reports/report.module';
 import { MessagesModule } from './controllers/message/message.module';
-import { FilesModule } from './controllers/Files/files.module';
+import { ImagesModule } from './controllers/images/images.module';
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { FilesModule } from './controllers/Files/files.module';
     FoundAnimalsModule,
     MailQueueModule,
     AdoptionAnimalsModule,
-    FilesModule,
+    ImagesModule,
     OngsModule,
     ReportsModule,
     MessagesModule,

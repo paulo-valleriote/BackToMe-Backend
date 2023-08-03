@@ -55,9 +55,9 @@ export class PrismaUserRepository implements UserRepository {
   async login(account: UserLoginDTO): Promise<any | Error> {
     const databaseStored = await this.prismaService.user.findUnique({
       where: { email: account.email },
-      
     });
-    if (!databaseStored?.active) throw new BadRequestException('Conta está desativada!')
+    if (!databaseStored?.active)
+      throw new BadRequestException('Conta está desativada!');
     if (
       !databaseStored?.password ||
       !compareToEncrypted({
@@ -67,12 +67,15 @@ export class PrismaUserRepository implements UserRepository {
     ) {
       return new BadRequestException('Email ou senha estão incorretos');
     }
-    const {...user} = new User(databaseStored);
-    return { password: '', token: sign({ id: databaseStored.id },process.env.JWT_SECRET as string), ...user };
+    const { ...user } = new User(databaseStored);
+    return {
+      password: '',
+      token: sign({ id: databaseStored.id }, process.env.JWT_SECRET as string),
+      ...user,
+    };
   }
 
-  async edit(userId: string, account: EditUserDTO, @UploadedFile() photoFile: Express.Multer.File): Promise<any | Error> {
-
+  async edit(userId: string, account: EditUserDTO): Promise<any | Error> {
     if (!userId) {
       throw new BadRequestException('Identificação inválida');
     }
@@ -90,51 +93,49 @@ export class PrismaUserRepository implements UserRepository {
         id: userId,
       },
     });
-    if (photoFile) {
 
-      const imagePath = `uploads/${photoFile.filename}`;
-      await this.prismaService.user.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          photo: imagePath,
-        },
-      });
-    }
     const addressExist = await this.prismaService.address.findFirst({
       where: {
         userId: userId,
       },
     });
 
-    if (addressExist && account.address){
-        await this.prismaService.address.update({
-          data: {
-            cep: account.address.cep,
-            complement: account.address.complement,
-            number: account.address.number,
-          },
-          where: {
-            userId,
-          },
-        });
-      }
-      if (!addressExist && account.address){
-        await this.prismaService.address.create({
-          data: {
-            cep: account?.address.cep,
-            complement: account?.address.complement,
-            number: account?.address.number,
-            userId
-          },
-        });
-      }
+    if (addressExist && account.address) {
+      await this.prismaService.address.update({
+        data: {
+          cep: account.address.cep,
+          complement: account.address.complement,
+          number: account.address.number,
+        },
+        where: {
+          userId,
+        },
+      });
+    }
+    if (!addressExist && account.address) {
+      await this.prismaService.address.create({
+        data: {
+          cep: account?.address.cep,
+          complement: account?.address.complement,
+          number: account?.address.number,
+          userId,
+        },
+      });
+    }
 
     return updatedUser;
   }
 
+  async saveImage(id: string, photoUrl: string): Promise<any> {
+    const updatedUser = await this.prismaService.user.update({
+      where: { id },
+      data: {
+        photo: photoUrl,
+      },
+    });
 
+    return updatedUser;
+  }
   async findUserById(id: string): Promise<any> {
     const user = await this.prismaService.user.findFirst({
       where: { id },
@@ -147,7 +148,7 @@ export class PrismaUserRepository implements UserRepository {
     return { ...user, address };
   }
 
-  async deleteUser(request:DeleteUserDTO ,id: string): Promise<void> {
+  async deleteUser(request: DeleteUserDTO, id: string): Promise<void> {
     const user = await this.prismaService.user.findUnique({
       where: { id },
     });
@@ -156,10 +157,11 @@ export class PrismaUserRepository implements UserRepository {
       throw new Error('Usuário não encontrado');
     }
     await this.prismaService.user.update({
-      where: { id },data:{
+      where: { id },
+      data: {
         active: false,
-        motivoDesativacao: request.motivoDesativacao
-      }
+        motivoDesativacao: request.motivoDesativacao,
+      },
     });
   }
   async updatePassword(id: string, newPassword: string): Promise<boolean> {
