@@ -1,3 +1,4 @@
+import { FileService } from '@infra/http/services/files/files.service';
 import {
   Controller,
   Post,
@@ -6,7 +7,6 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FileService } from '@infra/http/services/images/images.service';
 
 @Controller('file')
 export class ImagesController {

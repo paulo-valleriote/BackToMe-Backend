@@ -3,11 +3,11 @@ import { LostAnimalsModule } from './controllers/animals/lost-animals.module';
 import { UsersModule } from './controllers/users/user.module';
 import { FoundAnimalsModule } from './controllers/animals/found-animals.module';
 import { AdoptionAnimalsModule } from './controllers/animals/adoption-animals.module';
-import { ImagesModule } from './controllers/images/images.module';
 import { MailQueueModule } from './controllers/mail/mail.module';
-import { OngsModule } from './controllers/ong\'s/ong.module';
+import { OngsModule } from "./controllers/ong's/ong.module";
 import { ReportsModule } from './controllers/reports/report.module';
 import { MessagesModule } from './controllers/message/message.module';
+import { ImagesModule } from './controllers/images/images.module';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { MessagesModule } from './controllers/message/message.module';
     ImagesModule,
     OngsModule,
     ReportsModule,
-    MessagesModule
+    MessagesModule,
   ],
 })
 export class HttpModule {}
