@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
+import { UserRepository } from '@app/repositories/User/user';
 
 interface S3UploadInterface {
   file: Express.Multer.File;
@@ -10,6 +11,9 @@ interface S3UploadInterface {
 
 @Injectable()
 export class FileService {
+  constructor(
+    private  userRepository: UserRepository
+  ){}
   private AWS_S3_BUCKET = process.env.AWS_S3_BUCKET as string;
   private s3 = new AWS.S3({
     credentials: {
@@ -19,16 +23,20 @@ export class FileService {
     endpoint: new AWS.Endpoint(process.env.AWS_S3_ENDPOINT as string),
   });
 
-  constructor() {}
-
-  async uploadPhoto(file: Express.Multer.File): Promise<string | any> {
+  async uploadPhoto(id: string, file: Express.Multer.File): Promise<string | any> {
     try {
-      return this.s3_upload({
+      const photoUrl = await this.s3_upload({
         file: file,
         bucket: this.AWS_S3_BUCKET,
         originalName: file.originalname,
         mimetype: file.mimetype,
       });
+
+    
+        await this.userRepository.saveImage(id,photoUrl);
+      
+
+      return "Imagem salva !";
     } catch (e) {
       console.log(e);
     }
@@ -40,7 +48,7 @@ export class FileService {
     originalName,
     mimetype,
   }: S3UploadInterface): Promise<string> {
-    const s3Reponse = await this.s3
+    const s3Response = await this.s3
       .upload({
         Bucket: bucket,
         Key: originalName,
@@ -49,6 +57,6 @@ export class FileService {
       })
       .promise();
 
-    return s3Reponse.Location;
+    return s3Response.Location;
   }
 }

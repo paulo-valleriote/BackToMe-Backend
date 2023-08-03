@@ -1,6 +1,7 @@
 import {
   Controller,
   Post,
+  Param,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -11,9 +12,9 @@ import { FileService } from '@infra/http/services/images/images.service';
 export class ImagesController {
   constructor(private imageService: FileService) {}
 
-  @Post('upload')
+  @Post(':id/upload')
   @UseInterceptors(FileInterceptor('file'))
-  async upload(@UploadedFile() file: Express.Multer.File) {
-    return await this.imageService.uploadPhoto(file);
+  async upload(@Param('id') id:string ,@UploadedFile() file: Express.Multer.File) {
+    return await this.imageService.uploadPhoto(id,file);
   }
 }
