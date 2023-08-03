@@ -51,7 +51,6 @@ export class User {
     if (newUser.statusCode >= 300) {
       throw newUser.body;
     }
-    if (props?.password?.length < 6) throw new BadRequestException ('Senha deve ter pelo menos 6 caracteres!')
     this.props = {
       ...newUser.body,
       password: makeHash(newUser.body.password),
