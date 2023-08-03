@@ -3,4 +3,5 @@ export interface RegisterMessageDTO {
   content: string;
   senderId: string;
   receiverId: string;
+  createdAt: string;
 }

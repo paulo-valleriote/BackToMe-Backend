@@ -9,14 +9,10 @@ export class PrismaMessagesRepository implements MessageRepository {
 
   async register(message: Message): Promise<string> {
     try {
-      const { title,
-        content,
-        senderId,
-        receiverId, } = message.props;
+      const { title, content, senderId, receiverId } = message.props;
 
       await this.prismaService.message.create({
         data: {
-          
           title,
           content,
           senderId,
@@ -24,26 +20,38 @@ export class PrismaMessagesRepository implements MessageRepository {
         },
         select: {
           id: true,
+         
         },
       });
 
-      return "Registramos sua mensagem";
+      return 'Registramos sua mensagem';
     } catch (error) {
       throw new Error('Erro ao registrar messagem');
     }
   }
 
+  async findMessageByUserId(id: string): Promise<any | Error> {
+    try {
+      const message = await this.prismaService.message.findMany({
+        where: {
+          OR: [{ senderId: id }, { receiverId: id }],
+        },
+      });
+      return message;
+    } catch (error) {
+      throw new Error('Erro ao buscar mensagem');
+    }
+  }
   async findMessageById(id: string): Promise<any | Error> {
     try {
-      const message = await this.prismaService.message.findFirst({
-        where: { id },
+      const message = await this.prismaService.message.findMany({
+        where: {
+          id,
+        },
       });
-
-      if (!message) throw new BadRequestException('Messagem não encontrada');
-
-      return { ...message };
+      return message;
     } catch (error) {
-      throw new Error('Erro ao buscar messagem');
+      throw new Error('Erro ao buscar mensagem');
     }
   }
 
@@ -56,12 +64,13 @@ export class PrismaMessagesRepository implements MessageRepository {
       if (!message) {
         throw new Error('Messagem não encontrada');
       }
-        if(message.senderId === senderId){
-      await this.prismaService.message.delete({
-        where: { id: messageId },
-      })}else{
-        throw new BadRequestException("Erro ao deletar")
-      };
+      if (message.senderId === senderId) {
+        await this.prismaService.message.delete({
+          where: { id: messageId },
+        });
+      } else {
+        throw new BadRequestException('Erro ao deletar');
+      }
     } catch (error) {
       throw new Error('Erro ao excluir messagem');
     }

@@ -12,6 +12,7 @@ describe('Lost Animal', () => {
       age: 'Filhote',
       color: 'any_color',
       size: 'any_size',
+      photo: 'any_url',
       distinctive_characteristics: 'any_characteristic',
       date_loss: 'any_date',
       location_loss: 'any_location',

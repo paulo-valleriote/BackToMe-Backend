@@ -25,21 +25,21 @@ paths:
   /file/upload:
     patch:
       tags:
-        - Uploads
+      - Uploads
       summary: Salvar arquivo
       description: Salva arquivo no banco de dados
       requestBody:
         required: true
         content:
-          multipart/form-data:  
+          multipart/form-data:
             schema:
               type: object
               properties:
-                file:       # Nome do campo do arquivo
+                file: # Nome do campo do arquivo
                   type: string
                   format: binary
       responses:
-        "200":
+        "201":
           description: Arquivo salvo com sucesso
         "400":
           description: Erro ao salvar arquivo
@@ -63,7 +63,7 @@ paths:
                 value:
                   email: string
       responses:
-        "200":
+        "201":
           description: Não existe nenhum usuário cadastrado com este email
         "400":
           description: Já existe um cadastro com esse email
@@ -97,7 +97,7 @@ paths:
                   password: "string"
 
       responses:
-        "200":
+        "201":
           description: Usuário cadastrado com sucesso!
         "400":
           description: Erro ao cadastrar usuário!
@@ -124,7 +124,7 @@ paths:
                   password: "string"
 
       responses:
-        "200":
+        "201":
           description: Dados Usuário
           content:
             application/json:
@@ -173,7 +173,7 @@ paths:
                   password: "senha123"
                   age: "1990-05-12"
                   photo: "https://scontent-gig4-1.xx.fbcdn.net/v/t39.30808-6/346087374_248780904489604_1788490239312052550_n.jpg?_nc_cat=105&cb=99be929b-59f725be&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeF6ort8evUhObIwCKXOggMEn_y7x-wmkvyf_LvH7CaS_JlYf40jAQoimHSym_NAbPy16QDs-i2Mw29M_y3e-zb1&_nc_ohc=5RELifs8iVUAX8-C-im&_nc_ht=scontent-gig4-1.xx&oh=00_AfAZBi3UgqCHJe0MqKKMKH9J7mDntHBlcMOhKBZwj6Gclg&oe=64C61EBE"
-                  address: 
+                  address:
                     cep: "25264253"
                     complement: "502"
                     number: "202"
@@ -184,7 +184,7 @@ paths:
                   cpf: "string"
                   password: "string"
       responses:
-        "200":
+        "201":
           description: Usuário cadastrado com sucesso!
         "400":
           description: Erro interno!
@@ -205,7 +205,7 @@ paths:
           format: int64
           example: 123
       responses:
-        "200":
+        "201":
           description: Dados do Usuário
           content:
             application/json:
@@ -213,18 +213,18 @@ paths:
                 $ref: "#/components/schemas/UserList"
               examples:
                 Example Json:
-                  value: 
-                   name: "Nome do usuário"
-                   email: "email@example.com"
-                   cpf: "12345678900"
-                   phone: "123456789"
-                   photo : "url"
-                   age: "12/05/1990"
-                   password: "senha123"
-                   address: 
-                    cep: "25264253"
-                    complement: "502"
-                    number: "202"
+                  value:
+                    name: "Nome do usuário"
+                    email: "email@example.com"
+                    cpf: "12345678900"
+                    phone: "123456789"
+                    photo: "url"
+                    age: "12/05/1990"
+                    password: "senha123"
+                    address:
+                      cep: "25264253"
+                      complement: "502"
+                      number: "202"
         "400":
           description: Erro interno!
           content:
@@ -255,7 +255,7 @@ paths:
                   email: string
                   cpf: string
       responses:
-        "200":
+        "201":
           description: Link para verificação
 
         "400":
@@ -291,7 +291,7 @@ paths:
                   password: string
                   newPassword: string
       responses:
-        "200":
+        "201":
           description: Senha alterada com sucesso
 
         "400":
@@ -341,7 +341,7 @@ paths:
                   color: "Cor do animal"
                   size: "Tamanho do animal"
                   distinctive_characteristics: "Características distintivas do animal"
-                  user_id: "usuario id"
+                  userId: "usuario id"
               Example Type:
                 value:
                   photo: "string"
@@ -352,9 +352,9 @@ paths:
                   color: "string"
                   size: "string"
                   distinctive_characteristics: "string"
-                  user_id: "string"
+                  userId: "string"
       responses:
-        "200":
+        "201":
           description: Animal cadastrado com sucesso
           content:
             application/json:
@@ -372,7 +372,7 @@ paths:
                     color: "Cor do animal"
                     size: "Tamanho do animal"
                     distinctive_characteristics: "Características distintivas do animal"
-                    user_id: "usuario id"
+                    userId: "usuario id"
                 Example Type:
                   value:
                     photo: "string"
@@ -383,7 +383,7 @@ paths:
                     color: "string"
                     size: "string"
                     distinctive_characteristics: "string"
-                    user_id: "string"
+                    userId: "string"
         "400":
           description: Erro ao cadastrar animal
   /lost-animals/registered:
@@ -409,7 +409,7 @@ paths:
                   distinctive_characteristics: "Características distintivas do animal"
                   date_loss: "Data da perda"
                   location_loss: "Local onde o animal foi perdido"
-                  user_id: "usuario id"
+                  userId: "usuario id"
               Example Type:
                 value:
                   photo: "string"
@@ -420,10 +420,10 @@ paths:
                   color: "string"
                   size: "string"
                   distinctive_characteristics: "string"
-                  user_id: "string"
+                  userId: "string"
 
       responses:
-        "200":
+        "201":
           description: Animal perdido cadastrado com sucesso
           content:
             application/json:
@@ -441,7 +441,7 @@ paths:
                     distinctive_characteristics: "Características distintivas do animal"
                     date_loss: "Data da perda"
                     location_loss: "Local onde o animal foi perdido"
-                    user_id: "usuario id"
+                    userId: "usuario id"
                 Example Type:
                   value:
                     photo: "string"
@@ -452,7 +452,7 @@ paths:
                     color: "string"
                     size: "string"
                     distinctive_characteristics: "string"
-                    user_id: "string"
+                    userId: "string"
         "400":
           description: Erro ao cadastrar animal perdido
   /animals-adoption/registered:
@@ -477,7 +477,7 @@ paths:
                   size: "Tamanho do animal"
                   distinctive_characteristics: "Características distintivas do animal"
                   informacoes_personalidade: "Informações sobre a personalidade do animal"
-                  user_id: "id usuario"
+                  userId: "id usuario"
               Example Type:
                 value:
                   photo: "string"
@@ -488,9 +488,9 @@ paths:
                   color: "string"
                   size: "string"
                   distinctive_characteristics: "string"
-                  user_id: "string"
+                  userId: "string"
       responses:
-        "200":
+        "201":
           description: Animal para adoção cadastrado com sucesso
           content:
             application/json:
@@ -507,7 +507,7 @@ paths:
                     size: "Tamanho do animal"
                     distinctive_characteristics: "Características distintivas do animal"
                     informacoes_personalidade: "Informações sobre a personalidade do animal"
-                    user_id: "id usuario"
+                    userId: "id usuario"
                 Example Type:
                   value:
                     photo: "string"
@@ -518,7 +518,7 @@ paths:
                     color: "string"
                     size: "string"
                     distinctive_characteristics: "string"
-                    user_id: "string"
+                    userId: "string"
         "400":
           description: Erro ao cadastrar animal para adoção
   /available-animal/find:
@@ -554,7 +554,7 @@ paths:
           type: string
         description: Características distintivas do animal
       responses:
-        "200":
+        "201":
           description: Lista de animais para adoção encontrada
           content:
             application/json:
@@ -573,7 +573,7 @@ paths:
                     size: "Tamanho do animal"
                     distinctive_characteristics: "Características distintivas do animal"
                     informacoes_personalidade: "Informações sobre a personalidade do animal"
-                    user_id: "id usuario"
+                    userId: "id usuario"
                   - id: 2
                     species: "Espécie do animal"
                     race: "Raça do animal"
@@ -582,7 +582,7 @@ paths:
                     size: "Tamanho do animal"
                     distinctive_characteristics: "Características distintivas do animal"
                     informacoes_personalidade: "Informações sobre a personalidade do animal"
-                    user_id: "id usuario"
+                    userId: "id usuario"
         "400":
           description: Erro ao buscar animais para adoção
   /lost-animals/find:
@@ -618,7 +618,7 @@ paths:
           type: string
         description: Características distintivas do animal
       responses:
-        "200":
+        "201":
           description: Lista de animais para adoção encontrada
           content:
             application/json:
@@ -637,7 +637,7 @@ paths:
                     size: "Tamanho do animal"
                     distinctive_characteristics: "Características distintivas do animal"
                     informacoes_personalidade: "Informações sobre a personalidade do animal"
-                    user_id: "id usuario"
+                    userId: "id usuario"
                   - id: 2
                     species: "Espécie do animal"
                     race: "Raça do animal"
@@ -646,7 +646,7 @@ paths:
                     size: "Tamanho do animal"
                     distinctive_characteristics: "Características distintivas do animal"
                     informacoes_personalidade: "Informações sobre a personalidade do animal"
-                    user_id: "id usuario"
+                    userId: "id usuario"
         "400":
           description: Erro ao buscar animais perdido
   /ongs/all:
@@ -656,7 +656,7 @@ paths:
       summary: Listar todas as ONGs
       description: Rota para listar todas as Organizações Não Governamentais (ONGs).
       responses:
-        "200":
+        "201":
           description: Lista de ONGs encontrada
           content:
             application/json:
@@ -686,7 +686,7 @@ paths:
   /report:
     post:
       tags:
-        - Report
+      - Report
       summary: Cria um novo relatório
       description: Rota para criar um novo relatório
       requestBody:
@@ -703,13 +703,13 @@ paths:
                   messageId: "d50dcf33-2933-413d-98b4-e69fd8f7b18f"
                   reason: "Insira o motivo do relatório aqui"
       responses:
-        "200":
+        "201":
           description: Relatório criado com sucesso
 
   /message:
     post:
       tags:
-        - Message
+      - Message
       summary: Cria uma nova mensagem
       description: Rota para criar uma nova mensagem
       requestBody:
@@ -726,8 +726,8 @@ paths:
                   senderId: "92d43331-87ef-4a9e-ad44-34c3b277628b"
                   receiverId: "be89466a-361e-4e56-9ca9-89ace992fac0"
       responses:
-        "200":
-          description: Mensagem registrada  
+        "201":
+          description: Mensagem registrada
   /message/{id}:
     get:
       tags:
@@ -742,7 +742,7 @@ paths:
         schema:
           type: string
       responses:
-        "200":
+        "201":
           description: Mensagem encontrada
           content:
             application/json:
@@ -769,7 +769,7 @@ paths:
           description: Mensagem deletada com sucesso
         "404":
           description: Mensagem não encontrada
-        
+
 components:
   schemas:
     UserRegistered:
@@ -884,7 +884,7 @@ components:
           type: string
         distinctive_characteristics:
           type: string
-        user_id:
+        userId:
           type: string
 
     LostAnimals:
@@ -906,7 +906,7 @@ components:
           type: string
         location_loss:
           type: string
-        user_id:
+        userId:
           type: string
 
     AvailableAnimals:
@@ -926,7 +926,7 @@ components:
           type: string
         informacoes_personalidade:
           type: string
-        user_id:
+        userId:
           type: string
 
     LostAnimalsFind:
@@ -948,7 +948,7 @@ components:
           type: string
         informacoes_personalidade:
           type: string
-        user_id:
+        userId:
           type: string
 
     AvailableAnimalsFind:
@@ -970,7 +970,7 @@ components:
           type: string
         informacoes_personalidade:
           type: string
-        user_id:
+        userId:
           type: string
 
     Ongs:
@@ -991,7 +991,7 @@ components:
           type: string
         logo:
           type: string
-    
+
     ReportInput:
       type: object
       properties:
@@ -1014,8 +1014,8 @@ components:
         senderId:
           type: string
         receiverId:
-          type: string      
-    
+          type: string
+
     Message:
       type: object
       properties:
@@ -1031,21 +1031,3 @@ components:
           type: string
         updatedAt:
           type: string
-
-    Report:
-      type: object
-      properties:
-        id:
-          type: string
-        title:
-          type: string
-        description:
-          type: string
-        reportingUserId:
-          type: string
-        reportedUserId:
-          type: string
-        createdAt:
-          type: string
-        updatedAt:
-          type: string      
