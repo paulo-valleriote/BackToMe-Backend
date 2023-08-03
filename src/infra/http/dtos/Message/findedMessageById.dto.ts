@@ -4,4 +4,5 @@ export interface FindeMessageDTO {
   content: string;
   senderId: string;
   receiverId: string;
+  createdAt:string;
 }
