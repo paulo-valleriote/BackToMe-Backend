@@ -8,24 +8,25 @@ datasource db {
 }
 
 model User {
-  id               String            @id @default(uuid())
-  name             String
-  email            String            @unique
-  cpf              String            @unique
-  age              String?
-  photo            String?
-  phone            String
-  password         String
-  isVerified       Boolean           @default(false)
-  active           Boolean           @default(true)
-  address          Address?
-  animalsFound     AnimalFound[]
-  lostAnimals      LostAnimal[]
-  availableAnimals AvailableAnimal[]
-  sendedMessages   Message[]         @relation("sendMessages")
-  receivedMessages Message[]         @relation("receivedMessages")
-  reportedReports  Report[]          @relation("ReportsByUser")
-  receivedReports  Report[]          @relation("ReportsAboutUser")
+  id                String            @id @default(uuid())
+  name              String
+  email             String            @unique
+  cpf               String            @unique
+  age               String?           @default("")
+  photo             String?           @default("")
+  phone             String
+  password          String
+  isVerified        Boolean           @default(false)
+  active            Boolean           @default(true)
+  motivoDesativacao String?           @default("")
+  address           Address?
+  animalsFound      AnimalFound[]
+  lostAnimals       LostAnimal[]
+  availableAnimals  AvailableAnimal[]
+  sendedMessages    Message[]         @relation("sendMessages")
+  receivedMessages  Message[]         @relation("receivedMessages")
+  reportedReports   Report[]          @relation("ReportsByUser")
+  receivedReports   Report[]          @relation("ReportsAboutUser")
 }
 
 model Message {
@@ -43,15 +44,15 @@ model Message {
 model Address {
   id         String  @id @default(uuid())
   cep        String
-  complement String?
-  number     String?
+  complement String? @default("")
+  number     String? @default("")
   userId     String? @unique
   user       User?   @relation(fields: [userId], references: [id])
 }
 
 model AnimalFound {
-  id                          String @id @default(uuid())
-  photo                       String
+  id                          String   @id @default(uuid())
+  photo                       String[] @default([""])
   found_location              String
   species                     String
   race                        String
@@ -60,14 +61,14 @@ model AnimalFound {
   size                        String
   distinctive_characteristics String
   userId                      String
-  user                        User?  @relation(fields: [userId], references: [id])
+  user                        User?    @relation(fields: [userId], references: [id])
 }
 
 model LostAnimal {
-  id                          String @id @default(uuid())
+  id                          String   @id @default(uuid())
   species                     String
   race                        String
-  photo                       String
+  photo                       String[] @default([""])
   age                         String
   color                       String
   size                        String
@@ -75,21 +76,21 @@ model LostAnimal {
   date_loss                   String
   location_loss               String
   userId                      String
-  user                        User?  @relation(fields: [userId], references: [id])
+  user                        User?    @relation(fields: [userId], references: [id])
 }
 
 model AvailableAnimal {
-  id                          String @id @default(uuid())
+  id                          String   @id @default(uuid())
   species                     String
   race                        String
-  photo                       String
+  photo                       String[] @default([""])
   age                         String
   color                       String
   size                        String
   distinctive_characteristics String
   personality_description     String
   userId                      String
-  user                        User?  @relation(fields: [userId], references: [id])
+  user                        User?    @relation(fields: [userId], references: [id])
 }
 
 model Ongs {
@@ -97,9 +98,9 @@ model Ongs {
   name        String
   address     String
   contact     String
-  website     String?
-  description String?
-  logo        String?
+  website     String? @default("")
+  description String? @default("")
+  logo        String? @default("")
 }
 
 model Report {

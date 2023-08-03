@@ -15,6 +15,7 @@ import { FindedUserDTO } from '@infra/http/dtos/User/findedUser.dto';
 
 import { makeHash } from '@app/protocols/crypto/hash/makeHash';
 import { PrismaService } from '@infra/database/prisma/prisma.service';
+import { DeleteUserDTO } from '@infra/http/dtos/User/deleteUser.dto';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
@@ -145,7 +146,7 @@ export class PrismaUserRepository implements UserRepository {
     return { ...user, address };
   }
 
-  async deleteUser(id: string): Promise<void> {
+  async deleteUser(request:DeleteUserDTO, id: string): Promise<void> {
     const user = await this.prismaService.user.findUnique({
       where: { id },
     });
@@ -158,8 +159,12 @@ export class PrismaUserRepository implements UserRepository {
       where: { userId: id },
     });
 
-    await this.prismaService.user.delete({
-      where: { id },
+    await this.prismaService.user.update({
+      where: { id },data:{
+        active: false,
+        motivoDesativacao: request.motivoDesativacao
+
+      }
     });
   }
   async updatePassword(id: string, newPassword: string): Promise<boolean> {

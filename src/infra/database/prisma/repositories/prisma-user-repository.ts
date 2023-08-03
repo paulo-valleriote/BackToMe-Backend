@@ -15,6 +15,7 @@ import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { FindedUserDTO } from '@infra/http/dtos/User/findedUser.dto';
 
 import { makeHash } from '@app/protocols/crypto/hash/makeHash';
+import { DeleteUserDTO } from '@infra/http/dtos/User/deleteUser.dto';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
@@ -54,8 +55,9 @@ export class PrismaUserRepository implements UserRepository {
   async login(account: UserLoginDTO): Promise<any | Error> {
     const databaseStored = await this.prismaService.user.findUnique({
       where: { email: account.email },
+      
     });
-
+    if (!databaseStored?.active) throw new BadRequestException('Conta está desativada!')
     if (
       !databaseStored?.password ||
       !compareToEncrypted({
@@ -145,7 +147,7 @@ export class PrismaUserRepository implements UserRepository {
     return { ...user, address };
   }
 
-  async deleteUser(id: string): Promise<void> {
+  async deleteUser(request:DeleteUserDTO ,id: string): Promise<void> {
     const user = await this.prismaService.user.findUnique({
       where: { id },
     });
@@ -153,13 +155,11 @@ export class PrismaUserRepository implements UserRepository {
     if (!user) {
       throw new Error('Usuário não encontrado');
     }
-
-    await this.prismaService.address.deleteMany({
-      where: { userId: id },
-    });
-
-    await this.prismaService.user.delete({
-      where: { id },
+    await this.prismaService.user.update({
+      where: { id },data:{
+        active: false,
+        motivoDesativacao: request.motivoDesativacao
+      }
     });
   }
   async updatePassword(id: string, newPassword: string): Promise<boolean> {

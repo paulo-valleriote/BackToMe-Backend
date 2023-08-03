@@ -20,6 +20,8 @@ import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { MissingParamError } from '@app/errors/MissingParamError';
 import { ResetPasswordDTO } from '@infra/http/dtos/User/resetPassword.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { DeleteUserDTO } from '@infra/http/dtos/User/deleteUser.dto';
+
 
 @Controller('users')
 export class UsersController {
@@ -57,9 +59,9 @@ export class UsersController {
   const user = await this.userService.findUsers(id)
   return user
 }
-  @Delete(':id/delete')
-  async deleteUserById(@Param('id') id:string){
-   await this.userService.deleteUser(id)
+  @Patch(':id/delete')
+  async deleteUserById(@Body() request:DeleteUserDTO, @Param('id') id:string){
+   await this.userService.deleteUser(request,id)
   return "Usuario deletado!"
 }
 
