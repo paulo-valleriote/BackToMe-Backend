@@ -9,7 +9,7 @@ interface FoundAnimalProps extends HttpRequest {
     color: string;
     size: string;
     distinctive_characteristics: string;
-    photo: string;
+    photo: string[];
     found_location: string;
     userId: string;
   };
@@ -31,7 +31,7 @@ describe('Lost Animal', () => {
         color: 'any_color',
         size: 'any_size',
         distinctive_characteristics: 'any_characteristic',
-        photo: 'any_date',
+        photo: ['any_date'],
         found_location: 'any_location',
         userId: 'any_id',
       },
@@ -49,7 +49,7 @@ describe('Lost Animal', () => {
         color: 'any_color',
         size: 'any_size',
         distinctive_characteristics: 'any_characteristic',
-        photo: 'any_date',
+        photo: ['any_date'],
         found_location: 'any_location',
         userId: 'any_id',
       },

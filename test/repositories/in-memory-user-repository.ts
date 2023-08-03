@@ -1,5 +1,6 @@
 import { UserRepository } from '@app/repositories/User/user';
 import { User } from '@domain/User/User';
+import { DeleteUserDTO } from '@infra/http/dtos/User/deleteUser.dto';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { FindedUserDTO } from '@infra/http/dtos/User/findedUser.dto';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
@@ -99,7 +100,7 @@ export class inMemoryUserRepository implements UserRepository {
       ...user,
     };
   }
-  async deleteUser(id: string): Promise<void> {
+  async deleteUser(request:DeleteUserDTO, id: string): Promise<void> {
     const userIndex = this.users.findIndex((user) => user.props.name === id);
 
     if (userIndex < 0) {

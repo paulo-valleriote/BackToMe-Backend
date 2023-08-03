@@ -16,6 +16,7 @@ import { EditPasswordDTO } from '@infra/http/dtos/User/editPassword.dto';
 import { EmailValidationResponseDTO } from '@infra/http/dtos/User/emailValidationResponse.dto';
 import { z } from 'zod';
 import { sign } from 'jsonwebtoken';
+import { DeleteUserDTO } from '@infra/http/dtos/User/deleteUser.dto';
 
 @Injectable()
 export class UserService {
@@ -187,13 +188,13 @@ export class UserService {
       message: 'Já existe um usuário cadastrado com este e-mail',
     };
   }
-  async deleteUser(id: string): Promise<void> {
+  async deleteUser(request: DeleteUserDTO, id: string): Promise<void> {
     const user = await this.userRepository.findUserById(id);
 
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    await this.userRepository.deleteUser(id);
+    await this.userRepository.deleteUser(request,id);
   }
 }

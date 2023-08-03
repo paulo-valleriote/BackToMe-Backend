@@ -5,7 +5,7 @@ export interface RegisterFoundAnimalDTO {
   color: string;
   size: string;
   distinctive_characteristics: string;
-  photo: string;
+  photo: string[];
   found_location: string;
   userId: string;
 }

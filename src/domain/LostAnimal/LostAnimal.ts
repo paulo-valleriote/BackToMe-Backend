@@ -10,7 +10,9 @@ export class LostAnimal extends Animal {
         species: z.string({ required_error: 'Espécie não foi informada' }),
         race: z.string({ required_error: 'Raça não foi informada' }),
         age: z.string({ required_error: 'Idade não foi informada' }),
-        photo: z.string({ required_error: 'Foto não foi selecionada' }),
+        photo: z.array(
+          z.string({ required_error: 'Foto não foi selecionada' }),
+        ),
         color: z.string({ required_error: 'Cor não foi informada' }),
         size: z.string({ required_error: 'Tamanho não foi informado' }),
         distinctive_characteristics: z.string({

@@ -4,7 +4,7 @@ export interface RegisterAdoptionAnimalDTO {
   age: string;
   color: string;
   size: string;
-  photo: string;
+  photo: string[];
   distinctive_characteristics: string;
   personality_description: string;
   userId: string;

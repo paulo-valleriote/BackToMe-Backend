@@ -1,4 +1,5 @@
 import { User } from '@domain/User/User';
+import { DeleteUserDTO } from '@infra/http/dtos/User/deleteUser.dto';
 import { EditUserDTO } from '@infra/http/dtos/User/editUser.dto';
 import { FindedUserDTO } from '@infra/http/dtos/User/findedUser.dto';
 import { UserLoginDTO } from '@infra/http/dtos/User/login.dto';
@@ -18,5 +19,5 @@ export abstract class UserRepository {
   abstract findByEmail(
     email: string,
   ): Promise<FindedUserDTO | NotFoundException>;
-  abstract deleteUser(userId: string): Promise<void>
+  abstract deleteUser(request:DeleteUserDTO ,id: string): Promise<void>
 }

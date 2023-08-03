@@ -8,7 +8,7 @@ interface FoundAnimalProps extends AnimalProps {
   color: string;
   size: string;
   distinctive_characteristics: string;
-  photo: string;
+  photo: string[];
   found_location: string;
   userId: string;
 }
@@ -31,9 +31,9 @@ export class FoundAnimal extends Animal {
         personality_description: z.string({
           required_error: 'Características não foram informadas',
         }),
-        photo: z.string({
+        photo: z.array(z.string({
           required_error: 'Endereço de imagem não foi informado',
-        }),
+        })),
         found_location: z.string({
           required_error: 'Endereço não foi informado',
         }),
