@@ -5,7 +5,7 @@ export class MessageController {
   @Get()
   message() {
     const swaggerLink =
-      'https://app.swaggerhub.com/apis-docs/MAVIROLERO/BackToMe/1.0.0';
+      'https://app.swaggerhub.com/apis-docs/MAVIROLERO/back-to_me_api/1.0.0';
     return `Bem-vindo à API BackToMe! Acesse nossa documentação das rotas: <a href="${swaggerLink}">${swaggerLink}</a>`;
   }
 }
