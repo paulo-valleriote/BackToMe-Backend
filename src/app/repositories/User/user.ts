@@ -20,6 +20,8 @@ export abstract class UserRepository {
   abstract findUserById(userId: string): Promise<User>;
 
   abstract saveImage(id:string,photoUrl:string): Promise<any>;
+  
+  abstract saveFile(id:string,fileUrl:string): Promise<any>;
 
   abstract updatePassword(
     userId: string,

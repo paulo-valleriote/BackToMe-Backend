@@ -136,6 +136,17 @@ export class PrismaUserRepository implements UserRepository {
 
     return updatedUser;
   }
+  async saveFile(id: string, fileUrl: string): Promise<any> {
+    const updatedUser = await this.prismaService.user.update({
+      where: { id },
+      data: {
+        doc: fileUrl,
+        isVerified: true
+      },
+    });
+
+    return updatedUser;
+  }
   async findUserById(id: string): Promise<any> {
     const user = await this.prismaService.user.findFirst({
       where: { id },

@@ -36,6 +36,21 @@ export class FileService {
 
     return 'Imagem salva !';
   }
+  async uploadFile(
+    id: string,
+    file: Express.Multer.File,
+  ): Promise<string> {
+    const fileUrl = await this.s3_upload({
+      file,
+      bucket: this.AWS_S3_BUCKET,
+      originalName: file.originalname,
+      mimetype: file.mimetype,
+    });
+
+    await this.userRepository.saveFile(id, fileUrl);
+
+    return 'Imagem salva !';
+  }
 
   private async s3_upload({
     file,

@@ -20,4 +20,12 @@ export class ImagesController {
   ) {
     return await this.imageService.uploadPhoto(id, file);
   }
+  @Post(':id/upload-doc')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadDoc(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return await this.imageService.uploadFile(id, file);
+  }
 }
