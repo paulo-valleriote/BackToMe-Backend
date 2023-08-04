@@ -83,7 +83,7 @@ export class UserService {
 
   async edit(userId: string, request: EditUserDTO): Promise<void | Error> {
     if (!userId) {
-      return new BadRequestException('Identificação de usuário inválida');
+      return new BadRequestException('Identificação de usuário inválida!');
     }
     if (request && Number(request.password?.length) < 6)
       throw new BadRequestException('Senha deve ter pelo menos 6 caracteres!');
