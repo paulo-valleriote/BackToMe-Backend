@@ -11,9 +11,7 @@ interface S3UploadInterface {
 
 @Injectable()
 export class FileService {
-  constructor(
-    private  userRepository: UserRepository
-  ){}
+  constructor(private userRepository: UserRepository) {}
   private AWS_S3_BUCKET = process.env.AWS_S3_BUCKET as string;
   private s3 = new AWS.S3({
     credentials: {
@@ -23,23 +21,20 @@ export class FileService {
     endpoint: new AWS.Endpoint(process.env.AWS_S3_ENDPOINT as string),
   });
 
-  async uploadPhoto(id: string, file: Express.Multer.File): Promise<string | any> {
-    try {
-      const photoUrl = await this.s3_upload({
-        file: file,
-        bucket: this.AWS_S3_BUCKET,
-        originalName: file.originalname,
-        mimetype: file.mimetype,
-      });
+  async uploadPhoto(
+    id: string,
+    file: Express.Multer.File,
+  ): Promise<string> {
+    const photoUrl = await this.s3_upload({
+      file,
+      bucket: this.AWS_S3_BUCKET,
+      originalName: file.originalname,
+      mimetype: file.mimetype,
+    });
 
-    
-        await this.userRepository.saveImage(id,photoUrl);
-      
+    await this.userRepository.saveImage(id, photoUrl);
 
-      return "Imagem salva !";
-    } catch (e) {
-      console.log(e);
-    }
+    return 'Imagem salva !';
   }
 
   private async s3_upload({
