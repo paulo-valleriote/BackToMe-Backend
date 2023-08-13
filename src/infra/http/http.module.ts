@@ -7,6 +7,7 @@ import { MailQueueModule } from './controllers/mail/mail.module';
 import { OngsModule } from "./controllers/ong's/ong.module";
 import { ReportsModule } from './controllers/reports/report.module';
 import { MessagesModule } from './controllers/message/message.module';
+import { AssessmentsModule} from './controllers/assessment/assessment.module';
 import { ImagesModule } from './controllers/images/images.module';
 
 @Module({
@@ -20,6 +21,7 @@ import { ImagesModule } from './controllers/images/images.module';
     OngsModule,
     ReportsModule,
     MessagesModule,
+    AssessmentsModule
   ],
 })
 export class HttpModule {}

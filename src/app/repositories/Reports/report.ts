@@ -1,5 +1,4 @@
 import { Report } from '@domain/Reports/Reports';
-import { EditReportDTO } from '@infra/http/dtos/Report/editReport.dto';
 
 export abstract class ReportRepository {
   abstract register(report: Report): Promise<string>;

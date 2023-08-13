@@ -19,15 +19,9 @@ export class MessagesController {
   }
 
   @Get(':id/find')
-  async findMessageById(@Param('id') id: string) {
-    return await this.messageService.findMessageById(id);
+  async findMessageByUserId(@Param('id') id: string) {
+    return await this.messageService.findMessageByUserId(id);
   }
 
-  @Delete(':messageId/delete/:senderId')
-  async deleteMessage(
-    @Param('messageId') messageId: string,
-    @Param('senderId') senderId: string,
-  ) {
-    return await this.messageService.deleteMessage(messageId, senderId);
-  }
+ 
 }

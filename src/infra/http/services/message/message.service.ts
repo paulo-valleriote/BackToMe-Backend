@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { MessageRepository } from '@app/repositories/Message/message';
 import { Message } from '@domain/message/Message';
 
@@ -19,27 +14,18 @@ export class MessageService {
     return messageId;
   }
 
-  async findMessageById(id: string) {
+  async findMessageByUserId(id: string) {
     if (!id) {
       throw new BadRequestException('Identificação de mensagem inválida');
     }
-    const message = await this.messageRepository.findMessageByUserId(id);
-    if (!('senderId' in message[0])) {
+    const messages = await this.messageRepository.findMessageByUserId(id);
+    if (messages.length > 0  && !('senderId' in messages[0])) {
       throw new BadRequestException('Mensagem não encontrada');
     }
-    return message;
+    return messages;
   }
 
-  async deleteMessage(messageId: string, userId: string): Promise<string | Error> {
-    const messages: any[] = await this.messageRepository.findMessageById(messageId);
 
-    const messageToDelete = messages.find(
-      (message) => message.id === messageId,
-    );
-    if (!messageToDelete) {
-      throw new NotFoundException('Message not found');
-    }
-
-    return await this.messageRepository.deleteMessage(messageId, userId);
-  }
+  
+  
 }

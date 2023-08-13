@@ -20,9 +20,31 @@ tags:
 - name: ONGs
 - name: Report
 - name: Message
+- name: Depoimentos
 
 paths:
-  /file/upload:
+  /file/upload-img:
+    patch:
+      tags:
+      - Uploads
+      summary: Salvar arquivo
+      description: Salva arquivo no banco de dados
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file: # Nome do campo do arquivo
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: Imagem salva com sucesso
+        "400":
+          description: Erro ao salvar arquivo
+  /file/upload-doc:
     patch:
       tags:
       - Uploads
@@ -43,6 +65,7 @@ paths:
           description: Arquivo salvo com sucesso
         "400":
           description: Erro ao salvar arquivo
+
   /validate/email:
     post:
       tags:
@@ -67,7 +90,6 @@ paths:
           description: Não existe nenhum usuário cadastrado com este email
         "400":
           description: Já existe um cadastro com esse email
-
   /users/registered:
     post:
       tags:
@@ -188,7 +210,6 @@ paths:
           description: Usuário cadastrado com sucesso!
         "400":
           description: Erro interno!
-
   /users/{userId}/find:
     get:
       tags:
@@ -232,7 +253,6 @@ paths:
               examples:
                 Example Json:
                   value: '{"message": "Erro interno na API."}'
-
   /users/recovery-password:
     post:
       tags:
@@ -296,7 +316,6 @@ paths:
 
         "400":
           description: Erro ao alterar senha
-
   /users/{userId}/delete:
     delete:
       tags:
@@ -317,7 +336,6 @@ paths:
           description: Usuário deletado com sucesso.
         "404":
           description: Usuário não encontrado.
-
   /animals-found/registered:
     post:
       tags:
@@ -333,7 +351,7 @@ paths:
             examples:
               Example Json:
                 value:
-                  photo: "Caminho para a foto do animal"
+                  photo: ["Caminho para a foto do animal"]
                   local_encontrado: "Descrição ou endereço do local encontrado"
                   species: "Espécie do animal"
                   race: "Raça do animal"
@@ -405,6 +423,7 @@ paths:
                   race: "Raça do animal"
                   age: "Filhote || adulto || idoso"
                   color: "Cor do animal"
+                  photo: ["url"]
                   size: "Tamanho do animal"
                   distinctive_characteristics: "Características distintivas do animal"
                   date_loss: "Data da perda"
@@ -437,6 +456,7 @@ paths:
                     race: "Raça do animal"
                     age: "Filhote || adulto || idoso"
                     color: "Cor do animal"
+                    photo: ["url"]
                     size: "Tamanho do animal"
                     distinctive_characteristics: "Características distintivas do animal"
                     date_loss: "Data da perda"
@@ -474,6 +494,7 @@ paths:
                   race: "Raça do animal"
                   age: "Filhote || adulto || idoso"
                   color: "Cor do animal"
+                  photo: ["url"]
                   size: "Tamanho do animal"
                   distinctive_characteristics: "Características distintivas do animal"
                   informacoes_personalidade: "Informações sobre a personalidade do animal"
@@ -571,6 +592,7 @@ paths:
                     age: "Filhote"
                     color: "Cor do animal"
                     size: "Tamanho do animal"
+                    photo: ["url"]
                     distinctive_characteristics: "Características distintivas do animal"
                     informacoes_personalidade: "Informações sobre a personalidade do animal"
                     userId: "id usuario"
@@ -580,6 +602,7 @@ paths:
                     age: "Filhote || adulto || idoso"
                     color: "Cor do animal"
                     size: "Tamanho do animal"
+                    photo: ["url"]
                     distinctive_characteristics: "Características distintivas do animal"
                     informacoes_personalidade: "Informações sobre a personalidade do animal"
                     userId: "id usuario"
@@ -633,6 +656,7 @@ paths:
                     species: "Espécie do animal"
                     race: "Raça do animal"
                     age: "Filhote"
+                    photo: ["url"]
                     color: "Cor do animal"
                     size: "Tamanho do animal"
                     distinctive_characteristics: "Características distintivas do animal"
@@ -642,6 +666,7 @@ paths:
                     species: "Espécie do animal"
                     race: "Raça do animal"
                     age: "Filhote || adulto || idoso"
+                    photo: ["url"]
                     color: "Cor do animal"
                     size: "Tamanho do animal"
                     distinctive_characteristics: "Características distintivas do animal"
@@ -705,7 +730,6 @@ paths:
       responses:
         "201":
           description: Relatório criado com sucesso
-
   /message:
     post:
       tags:
@@ -728,17 +752,17 @@ paths:
       responses:
         "201":
           description: Mensagem registrada
-  /message/{id}:
+  /message/{senderId}:
     get:
       tags:
       - Message
       summary: Buscar mensagem por ID
-      description: Rota para buscar uma mensagem pelo ID.
+      description: Rota para buscar as mensagens pelo ID do usuario que enviou.
       parameters:
-      - name: id
+      - name: senderId
         in: path
         required: true
-        description: ID da mensagem
+        description: ID do usuario que enviou
         schema:
           type: string
       responses:
@@ -748,17 +772,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Message"
+              examples:
+                ExampleJson:
+                  value:
+                  - id: "9e80e60c-0f6f-411e-8cba-44f82911c3df"
+                    title: "string"
+                    content: "string"
+                    senderId: "string"
+                    receiverId: "string"
+                  - id: "ee0529fb-b4cc-4c92-9f11-7c7adf666ec0"
+                    title: "string"
+                    content: "string"
+                    senderId: "string"
+                    receiverId: "string"
         "404":
           description: Mensagem não encontrada
-
-  /message/{id}/delete:
+  /message/{messageId}/delete:
     delete:
       tags:
       - Message
       summary: Deletar mensagem por ID
       description: Rota para deletar uma mensagem pelo ID.
       parameters:
-      - name: id
+      - name: messageId
         in: path
         required: true
         description: ID da mensagem
@@ -769,7 +805,27 @@ paths:
           description: Mensagem deletada com sucesso
         "404":
           description: Mensagem não encontrada
-
+  /testimonial/register:
+    post:
+      tags:
+      - Depoimentos
+      summary: Cria um novo testimonyo
+      description: Rota para criar um novo testimonyo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TestmonialRef"
+            examples:
+              Example Json:
+                value:
+                  assessment: "5"
+                  testimony: "Amei o app"
+                  userId: "be89466a-361e-4e56-9ca9-89ace992fac0"
+      responses:
+        "201":
+          description: Depoimento registrado
 components:
   schemas:
     UserRegistered:
@@ -1031,3 +1087,16 @@ components:
           type: string
         updatedAt:
           type: string
+
+    Testimonial:
+      type: object
+      properties:
+        id:
+          type: string
+        testimony:
+          type: string
+        assessment:
+          type: string
+        userId:
+          type: string
+

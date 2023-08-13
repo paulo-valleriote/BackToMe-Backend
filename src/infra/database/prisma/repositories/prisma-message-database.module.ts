@@ -1,13 +1,11 @@
 import { Module } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
-import { PrismaMessagesRepository } from './prisma-message-repository';
+import { FirebaseMessagesRepository } from './prisma-message-repository';
 import { MessageRepository } from '@app/repositories/Message/message';
 
 @Module({
   providers: [
-    PrismaService,
-    { provide: MessageRepository, useClass: PrismaMessagesRepository },
+    { provide: MessageRepository, useClass: FirebaseMessagesRepository },
   ],
-  exports: [{ provide: MessageRepository, useClass: PrismaMessagesRepository }],
+  exports: [{ provide: MessageRepository, useClass: FirebaseMessagesRepository }],
 })
-export class MessagesDatabaseModule {}
+export class FirebaseMessagesModule {}
