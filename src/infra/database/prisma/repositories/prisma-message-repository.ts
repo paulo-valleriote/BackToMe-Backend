@@ -87,7 +87,6 @@ export class FirebaseMessagesRepository implements MessageRepository {
         };
         messages.push(messageWithId);
       });
-       console.log(messages)
       return messages;
     } catch (error) {
       throw new BadRequestException('Erro ao buscar mensagem do Usuário');
