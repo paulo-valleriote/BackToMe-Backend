@@ -11,6 +11,15 @@ export class InMemoryMessageRepository implements MessageRepository {
     return 'valid_id';
   }
 
+  async findMessageByUserId(userId: string): Promise<Message> {
+    const message = this.message.find((message) => message.props.senderId === userId);
+
+    if (!message) {
+      throw new NotFoundException('Message not found');
+    }
+
+    return message;
+  }
   async findMessageById(messageId: string): Promise<Message> {
     const message = this.message.find((message) => message.props.senderId === messageId);
 
@@ -21,15 +30,4 @@ export class InMemoryMessageRepository implements MessageRepository {
     return message;
   }
 
-  async deleteMessage(messageId: string, senderId: string): Promise<void> {
-    const messageIndex = this.message.findIndex(
-      (message) => message.props.senderId === messageId && message.props.senderId === senderId,
-    );
-
-    if (messageIndex < 0) {
-      throw new NotFoundException('Message not found');
-    }
-
-    this.message.splice(messageIndex, 1);
-  }
 }

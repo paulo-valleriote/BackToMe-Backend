@@ -1,76 +1,113 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
+import { FirebaseApp, initializeApp } from 'firebase/app';
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore'; // Importe diretamente do 'firebase/firestore'
 import { Message } from '@domain/message/Message';
 import { MessageRepository } from '@app/repositories/Message/message';
+import { Firestore, getFirestore } from 'firebase/firestore';
+interface MessageProps {
+  id?: string;
+  title: string;
+  content: string;
+  senderId: string;
+  receiverId: string;
+  createdAt: string;
+}
 
 @Injectable()
-export class PrismaMessagesRepository implements MessageRepository {
-  constructor(private prismaService: PrismaService) {}
+export class FirebaseMessagesRepository implements MessageRepository {
+  private firestore: Firestore;
+  private app: FirebaseApp;
 
-  async register(message: Message): Promise<string> {
+  constructor() {
+    this.app = initializeApp({
+      apiKey: 'AIzaSyAp4bA4T2HAnk6QPF9CDcfCq_2XWerkzqY',
+      authDomain: 'chat-btm.firebaseapp.com',
+      projectId: 'chat-btm',
+      storageBucket: 'chat-btm.appspot.com',
+      messagingSenderId: '330622068920',
+      appId: '1:330622068920:web:211816e6f006a1ea126c4d',
+      measurementId: 'G-81XGHZ9F45',
+    });
+    this.firestore = getFirestore(this.app);
+  }
+
+  async register(message: Message,): Promise<string> {
     try {
       const { title, content, senderId, receiverId } = message.props;
 
-      await this.prismaService.message.create({
-        data: {
-          title,
-          content,
-          senderId,
-          receiverId,
-        },
-        select: {
-          id: true,
-         
-        },
+      const messagesRef = collection(this.firestore, 'messages');
+      await addDoc(messagesRef, {
+        title,
+        content,
+        senderId,
+        receiverId,
+        createdAt: new Date()
       });
 
       return 'Registramos sua mensagem';
     } catch (error) {
-      throw new Error('Erro ao registrar messagem');
+      throw new BadRequestException('Erro ao registrar mensagem');
     }
   }
 
-  async findMessageByUserId(id: string): Promise<any | Error> {
+  async findMessageByUserId(id: string): Promise<MessageProps[] | Error> {
     try {
-      const message = await this.prismaService.message.findMany({
-        where: {
-          OR: [{ senderId: id }, { receiverId: id }],
-        },
+      const messagesRef = collection(this.firestore, 'messages');
+      const senderQuery = query(messagesRef, where('senderId', '==', id));
+      const receivedQuery = query(messagesRef, where('receiverId', '==', id));
+
+      const [senderSnapshot, receivedSnapshot] = await Promise.all([
+        getDocs(senderQuery),
+        getDocs(receivedQuery),
+      ]);
+
+      const messages: MessageProps[] = [];
+      senderSnapshot.forEach((doc) => {
+        const messageData = doc.data() as MessageProps;
+        const messageWithId: MessageProps = {
+          id: doc.id,
+          ...messageData,
+        };
+        messages.push(messageWithId);
       });
-      return message;
+      receivedSnapshot.forEach((doc) => {
+        const messageData = doc.data() as MessageProps;
+        const messageWithId: MessageProps = {
+          id: doc.id,
+          ...messageData,
+        };
+        messages.push(messageWithId);
+      });
+       console.log(messages)
+      return messages;
     } catch (error) {
-      throw new Error('Erro ao buscar mensagem do Usuario');
+      throw new BadRequestException('Erro ao buscar mensagem do Usuário');
     }
   }
+
   async findMessageById(id: string): Promise<any | Error> {
     try {
-      const message = await this.prismaService.message.findMany({
-        where: {
-          id,
-        },
-      });
-      return message;
+      const messageRef = doc(this.firestore, 'messages', id);
+      const messageSnapshot = await getDoc(messageRef);
+
+      if (!messageSnapshot.exists()) {
+        throw new BadRequestException('Mensagem não encontrada');
+      }
+
+      const messageData = messageSnapshot.data() as MessageProps;
+      return [messageData];
     } catch (error) {
-      throw new Error('Erro ao buscar mensagem');
+      console.error('Erro:', error); // Verifique o erro aqui
+      throw new BadRequestException('Erro ao buscar mensagem');
     }
-  }
-
-  async deleteMessage(messageId: string, senderId: string): Promise<string | Error> {
-      const message = await this.prismaService.message.findUnique({
-        where: { id: messageId },
-      });
-
-      if (!message) {
-        throw new BadRequestException('Messagem não encontrada');
-      }
-      if (message.senderId === senderId) {
-        await this.prismaService.message.delete({
-          where: { id: messageId },
-        });
-        return "Mensagem deletada"
-      } else {
-        throw new BadRequestException('Mensagem não corresponde ao usuário!');
-      }
-  
   }
 }

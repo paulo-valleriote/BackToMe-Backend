@@ -55,7 +55,7 @@ export class Message {
   private isValid(params: MessageProps): IsValidMethodReturn {
     const messageSchema = z.object({
       title: z.string().min(3, { message: 'Invalid' }),
-      content: z.string().min(9, { message: 'Invalid' }),
+      content: z.string().min(1, { message: 'Invalid' }),
       senderId: z.string().min(3, { message: 'Invalid' }),
       receiverId: z.string().min(3, { message: 'Invalid' }),
     });

@@ -7,7 +7,4 @@ export abstract class MessageRepository {
   
   abstract findMessageByUserId(id: string): Promise<any>;
 
-  abstract deleteMessage(messageId: string, senderId: string): Promise<string | Error>;
-
-
 }

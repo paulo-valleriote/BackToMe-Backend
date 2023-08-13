@@ -7,10 +7,10 @@ import {
 import { PrismaService } from '@infra/database/prisma/prisma.service';
 import { ValidateToken } from '@infra/http/middlewares/users/validateToken';
 import { MessageService } from '@infra/http/services/message/message.service';
-import { MessagesDatabaseModule } from '@infra/database/prisma/repositories/prisma-message-database.module';
+import { FirebaseMessagesModule } from '@infra/database/prisma/repositories/prisma-message-database.module';
 import { MessagesController } from '@infra/http/controllers/message/message.controller';
 @Module({
-  imports: [MessagesDatabaseModule],
+  imports: [FirebaseMessagesModule],
   controllers: [MessagesController],
   providers: [MessageService, PrismaService],
 })
