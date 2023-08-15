@@ -11,12 +11,12 @@ export class PrismaReportRepository implements ReportRepository {
     try {
       const { reportingUserId, reportedUserId, messageId, reason, } = report.props;
 
-      const createdReport = await this.prismaService.report.create({
+      await this.prismaService.report.create({
         data: {
-          
+
           reportingUserId: reportingUserId as string,
           reportedUserId: reportedUserId as string,
-          messageId: messageId as string,
+          firebaseMessageId: messageId as string,
           reason: reason as string,
         },
         select: {

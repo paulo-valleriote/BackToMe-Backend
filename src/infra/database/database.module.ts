@@ -17,7 +17,7 @@ import { AssessmentsDatabaseModule } from './prisma/repositories/prisma-assessme
     OngsDatabaseModule,
     ReportsDatabaseModule,
     FirebaseMessagesModule,
-    AssessmentsDatabaseModule
+    AssessmentsDatabaseModule,
   ],
 })
 export class DatabaseModule {}

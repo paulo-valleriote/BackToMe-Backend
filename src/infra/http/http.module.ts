@@ -21,7 +21,7 @@ import { ImagesModule } from './controllers/images/images.module';
     OngsModule,
     ReportsModule,
     MessagesModule,
-    AssessmentsModule
+    AssessmentsModule,
   ],
 })
 export class HttpModule {}
