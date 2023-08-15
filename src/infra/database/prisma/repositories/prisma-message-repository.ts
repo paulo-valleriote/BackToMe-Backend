@@ -9,7 +9,7 @@ import {
   getDocs,
   query,
   where,
-} from 'firebase/firestore'; // Importe diretamente do 'firebase/firestore'
+} from 'firebase/firestore';
 import { Message } from '@domain/message/Message';
 import { MessageRepository } from '@app/repositories/Message/message';
 import { Firestore, getFirestore } from 'firebase/firestore';
@@ -50,7 +50,9 @@ export class FirebaseMessagesRepository implements MessageRepository {
         content,
         senderId,
         receiverId,
-        createdAt: new Date()
+        createdAt: new Date(),
+        resolved:false,
+        resolutionDescription: ''
       });
 
       return 'Registramos sua mensagem';
@@ -105,7 +107,7 @@ export class FirebaseMessagesRepository implements MessageRepository {
       const messageData = messageSnapshot.data() as MessageProps;
       return [messageData];
     } catch (error) {
-      console.error('Erro:', error); // Verifique o erro aqui
+      console.error('Erro:', error); 
       throw new BadRequestException('Erro ao buscar mensagem');
     }
   }

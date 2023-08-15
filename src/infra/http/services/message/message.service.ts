@@ -1,17 +1,21 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+} from '@nestjs/common';
 import { MessageRepository } from '@app/repositories/Message/message';
 import { Message } from '@domain/message/Message';
 
 @Injectable()
 export class MessageService {
-  constructor(private messageRepository: MessageRepository) {}
+  constructor(
+    private messageRepository: MessageRepository) {}
 
   async createMessage(message: any): Promise<string> {
     const newMessage = new Message(message);
 
-    const messageId = await this.messageRepository.register(newMessage);
+    const response = await this.messageRepository.register(newMessage);
 
-    return messageId;
+    return response;
   }
 
   async findMessageByUserId(id: string) {
@@ -19,13 +23,10 @@ export class MessageService {
       throw new BadRequestException('Identificação de mensagem inválida');
     }
     const messages = await this.messageRepository.findMessageByUserId(id);
-    if (messages.length > 0  && !('senderId' in messages[0])) {
+    if (messages.length > 0 && !('senderId' in messages[0])) {
       throw new BadRequestException('Mensagem não encontrada');
     }
+
     return messages;
   }
-
-
-  
-  
 }
