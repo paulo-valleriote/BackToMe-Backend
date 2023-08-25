@@ -9,7 +9,7 @@ import { ReportsModule } from './controllers/reports/report.module';
 import { MessagesModule } from './controllers/message/message.module';
 import { AssessmentsModule} from './controllers/assessment/assessment.module';
 import { ImagesModule } from './controllers/images/images.module';
-
+import { SocketModule } from '@infra/Socket/socket.module';
 @Module({
   imports: [
     LostAnimalsModule,
@@ -22,6 +22,7 @@ import { ImagesModule } from './controllers/images/images.module';
     ReportsModule,
     MessagesModule,
     AssessmentsModule,
+    SocketModule
   ],
 })
 export class HttpModule {}

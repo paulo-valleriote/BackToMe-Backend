@@ -2,7 +2,7 @@ import { InvalidParamError } from '@app/errors/InvalidParamError';
 import { MissingParamError } from '@app/errors/MissingParamError';
 import { z } from 'zod';
 
-interface MessageProps {
+export interface MessageProps {
   title: string;
   content: string;
   senderId: string;

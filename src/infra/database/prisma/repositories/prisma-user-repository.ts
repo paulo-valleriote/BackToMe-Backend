@@ -56,7 +56,7 @@ export class PrismaUserRepository implements UserRepository {
     const databaseStored = await this.prismaService.user.findUnique({
       where: { email: account.email },
     });
-    if (!databaseStored?.active)
+    if (databaseStored?.email && !databaseStored?.active)
       throw new BadRequestException('Conta está desativada!');
     if (
       !databaseStored?.password ||
