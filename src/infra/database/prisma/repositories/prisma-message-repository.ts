@@ -13,6 +13,8 @@ import {
 import { Message } from '@domain/message/Message';
 import { MessageRepository } from '@app/repositories/Message/message';
 import { Firestore, getFirestore } from 'firebase/firestore';
+import { SocketService } from '@infra/Socket/socket.service'; // Importe o serviço do socket
+
 interface MessageProps {
   id?: string;
   title: string;
@@ -21,26 +23,26 @@ interface MessageProps {
   receiverId: string;
   createdAt: string;
 }
-
+const firebaseConfig = {
+  apiKey: 'AIzaSyAp4bA4T2HAnk6QPF9CDcfCq_2XWerkzqY',
+  authDomain: 'chat-btm.firebaseapp.com',
+  projectId: 'chat-btm',
+  storageBucket: 'chat-btm.appspot.com',
+  messagingSenderId: '330622068920',
+  appId: '1:330622068920:web:211816e6f006a1ea126c4d',
+  measurementId: 'G-81XGHZ9F45',
+}
 @Injectable()
 export class FirebaseMessagesRepository implements MessageRepository {
   private firestore: Firestore;
   private app: FirebaseApp;
 
-  constructor() {
-    this.app = initializeApp({
-      apiKey: 'AIzaSyAp4bA4T2HAnk6QPF9CDcfCq_2XWerkzqY',
-      authDomain: 'chat-btm.firebaseapp.com',
-      projectId: 'chat-btm',
-      storageBucket: 'chat-btm.appspot.com',
-      messagingSenderId: '330622068920',
-      appId: '1:330622068920:web:211816e6f006a1ea126c4d',
-      measurementId: 'G-81XGHZ9F45',
-    });
+  constructor(private socketService: SocketService) {
+    this.app = initializeApp(firebaseConfig);
     this.firestore = getFirestore(this.app);
   }
 
-  async register(message: Message,): Promise<string> {
+  async register(message: Message): Promise<string> {
     try {
       const { title, content, senderId, receiverId } = message.props;
 
@@ -51,10 +53,10 @@ export class FirebaseMessagesRepository implements MessageRepository {
         senderId,
         receiverId,
         createdAt: new Date(),
-        resolved:false,
-        resolutionDescription: ''
+        resolved: false,
+        resolutionDescription: '',
       });
-
+      this.socketService.emitNewMessage(message.props);
       return 'Registramos sua mensagem';
     } catch (error) {
       throw new BadRequestException('Erro ao registrar mensagem');
@@ -107,7 +109,7 @@ export class FirebaseMessagesRepository implements MessageRepository {
       const messageData = messageSnapshot.data() as MessageProps;
       return [messageData];
     } catch (error) {
-      console.error('Erro:', error); 
+      console.error('Erro:', error);
       throw new BadRequestException('Erro ao buscar mensagem');
     }
   }
