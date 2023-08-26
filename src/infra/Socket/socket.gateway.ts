@@ -1,4 +1,9 @@
-import { SubscribeMessage, WebSocketGateway, WebSocketServer, OnGatewayInit } from '@nestjs/websockets';
+import {
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+  OnGatewayInit,
+} from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { SocketService } from './socket.service';
 import { MessageProps } from '@domain/message/Message';
@@ -17,5 +22,6 @@ export class SocketGateway implements OnGatewayInit {
   @SubscribeMessage('newMessage')
   handleNewMessage(socket: Socket, message: MessageProps) {
     this.socketService.emitNewMessage(message);
+    console.log(socket);
   }
 }
