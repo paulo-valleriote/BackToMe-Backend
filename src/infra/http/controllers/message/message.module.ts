@@ -9,8 +9,9 @@ import { ValidateToken } from '@infra/http/middlewares/users/validateToken';
 import { MessageService } from '@infra/http/services/message/message.service';
 import { FirebaseMessagesModule } from '@infra/database/prisma/repositories/prisma-message-database.module';
 import { MessagesController } from '@infra/http/controllers/message/message.controller';
+import { SocketModule } from '@infra/Socket/socket.module';
 @Module({
-  imports: [FirebaseMessagesModule],
+  imports: [FirebaseMessagesModule,SocketModule],
   controllers: [MessagesController],
   providers: [MessageService, PrismaService],
 })
