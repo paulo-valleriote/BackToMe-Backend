@@ -2,10 +2,10 @@ import { InvalidParamError } from '@app/errors/InvalidParamError';
 import { MissingParamError } from '@app/errors/MissingParamError';
 import { z } from 'zod';
 
-interface OngProps {
-  name: String;
-  address: String;
-  contact: String;
+export interface OngProps {
+  name: string;
+  address: string;
+  contact: string;
   website?: string;
   description?: string;
   logo?: string;
