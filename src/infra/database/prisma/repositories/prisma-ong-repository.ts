@@ -7,6 +7,24 @@ import { Ong } from "@domain/Ong's/Ongs";
 export class PrismaOngRepository implements OngsRepository {
   constructor(private prismaService: PrismaService) {}
 
+  async register(ong: Ong): Promise<string> {
+    try {
+      const {  address,contact,name,description,logo,website} = ong.props;
+
+      await this.prismaService.ongs.create({
+        data: {
+          address,contact,name,description,logo,website
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      return "Ong Registrada!";
+    } catch (error) {
+      throw new Error('Erro ao registrar ong');
+    }
+  }
   async findAllOngs(): Promise<Ong['props'][]> {
     const ongs = await this.prismaService.ongs.findMany();
 

@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get ,Post} from '@nestjs/common';
 import { OngsService } from '@infra/http/services/Ongs/ongs.service';
 import { Ong } from "@domain/Ong's/Ongs";
 
@@ -9,5 +9,10 @@ export class OngsController {
   @Get('all')
   async getAllOngs(): Promise<Ong['props'][] | Error> {
     return this.ongsService.getAllOngs();
+  }
+
+  @Post()
+  async registerOng(@Body() ong: any) {
+    return this.ongsService.createOng(ong);
   }
 }
