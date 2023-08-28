@@ -22,6 +22,5 @@ export class SocketGateway implements OnGatewayInit {
   @SubscribeMessage('newMessage')
   handleNewMessage(socket: Socket, message: MessageProps) {
     this.socketService.emitNewMessage(message);
-    console.log(socket);
   }
 }
