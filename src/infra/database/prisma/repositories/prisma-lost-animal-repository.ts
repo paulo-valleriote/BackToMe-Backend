@@ -11,6 +11,8 @@ export class PrismaLostAnimalsRepository implements LostAnimalsRepository {
     await this.prismaService.lostAnimal.create({
       data: {
         ...animal.props,
+        createdAt:  new Date()
+
       },
     });
   }
