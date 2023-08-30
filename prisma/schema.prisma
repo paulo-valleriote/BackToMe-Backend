@@ -45,6 +45,7 @@ model AnimalFound {
   photo                       String[] @default([""])
   found_location              String
   species                     String
+  gender                      String   @default("")
   race                        String
   age                         String
   color                       String
@@ -52,6 +53,7 @@ model AnimalFound {
   distinctive_characteristics String
   userId                      String
   user                        User?    @relation(fields: [userId], references: [id])
+  createdAt                   DateTime @default(now())
 }
 
 model LostAnimal {
@@ -61,12 +63,14 @@ model LostAnimal {
   photo                       String[] @default([""])
   age                         String
   color                       String
+  gender                      String   @default("")
   size                        String
   distinctive_characteristics String
   date_loss                   String
   location_loss               String
   userId                      String
   user                        User?    @relation(fields: [userId], references: [id])
+  createdAt                   DateTime @default(now())
 }
 
 model AvailableAnimal {
@@ -94,15 +98,15 @@ model Ongs {
 }
 
 model Report {
-  id              String   @id @default(uuid())
-  reportingUser   User?    @relation("ReportsByUser", fields: [reportingUserId], references: [id])
-  reportingUserId String
-  reportedUser    User?    @relation("ReportsAboutUser", fields: [reportedUserId], references: [id])
-  reportedUserId  String
+  id                String   @id @default(uuid())
+  reportingUser     User?    @relation("ReportsByUser", fields: [reportingUserId], references: [id])
+  reportingUserId   String
+  reportedUser      User?    @relation("ReportsAboutUser", fields: [reportedUserId], references: [id])
+  reportedUserId    String
   firebaseMessageId String?
-  reason          String
-  resolved        Boolean  @default(false)
-  createdAt       DateTime @default(now())
+  reason            String
+  resolved          Boolean  @default(false)
+  createdAt         DateTime @default(now())
 }
 
 model Testimonial {

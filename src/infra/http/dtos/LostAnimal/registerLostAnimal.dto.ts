@@ -9,4 +9,7 @@ export interface RegisterLostAnimalDTO {
   date_loss: string;
   location_loss: string;
   userId: string;
+  gender: string;
+  createAt: string
+
 }
