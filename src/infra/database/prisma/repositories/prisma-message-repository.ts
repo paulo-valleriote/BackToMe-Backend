@@ -3,7 +3,6 @@ import { FirebaseApp, initializeApp } from 'firebase/app';
 import {
   addDoc,
   collection,
-  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -14,6 +13,7 @@ import { Message } from '@domain/message/Message';
 import { MessageRepository } from '@app/repositories/Message/message';
 import { Firestore, getFirestore } from 'firebase/firestore';
 import { SocketService } from '@infra/Socket/socket.service'; // Importe o serviço do socket
+import * as crypto from 'crypto';
 
 interface MessageProps {
   id?: string;
@@ -36,10 +36,12 @@ const firebaseConfig = {
 export class FirebaseMessagesRepository implements MessageRepository {
   private firestore: Firestore;
   private app: FirebaseApp;
+  private encryptionKey: Buffer = Buffer.from('BackToMe', 'utf8')
 
   constructor(private socketService: SocketService) {
     this.app = initializeApp(firebaseConfig);
     this.firestore = getFirestore(this.app);
+    this.encryptionKey = crypto.randomBytes(32);
   }
 
   async register(message: Message): Promise<string> {
@@ -47,15 +49,18 @@ export class FirebaseMessagesRepository implements MessageRepository {
       const { title, content, senderId, receiverId } = message.props;
 
       const messagesRef = collection(this.firestore, 'messages');
+      const encryptedContent = this.encrypt(content);
+
       await addDoc(messagesRef, {
         title,
-        content,
+        content: encryptedContent,
         senderId,
         receiverId,
         createdAt: new Date(),
         resolved: false,
         resolutionDescription: '',
       });
+
       this.socketService.emitNewMessage(message.props);
       return 'Registramos sua mensagem';
     } catch (error) {
@@ -83,6 +88,7 @@ export class FirebaseMessagesRepository implements MessageRepository {
         };
         messages.push(messageWithId);
       });
+
       receivedSnapshot.forEach((doc) => {
         const messageData = doc.data() as MessageProps;
         const messageWithId: MessageProps = {
@@ -91,8 +97,14 @@ export class FirebaseMessagesRepository implements MessageRepository {
         };
         messages.push(messageWithId);
       });
+
+      messages.forEach((message) => {
+        message.content = this.decrypt(message.content);
+      });
+
       return messages;
     } catch (error) {
+      console.log(error)
       throw new BadRequestException('Erro ao buscar mensagem do Usuário');
     }
   }
@@ -107,10 +119,28 @@ export class FirebaseMessagesRepository implements MessageRepository {
       }
 
       const messageData = messageSnapshot.data() as MessageProps;
+      messageData.content = this.decrypt(messageData.content);
       return [messageData];
     } catch (error) {
       console.error('Erro:', error);
       throw new BadRequestException('Erro ao buscar mensagem');
     }
+  }
+
+  private encrypt(text: string): string {
+    const iv = crypto.randomBytes(16);
+    const cipher = crypto.createCipheriv('aes-256-cbc', this.encryptionKey, iv);
+    let encryptedText = cipher.update(text, 'utf8', 'hex');
+    encryptedText += cipher.final('hex');
+    return `${iv.toString('hex')}:${encryptedText}`;
+  }
+
+  private decrypt(encryptedText: string): string {
+    const [ivHex, encryptedData] = encryptedText.split(':');
+    const iv = Buffer.from(ivHex, 'hex');
+    const decipher = crypto.createDecipheriv('aes-256-cbc', this.encryptionKey, iv);
+    let decryptedText = decipher.update(encryptedData, 'hex', 'utf8');
+    decryptedText += decipher.final('utf8');
+    return decryptedText;
   }
 }
