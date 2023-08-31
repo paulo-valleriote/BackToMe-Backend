@@ -36,12 +36,12 @@ const firebaseConfig = {
 export class FirebaseMessagesRepository implements MessageRepository {
   private firestore: Firestore;
   private app: FirebaseApp;
-  private encryptionKey: Buffer = Buffer.from('BackToMe', 'utf8')
+  private encryptionKey: Buffer 
 
   constructor(private socketService: SocketService) {
     this.app = initializeApp(firebaseConfig);
     this.firestore = getFirestore(this.app);
-    this.encryptionKey = crypto.randomBytes(32);
+    this.encryptionKey = crypto.createHash('sha256').update(process.env.JWT_SECRET as string).digest()
   }
 
   async register(message: Message): Promise<string> {
